@@ -428,21 +428,6 @@
 
     var year = $("#year");
     if (year) year.textContent = new Date().getFullYear();
-
-    $$(".zone__title, .subhead, .card__title, .more__title, .slotbox__name, .mission__title").forEach(numify);
-  }
-
-  // Wrap digits in pixel-font headings so they render in the number font.
-  function numify(node) {
-    node.childNodes.forEach(function (n) {
-      if (n.nodeType !== 3 || !/\d/.test(n.data)) return;
-      var frag = document.createDocumentFragment();
-      n.data.split(/(\d[\d.,/]*)/).forEach(function (part, i) {
-        if (!part) return;
-        frag.appendChild(i % 2 ? el("span", "num", part) : document.createTextNode(part));
-      });
-      n.replaceWith(frag);
-    });
   }
 
   function projectCard(p) {

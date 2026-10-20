@@ -59,9 +59,9 @@
   --bracket: rgba(94, 240, 255, 0.85);
 
   /* Type */
-  --font-pixel: "Pixelify Sans", ui-monospace, monospace;
+  --font-pixel: "Jersey 10", "Silkscreen", ui-monospace, monospace;
   --font-hud: "Silkscreen", ui-monospace, monospace;
-  --font-num: "Jersey 10", "Silkscreen", ui-monospace, monospace; /* clearest pixel digits */
+  --font-num: var(--font-pixel);
   --font-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 
   /* Sizes */
@@ -96,19 +96,8 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Pixelify's "fi" ligature reads like an "A". The font shorthand resets
-   font-feature-settings, so it is switched off on every element. */
-* { font-feature-settings: "liga" 0, "clig" 0 !important; }
 
 section[id] { scroll-margin-top: var(--topbar-h); }
-
-/* Digits inside pixel headings (Pixelify's 5 looks like an S) */
-.num {
-  font-family: var(--font-num);
-  font-size: 1.2em;
-  font-weight: 400;
-  line-height: 0.8;
-}
 
 a { color: inherit; }
 
@@ -147,7 +136,7 @@ a { color: inherit; }
   border: 0;
   background: var(--bg);
   color: var(--fg);
-  font: 600 1.0625rem/1 var(--font-pixel);
+  font: 400 1.4rem/1 var(--font-pixel);
   text-decoration: none;
   white-space: nowrap;
   cursor: pointer;
@@ -172,7 +161,7 @@ a { color: inherit; }
 .btn--small {
   --step: 3px;
   padding: 0.5rem 0.8rem 0.55rem;
-  font-size: 0.95rem;
+  font-size: 1.25rem;
 }
 
 .btn__icon { flex: none; }
@@ -209,7 +198,7 @@ a { color: inherit; }
   padding: 0.3rem 0.45rem 0.35rem;
   background: var(--cyan);
   color: var(--navy-950);
-  font: 700 1.2rem/1 var(--font-pixel);
+  font: 400 1.6rem/1 var(--font-pixel);
 }
 
 .brand__name {
@@ -227,7 +216,7 @@ a { color: inherit; }
 }
 
 .topnav__list a {
-  font: 500 1.0625rem/1 var(--font-pixel);
+  font: 400 1.35rem/1 var(--font-pixel);
   text-decoration: none;
 }
 .topnav__list a:hover { color: var(--cyan); }
@@ -289,7 +278,7 @@ a { color: inherit; }
   background: var(--panel);
   border: 1px solid rgba(255, 181, 71, 0.4);
   color: var(--amber);
-  font: 500 0.875rem/1.2 var(--font-pixel);
+  font: 400 1.15rem/1.1 var(--font-pixel);
   letter-spacing: 0.02em;
 }
 .chip::before {
@@ -305,7 +294,7 @@ a { color: inherit; }
   position: relative;
   margin: 0;
   color: var(--name-color);
-  font: 700 clamp(3rem, 1.5rem + 4.6vw, 5.75rem)/0.95 var(--font-pixel);
+  font: 400 clamp(3.75rem, 2rem + 5.6vw, 7rem)/0.9 var(--font-pixel);
   letter-spacing: 0;
   text-shadow: 0 var(--name-shadow) 0 var(--navy-950);
   text-wrap: balance;
@@ -345,7 +334,7 @@ a { color: inherit; }
   background: var(--panel);
   border: 1px solid var(--line);
   color: var(--text);
-  font: 500 clamp(0.95rem, 0.9rem + 0.25vw, 1.0625rem)/1.1 var(--font-pixel);
+  font: 400 clamp(1.2rem, 1.1rem + 0.35vw, 1.4rem)/1 var(--font-pixel);
 }
 .hero__titles li::before {
   content: "";
@@ -590,7 +579,7 @@ a { color: inherit; }
   .topnav__list a {
     display: block;
     padding: 0.8rem 0 0.75rem;
-    font-size: 1rem;
+    font-size: 1.3rem;
   }
   .hud { padding: 0.4rem 0.5rem; }
   .hud--tl, .hud--tr { top: 10px; }
@@ -682,16 +671,16 @@ a { color: inherit; }
 .zone__kicker {
   margin: 0 0 0.5rem;
   color: var(--amber);
-  font: 500 1rem/1.2 var(--font-pixel);
+  font: 400 1.3rem/1.1 var(--font-pixel);
 }
 
 .zone__title {
   margin: 0;
-  font: 700 clamp(2.25rem, 1.6rem + 2.2vw, 3.5rem)/1 var(--font-pixel);
+  font: 400 clamp(2.9rem, 2rem + 3vw, 4.6rem)/0.95 var(--font-pixel);
   text-shadow: 0 var(--art-px) 0 var(--navy-950);
   text-wrap: balance;
 }
-.zone__title--wide { font-size: clamp(2rem, 1.3rem + 2.4vw, 3.25rem); }
+.zone__title--wide { font-size: clamp(2.6rem, 1.7rem + 3.1vw, 4.2rem); }
 
 .zone__lede {
   margin: 1rem 0 0;
@@ -702,7 +691,7 @@ a { color: inherit; }
 .subhead {
   margin: 0 0 1.25rem;
   color: var(--foam-100);
-  font: 600 1.375rem/1.2 var(--font-pixel);
+  font: 400 1.8rem/1.1 var(--font-pixel);
 }
 
 .prose { max-width: 40rem; }
@@ -719,7 +708,7 @@ a { color: inherit; }
   align-items: center;
   gap: 0.45rem;
   color: var(--cyan);
-  font: 500 1rem/1.2 var(--font-pixel);
+  font: 400 1.3rem/1.1 var(--font-pixel);
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 4px;
@@ -852,7 +841,7 @@ a { color: inherit; }
 }
 .mission__title {
   margin: 0;
-  font: 700 clamp(1.4rem, 1.1rem + 1vw, 1.9rem)/1.15 var(--font-pixel);
+  font: 400 clamp(1.8rem, 1.4rem + 1.3vw, 2.5rem)/1.05 var(--font-pixel);
   text-wrap: balance;
 }
 .mission__text {
@@ -947,7 +936,7 @@ a { color: inherit; }
 }
 .card__title {
   margin: 0;
-  font: 700 1.6rem/1.1 var(--font-pixel);
+  font: 400 2.1rem/1 var(--font-pixel);
 }
 .card__summary {
   margin: 0;
@@ -1022,7 +1011,7 @@ a { color: inherit; }
 }
 .more__title {
   margin: 0;
-  font: 600 1.15rem/1.3 var(--font-pixel);
+  font: 400 1.5rem/1.15 var(--font-pixel);
 }
 .more__summary {
   margin: 0 0 0.6rem;
@@ -1059,7 +1048,7 @@ a { color: inherit; }
 .logo--mark {
   background: var(--navy-950);
   color: var(--cyan);
-  font: 700 1.25rem/1 var(--font-pixel);
+  font: 400 1.6rem/1 var(--font-pixel);
 }
 
 .log__list {
@@ -1222,7 +1211,7 @@ a { color: inherit; }
 .slotbox__icon svg { width: 36px; height: 36px; }
 .slotbox__name {
   margin: 0;
-  font: 600 1.125rem/1.2 var(--font-pixel);
+  font: 400 1.5rem/1.1 var(--font-pixel);
 }
 .slotbox__count {
   display: block;
@@ -1534,7 +1523,7 @@ a { color: inherit; }
   .log__entry .logo { width: 66px; height: 48px; }
   .log__entry::before { top: 19px; }
   .logo { width: 48px; height: 48px; padding: 4px; }
-  .logo--mark { font-size: 1rem; }
+  .logo--mark { font-size: 1.3rem; }
   .idcard__body { grid-template-columns: 38% minmax(0, 1fr); gap: 0.85rem; padding: 0.85rem; }
   .featured__stats li { padding: 0.85rem; }
   .card__body { padding: 1.1rem 1.1rem 1.25rem; }
