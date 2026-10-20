@@ -50,8 +50,8 @@ window.CONTENT = {
     titles: ["Autonomous Systems Engineer", "Computer Vision Engineer", "Agentic AI Engineer"],
     // Short lines under the title tags; the first one is shown slightly stronger.
     intro: [
-      "Research-driven engineer with a foot in both academia and industry.",
-      "Taught algorithm design as an undergraduate TA at BRAC University; now working on underwater robotics R&D at Dubotech."
+      "I build robots that see, agents that plan, and apps people use.",
+      "From YOLO on a Jetson underwater to LangGraph agents and RAG products."
     ],
     actions: [
       { label: "See projects", href: "#projects", style: "primary" },
