@@ -362,7 +362,6 @@ window.CONTENT = {
   },
 
   footer: {
-    text: "Built with plain HTML, CSS and JavaScript. Pixel art drawn in code.",
     top: "Back to the surface"
   }
 };
