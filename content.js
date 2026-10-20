@@ -74,7 +74,7 @@ window.CONTENT = {
   about: {
     title: "About",
     paragraphs: [
-      "I'm Yaad, a Computer Science graduate from BRAC University in Dhaka. I try to build a bridge between academia and industry: taking ideas from research and turning them into systems that work on real hardware.",
+      "I'm Yaad, a Computer Science graduate from BRAC University in Dhaka. I care about both sides of the field: the research that explains why something works, and the engineering that makes it work on real hardware.",
       "On the academic side, I spent over a year as an undergraduate teaching assistant, running weekly consultations and helping students think through algorithm design. On the industry side, I'm a Research Assistant at Dubotech Digital working on underwater robotics R&D, after leading the AI and Machine Vision sub-team at BRACU Duburi.",
       "Outside of that, I build things for fun: agents, vision pipelines and robot planners in simulation. I like to experiment and see what breaks, but I always aim for something meaningful that could actually add value for someone."
     ],
