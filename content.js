@@ -56,7 +56,7 @@ window.CONTENT = {
       { label: "See projects", href: "#projects", style: "primary" },
       { label: "Get in touch", href: "#contact", style: "secondary" }
     ],
-    facts: ["RoboSub 2025 & 2026: 8th of 58", "BSc CS, BRAC University", "CGPA 3.96"]
+    facts: [] // short facts under the buttons, e.g. ["CGPA 3.96"]; empty hides the row
   },
 
   // Small readouts around the pixel scene.
