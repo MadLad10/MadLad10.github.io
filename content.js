@@ -212,7 +212,8 @@ window.CONTENT = {
         kind: "Backend",
         summary: "Employee wellness platform: companies invite staff, employees do periodic check-ins with email reminders, admins use role-based dashboards. FastAPI backend with JWT auth.",
         tags: ["FastAPI", "React", "PostgreSQL"],
-        image: "",
+        image: "assets/projects/mindwell.jpg",
+        alt: "MindWell promo: weekly check-in card, email reminder and admin dashboard",
         icon: "screen",
         detect: { label: "mindwell", confidence: 0.92 },
         // Add the repo link here if it's public: { label: "Code", href: "https://github.com/..." }
