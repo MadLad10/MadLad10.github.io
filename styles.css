@@ -72,8 +72,6 @@
   --max: 1280px;
   --topbar-h: 64px;
   --meter-space: 0px;     /* room kept free for the fixed depth meter */
-  /* a stepped "pixel circle" on a 12x12 grid */
-  --pixel-circle: polygon(66.6667% 0, 66.6667% 8.3333%, 83.3333% 8.3333%, 83.3333% 16.6667%, 91.6667% 16.6667%, 91.6667% 33.3333%, 100% 33.3333%, 100% 66.6667%, 91.6667% 66.6667%, 91.6667% 83.3333%, 83.3333% 83.3333%, 83.3333% 91.6667%, 66.6667% 91.6667%, 66.6667% 100%, 33.3333% 100%, 33.3333% 91.6667%, 16.6667% 91.6667%, 16.6667% 83.3333%, 8.3333% 83.3333%, 8.3333% 66.6667%, 0 66.6667%, 0 33.3333%, 8.3333% 33.3333%, 8.3333% 16.6667%, 16.6667% 16.6667%, 16.6667% 8.3333%, 33.3333% 8.3333%, 33.3333% 0);
 }
 
 /* ---------- Base ---------- */
@@ -1133,25 +1131,15 @@ a { color: inherit; }
   margin-bottom: 0.75rem;
 }
 .edu__head .log__time { margin: 0; }
-/* education logos: light plate inside a thin cyan ring, both cut to a pixel circle */
+/* education logos: round light plate with a thin ring */
 .edu__head .logo {
-  width: 84px;           /* 12 steps x 7px */
+  width: 84px;
   height: 84px;
-  padding: 15px;
-  background: var(--cyan);
-  border: 0;
-  clip-path: var(--pixel-circle);
+  padding: 13px;
+  border: 2px solid rgba(94, 240, 255, 0.45);
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px rgba(94, 240, 255, 0.08);
 }
-.edu__head .logo::before {
-  content: "";
-  position: absolute;
-  inset: 3px;
-  z-index: -1;
-  background: var(--text);
-  clip-path: var(--pixel-circle);
-}
-.edu__head .logo { position: relative; }
-.edu__head .logo--mark::before { background: var(--navy-950); }
 .edu__degree {
   margin: 0;
   font-size: 1.125rem;
