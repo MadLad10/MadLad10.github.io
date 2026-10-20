@@ -50,8 +50,8 @@ window.CONTENT = {
     titles: ["Autonomous Systems Engineer", "Computer Vision Engineer", "Agentic AI Engineer"],
     // Short lines under the title tags; the first one is shown slightly stronger.
     intro: [
-      "I build robots that see, agents that plan, and apps people use.",
-      "From YOLO on a Jetson underwater to LangGraph agents and RAG products."
+      "I build robots that see and agents that plan.",
+      "From YOLO on a Jetson underwater to LangGraph agents and RAG systems."
     ],
     actions: [
       { label: "See projects", href: "#projects", style: "primary" },
