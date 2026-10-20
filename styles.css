@@ -861,6 +861,7 @@ a { color: inherit; }
   line-height: 1.65;
 }
 .mission .featured__links { margin-top: 1rem; }
+.mission .featured__stats { align-self: center; }
 .featured__links {
   display: flex;
   flex-wrap: wrap;

@@ -99,12 +99,10 @@ window.CONTENT = {
     tag: "Headline mission",
     title: "Bangladesh's first AUV. 8th of 58 at RoboSub. Twice.",
     text:
-      "At RoboNation's RoboSub in California, BRACU Duburi placed 8th of 58 teams in 2025 (me as Technical Coordinator) and again in 2026 (me as Sub-Team Lead, AI and Machine Vision). My sub-team gave the vehicle its eyes: YOLO11 at 0.995 mAP50, pruned and deployed with TensorRT on a Jetson Orin Nano with ByteTrack tracking.",
+      "RoboSub, organised by RoboNation, is the biggest student competition for autonomous underwater vehicles. With BRACU Duburi we placed 8th of 58 teams in 2025, when I was Technical Coordinator, and again in 2026, when I led the AI and Machine Vision sub-team.",
     stats: [
       { value: "8th / 58", label: "RoboSub 2026 · AI & Vision lead" },
-      { value: "8th / 58", label: "RoboSub 2025 · Technical Coordinator" },
-      { value: "0.995", label: "mAP50, YOLO11 detector" },
-      { value: "Jetson", label: "Orin Nano · TensorRT · ByteTrack" }
+      { value: "8th / 58", label: "RoboSub 2025 · Technical Coordinator" }
     ],
     links: [
       { label: "See the vision pipeline", href: "https://github.com/MadLad10/BRACU-Duburi-AUV-Vision-Pipeline" },
