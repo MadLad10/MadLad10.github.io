@@ -74,9 +74,9 @@ window.CONTENT = {
   about: {
     title: "About",
     paragraphs: [
-      "I like problems where software meets the physical world. Underwater, cameras blur, sensors drift and there's no cloud to fall back on, so models have to be small, fast and robust.",
-      "My work sits where perception meets decision-making: vision models that run in real time on a Jetson, and LLM agents that turn plain English into plans a robot can carry out, with guardrails for when things go wrong.",
-      "Next, I want to do this in a research team, building AI and autonomous systems that hold up outside the lab."
+      "I'm Yaad, a Computer Science graduate from BRAC University in Dhaka. I try to build a bridge between academia and industry: taking ideas from research and turning them into systems that work on real hardware.",
+      "On the academic side, I spent over a year as an undergraduate teaching assistant, running weekly consultations and helping students think through algorithm design. On the industry side, I'm a Research Assistant at Dubotech Digital working on underwater robotics R&D, after leading the AI and Machine Vision sub-team at BRACU Duburi.",
+      "Outside of that, I build things for fun: agents, vision pipelines and robot planners in simulation. I like to experiment and see what breaks, but I always aim for something meaningful that could actually add value for someone."
     ],
     card: {
       title: "Operator ID",
