@@ -919,33 +919,8 @@ a { color: inherit; }
   overflow: hidden;
   border-bottom: 1px solid rgba(94, 240, 255, 0.18);
 }
-/* pixel-art media that resolves to the real footage on hover / focus / tap */
-.pixmedia {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  background: var(--navy-950);
-  cursor: pointer;
-}
-.pixmedia > img,
-.pixmedia > video {
-  position: absolute;
-  inset: 0;
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.pixmedia__pixel {
-  image-rendering: crisp-edges;
-  image-rendering: pixelated;
-}
-.pixmedia__real {
-  opacity: 0;
-  transition: opacity 0.3s steps(4);
-}
-.pixmedia.is-real .pixmedia__real { opacity: 1; }
-.pixmedia__tag {
+/* small HUD tag in the corner of a card's media */
+.media-tag {
   position: absolute;
   top: 8px;
   right: 8px;
@@ -956,13 +931,7 @@ a { color: inherit; }
   font: 400 0.625rem/1 var(--font-hud);
   letter-spacing: 0.05em;
 }
-.pixmedia__tag::before { content: "LO-RES"; }
-.pixmedia.is-real .pixmedia__tag { color: var(--cyan); border-color: var(--cyan); }
-.pixmedia.is-real .pixmedia__tag::before { content: "HI-RES"; }
-@media (hover: none) {
-  .pixmedia__tag::before { content: "TAP: HI-RES"; }
-  .pixmedia.is-real .pixmedia__tag::before { content: "TAP: LO-RES"; }
-}
+.media-tag::before { content: "NO SIGNAL"; }
 
 /* card without media: pixel "no signal" screen */
 .nofeed {
@@ -980,7 +949,6 @@ a { color: inherit; }
   height: 96px;
   opacity: 0.9;
 }
-.nofeed__tag::before { content: "NO SIGNAL" !important; }
 
 .card__body {
   display: flex;

@@ -112,7 +112,7 @@ window.CONTENT = {
 
   projects: {
     title: "Projects",
-    lede: "Hover over a card, or tap its image, to run detection and switch to the real footage.",
+    lede: "Hover over a card to run detection.",
     featured: [
       {
         title: "Agentic AUV",
@@ -121,10 +121,9 @@ window.CONTENT = {
           "Fault-tolerant multi-agent LLM system that plans underwater missions from plain English and keeps working through sensor faults.",
         stat: { label: "Fusion", value: "EKF · Sonar · VLM" },
         tags: ["LangGraph", "VLM", "Tool calling", "Sensor fusion", "Guardrails"],
-        // image: real footage (shown on hover/tap); pixel: pixel-art version (shown by default).
-        // For .mp4 files, a still with the same name (.jpg for real, .png for pixel) is used as the poster.
+        // image: a .jpg/.png/.gif or a short .mp4 (autoplays muted on a loop; a .jpg with the
+        // same name is used as its still frame).
         image: "assets/projects/agentic-auv.mp4",
-        pixel: "assets/projects/agentic-auv-pixel.mp4",
         alt: "Simulated AUV run with camera, sonar and navigation views while the DVL drops out",
         slot: "assets/projects/agentic-auv.mp4 · 16:9",
         detect: { label: "agentic_auv", confidence: 0.98 },
@@ -138,7 +137,6 @@ window.CONTENT = {
         stat: { label: "mAP50", value: "0.995" },
         tags: ["YOLO11", "PyTorch", "TensorRT", "ROS2", "Jetson"],
         image: "assets/projects/duburi-vision.mp4",
-        pixel: "assets/projects/duburi-vision-pixel.mp4",
         alt: "Underwater validation frames with YOLO detection boxes for torpedo, blood and hole targets",
         slot: "assets/projects/duburi-vision.mp4 · 16:9",
         detect: { label: "vision_pipeline", confidence: 0.99 },
@@ -152,7 +150,6 @@ window.CONTENT = {
         stat: { label: "Gazebo missions", value: "25" },
         tags: ["LLM agents", "Ollama", "Structured outputs", "ROS2", "Gazebo"],
         image: "assets/projects/mission-planner.mp4",
-        pixel: "assets/projects/mission-planner-pixel.mp4",
         alt: "Onboard camera of the simulated AUV approaching the gate and buoys in Gazebo",
         slot: "assets/projects/mission-planner.mp4 · 16:9",
         detect: { label: "mission_planner", confidence: 0.97 },
@@ -166,14 +163,13 @@ window.CONTENT = {
         stat: { label: "Injection attacks blocked", value: "100%" },
         tags: ["LangGraph", "RAG", "FastAPI", "React", "pgvector"],
         image: "assets/projects/bari.jpg",
-        pixel: "assets/projects/bari-pixel.png",
         alt: "bari moderation queue holding a duplicate listing and a likely scam, with the reasons shown",
         slot: "assets/projects/bari.jpg · 16:9",
         detect: { label: "rag_agent", confidence: 0.96 },
         links: [{ label: "Code", href: "https://github.com/MadLad10/bari.com" }]
       }
     ],
-    // Shown as the same cards, after the four above. Without image/pixel a card shows a
+    // Shown as the same cards, after the four above. Without an image a card shows a
     // pixel "no signal" screen with `icon` (code, agent, eye, robot, chip, db, screen, tool).
     more: [
       {
@@ -183,7 +179,6 @@ window.CONTENT = {
         stat: { label: "Integration tests", value: "163" },
         tags: ["FastAPI", "React Native", "Next.js", "PostGIS", "pgvector"],
         image: "assets/projects/pinstagram.jpg",
-        pixel: "assets/projects/pinstagram-pixel.png",
         alt: "Pinstagram screens: place map of Dhaka, photo feed and bus directions",
         detect: { label: "pinstagram", confidence: 0.95 },
         links: [
@@ -197,7 +192,6 @@ window.CONTENT = {
         summary: "Dashboard for the Duburi team to review training results per task, plus n8n workflows that send video clips to annotators and collect labels.",
         tags: ["Streamlit", "Plotly", "n8n"],
         image: "assets/projects/duburi-dashboard.jpg",
-        pixel: "assets/projects/duburi-dashboard-pixel.png",
         alt: "YOLO training curves: box, class and DFL losses, precision and mAP50",
         detect: { label: "ml_dashboard", confidence: 0.94 },
         links: [{ label: "Code", href: "https://github.com/MadLad10/BRACU-Duburi-Vision-Pipeline-Dashboard" }]
