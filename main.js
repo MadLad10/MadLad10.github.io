@@ -1,8 +1,9 @@
 /*
   Yaad Kamrul Bari | portfolio
-  1. Render text and links from content.js
+  1. Render every section from content.js
   2. Build the name pixel by pixel (once)
-  3. Pixel ocean scene on a low-res canvas + HUD + detection box
+  3. Pixel scenes (hero ocean + seabed) on low-res canvases
+  4. Depth meter, project detection boxes, copy-email
 */
 (function () {
   "use strict";
@@ -23,11 +24,280 @@
     if (text != null) n.textContent = text;
     return n;
   }
+  function fill(parent, nodes) {
+    if (!parent) return;
+    parent.replaceChildren.apply(parent, nodes);
+  }
   function cssVar(name) { return getComputedStyle(root).getPropertyValue(name).trim(); }
+
+  /* ------------------------------------------------------------
+     Sprites: one character per pixel, "." is transparent.
+     Colours: k navy  a/A/h amber  w white  c cyan  t turquoise  f foam
+              p/d acrylic  g/G steel  L blinking light  1/2 propeller frames
+     ------------------------------------------------------------ */
+  // AUV drawn facing right; it is mirrored so it faces the text.
+  var AUV = [
+    "...............................L................",
+    "...............................k................",
+    "..........kkkkkkkkkkkkkkkkkkkkkkkkkkk...........",
+    "....kkk..kggpwwwwwwwwwwppppppppppppggk..kkk.....",
+    "...kgGGk.kggppGddddGddddGddddGddddpggk.kgGGk....",
+    "...kgGGk.kggppddddcdddadddcdddddddpggk.kgGGk....",
+    "...kgGGk.kGGpppppppppppppppppppppppGGk.kgGGk....",
+    "...kgGGk..kkkkkkkkkkkkkkkkkkkkkkkkkkk..kgGGk....",
+    "....kkk......GG.................GG......kkk.....",
+    "....kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk......",
+    "kkkkahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhkkk...",
+    "k1GkaaaaaaaaaaaAaaaaaaaaaaaaaaAaaaaaaaaaaakpck..",
+    "k2GkaaaaaaaaaaaAaakkkkkkkkkkaaAaaaaaaaaaaakcwck.",
+    "k1GkaaaaaaaaaaaAaaaaaaaaaaaaaaAaaaaaaaaaaakccck.",
+    "k2GkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAkdck..",
+    "kkkkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAkkk...",
+    "....kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk......",
+    "..........GG......................GG............",
+    "......kGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGk......."
+  ];
+  var FISH_A = [".fff.t", "efffft", ".fff.t"];
+  var FISH_B = [".fff..", "efffft", ".fff.."];
+  var ROCK = [
+    "....kkkk....",
+    "..kkgggGkk..",
+    ".kggggGGGGk.",
+    "kgggGGGGGGGk",
+    "kGGGGGGGGGGk"
+  ];
+  var PEBBLE = [".kk.", "kgGk"];
+  var STAR = ["..a..", "aaaaa", ".aAa.", ".a.a."];
+  var ICONS = {
+    code: [
+      "............",
+      ".......a....",
+      ".......a....",
+      "...c..a.c...",
+      "..c...a..c..",
+      ".c....a...c.",
+      "c....a.....c",
+      ".c...a....c.",
+      "..c..a...c..",
+      "...ca...c...",
+      "....a.......",
+      "............"
+    ],
+    agent: [
+      "............",
+      "............",
+      "..wwwwwwww..",
+      ".wddddddddw.",
+      ".wddddddddw.",
+      ".wdadadaddw.",
+      ".wddddddddw.",
+      ".wddddddddw.",
+      "..wwwwwwww..",
+      "..ww........",
+      "..w.........",
+      "............"
+    ],
+    eye: [
+      "............",
+      "............",
+      "............",
+      "...wwwwww...",
+      "..w.cccc.w..",
+      ".w..cwkc..w.",
+      "w...ckkc...w",
+      ".w..ckkc..w.",
+      "..w.cccc.w..",
+      "...wwwwww...",
+      "............",
+      "............"
+    ],
+    robot: [
+      "..........c.",
+      "........ac..",
+      "......aa..c.",
+      ".....a...c..",
+      "...www......",
+      "....a.......",
+      "....a.......",
+      "....a.......",
+      "....a.......",
+      "..ggggg.....",
+      ".GGGGGGG....",
+      ".GGGGGGG...."
+    ],
+    chip: [
+      "............",
+      "....g.g.g...",
+      "....g.g.g...",
+      "...gggggg...",
+      ".gggGGGGggg.",
+      "...gGccGg...",
+      ".gggGccGggg.",
+      "...gGGGGg...",
+      ".gggggggggg.",
+      "....g.g.g...",
+      "....g.g.g...",
+      "............"
+    ],
+    db: [
+      "............",
+      "...wwwwww...",
+      "..gccccccg..",
+      "...dddddd...",
+      "............",
+      "...wwwwww...",
+      "..gccccccg..",
+      "...dddddd...",
+      "............",
+      "...wwwwww...",
+      "..gccccccg..",
+      "...dddddd..."
+    ],
+    screen: [
+      "............",
+      "gggggggggggg",
+      "gkkkkkkkkkkg",
+      "gkccccckkkkg",
+      "gkkkkkkkkkkg",
+      "gkfffffffkkg",
+      "gkffffkkkkkg",
+      "gkkkkkkkkkkg",
+      "gggggggggggg",
+      ".....GG.....",
+      "...gggggg...",
+      "............"
+    ],
+    tool: [
+      "............",
+      "........g.g.",
+      ".......gg.g.",
+      ".......gggg.",
+      "......gggg..",
+      ".....ggG....",
+      "....ggG.....",
+      "...ggG......",
+      "..ggG.......",
+      ".aaG........",
+      ".aa.........",
+      "............"
+    ],
+    trophy: [
+      "................",
+      "....hhhhhhhh....",
+      ".aaahhaaaaAAAAA.",
+      ".a..hhawwaAA..A.",
+      ".a..hhawaaAA..A.",
+      "..a.hhaaaaAA.A..",
+      "...ahhaaaaAAA...",
+      "....aaaaaaAA....",
+      ".....AAAAAA.....",
+      ".......aa.......",
+      ".......aa.......",
+      ".....AAAAAA.....",
+      "....gggggggg....",
+      "....GGaaaaGG....",
+      "....GGGGGGGG....",
+      "................"
+    ],
+    medal: [
+      "....ct....tc....",
+      ".....ct..tc.....",
+      ".....ct..tc.....",
+      "......cttc......",
+      "......cttc......",
+      ".......tc.......",
+      ".......tc.......",
+      "......aaaa......",
+      "....aaaaaaaA....",
+      "....aaahhaAA....",
+      "....aahhhhAA....",
+      "....aaahhaAA....",
+      "....aaahhaAA....",
+      "....aaaaaaAA....",
+      "......AAAAA.....",
+      "................"
+    ],
+    marker: [
+      "....a....",
+      "...pppp..",
+      "gaaaaaaac",
+      "gaaaaaaac",
+      "..AAAAA.."
+    ]
+  };
+
+  // Inline SVG from a sprite; colours come from .px-* classes in styles.css.
+  function spriteSVG(rows, cls) {
+    var w = rows[0].length, h = rows.length, out = [];
+    rows.forEach(function (row, y) {
+      var x = 0;
+      while (x < w) {
+        var ch = row[x];
+        if (ch === ".") { x++; continue; }
+        var x0 = x;
+        while (x < w && row[x] === ch) x++;
+        out.push('<rect class="px-' + ch + '" x="' + x0 + '" y="' + y + '" width="' + (x - x0) + '" height="1"/>');
+      }
+    });
+    return '<svg class="' + (cls || "") + '" viewBox="0 0 ' + w + " " + h +
+      '" shape-rendering="crispEdges" aria-hidden="true" focusable="false">' + out.join("") + "</svg>";
+  }
+
+  var ARROW_OUT = '<svg viewBox="0 0 7 7" width="11" height="11" shape-rendering="crispEdges" aria-hidden="true" focusable="false"><path fill="currentColor" d="M2 0h5v1H2zM6 1h1v4H6zM5 1h1v1H5zM4 2h1v1H4zM3 3h1v1H3zM2 4h1v1H2zM1 5h1v1H1zM0 6h1v1H0z"/></svg>';
+  var ARROW_DOWN = '<svg viewBox="0 0 7 8" width="11" height="12" shape-rendering="crispEdges" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 0h1v4H3zM1 3h1v1H1zM5 3h1v1H5zM2 4h1v1H2zM4 4h1v1H4zM3 5h1v1H3zM0 7h7v1H0z"/></svg>';
 
   /* ------------------------------------------------------------
      1. Content
      ------------------------------------------------------------ */
+  function link(l) {
+    var a = el("a", "link");
+    a.href = l.href;
+    a.appendChild(el("span", null, l.label));
+    if (l.download) {
+      a.setAttribute("download", "");
+      a.insertAdjacentHTML("beforeend", ARROW_DOWN);
+    } else if (/^https?:/.test(l.href)) {
+      a.target = "_blank";
+      a.rel = "noopener";
+      a.insertAdjacentHTML("beforeend", ARROW_OUT);
+    }
+    return a;
+  }
+
+  // An image / GIF / video if one is set, otherwise a labelled grey slot.
+  function media(src, slot, alt, title) {
+    if (src) {
+      if (/\.(mp4|webm)$/i.test(src)) {
+        var v = el("video", "media-img");
+        v.src = src;
+        v.muted = true;
+        v.loop = true;
+        v.playsInline = true;
+        v.autoplay = !reduceMQ.matches;
+        v.setAttribute("aria-label", alt || "");
+        return v;
+      }
+      var img = el("img", "media-img");
+      img.src = src;
+      img.alt = alt || "";
+      img.loading = "lazy";
+      img.decoding = "async";
+      return img;
+    }
+    var s = el("div", "slot");
+    s.setAttribute("role", "img");
+    s.setAttribute("aria-label", (title || "Image slot") + ": " + (alt || "placeholder"));
+    s.appendChild(el("span", "slot__title", title || "Image slot"));
+    if (slot) s.appendChild(el("span", "slot__path", slot));
+    return s;
+  }
+
+  function tags(list) {
+    var ul = el("ul", "tags");
+    (list || []).forEach(function (t) { ul.appendChild(el("li", null, t)); });
+    return ul;
+  }
+
   function renderContent() {
     if (C.meta) {
       if (C.meta.title) document.title = C.meta.title;
@@ -40,37 +310,207 @@
       if (typeof v === "string" || typeof v === "number") node.textContent = v;
     });
 
+    // Nav + CV
     var nav = C.nav || {};
-    var list = $("#nav-links");
-    if (list && nav.links) {
-      list.replaceChildren.apply(list, nav.links.map(function (l) {
-        var li = el("li");
-        var a = el("a", null, l.label);
-        a.href = l.href;
-        li.appendChild(a);
-        return li;
-      }));
-    }
+    fill($("#nav-links"), (nav.links || []).map(function (l) {
+      var li = el("li");
+      var a = el("a", null, l.label);
+      a.href = l.href;
+      li.appendChild(a);
+      return li;
+    }));
     var cv = $("#cv-link");
     if (cv && nav.cv && nav.cv.href) cv.href = nav.cv.href;
 
+    // Hero
     var hero = C.hero || {};
-    var actions = $("#hero-actions");
-    if (actions && hero.actions) {
-      actions.replaceChildren.apply(actions, hero.actions.map(function (a) {
-        var link = el("a", "btn" + (a.style === "secondary" ? " btn--secondary" : ""), a.label);
-        link.href = a.href;
-        return link;
-      }));
-    }
+    fill($("#hero-actions"), (hero.actions || []).map(function (a) {
+      var b = el("a", "btn" + (a.style === "secondary" ? " btn--secondary" : ""), a.label);
+      b.href = a.href;
+      return b;
+    }));
     var facts = $("#hero-facts");
     if (facts) {
-      if (hero.facts && hero.facts.length) {
-        facts.replaceChildren.apply(facts, hero.facts.map(function (f) { return el("li", null, f); }));
-      } else {
-        facts.hidden = true;
-      }
+      fill(facts, (hero.facts || []).map(function (f) { return el("li", null, f); }));
+      facts.hidden = !(hero.facts && hero.facts.length);
     }
+
+    // About
+    var about = C.about || {};
+    fill($("#about-text"), (about.paragraphs || []).map(function (p) { return el("p", null, p); }));
+    var card = about.card || {};
+    fill($("#about-photo"), [media(card.image, card.slot, card.alt, "Photo slot")]);
+    fill($("#about-facts"), (card.facts || []).map(function (f) {
+      var d = el("div");
+      d.appendChild(el("dt", null, f.label));
+      d.appendChild(el("dd", null, f.value));
+      return d;
+    }));
+
+    // Featured story
+    var ft = C.featured || {};
+    fill($("#featured-media"), [media(ft.image, ft.slot, ft.alt, "Photo slot")]);
+    fill($("#featured-text"), (ft.paragraphs || []).map(function (p) { return el("p", null, p); }));
+    fill($("#featured-links"), (ft.links || []).map(link));
+    fill($("#featured-stats"), (ft.stats || []).map(function (s) {
+      var li = el("li");
+      li.appendChild(el("span", "stat__value", s.value));
+      li.appendChild(el("span", "stat__label", s.label));
+      return li;
+    }));
+
+    // Projects
+    var pr = C.projects || {};
+    fill($("#project-cards"), (pr.featured || []).map(projectCard));
+    fill($("#more-projects"), (pr.more || []).map(function (p) {
+      var li = el("li", "more__item");
+      li.appendChild(el("h4", "more__title", p.title));
+      var mid = el("div");
+      mid.appendChild(el("p", "more__summary", p.summary));
+      mid.appendChild(tags(p.tags));
+      li.appendChild(mid);
+      var links = el("div", "more__links");
+      (p.links || []).filter(function (l) { return l.href; }).forEach(function (l) { links.appendChild(link(l)); });
+      li.appendChild(links);
+      return li;
+    }));
+
+    // Mission log
+    var ex = C.experience || {};
+    fill($("#log-missions"), (ex.missions || []).map(logEntry));
+    fill($("#log-training"), (ex.training || []).map(logEntry));
+
+    // Inventory
+    var sk = C.skills || {};
+    fill($("#inventory"), (sk.groups || []).map(function (g) {
+      var li = el("li", "slotbox");
+      var head = el("div", "slotbox__head");
+      var icon = el("span", "slotbox__icon");
+      icon.innerHTML = spriteSVG(ICONS[g.icon] || ICONS.code);
+      head.appendChild(icon);
+      var name = el("div");
+      name.appendChild(el("h3", "slotbox__name", g.name));
+      name.appendChild(el("span", "slotbox__count", "x" + (g.items || []).length + " items"));
+      head.appendChild(name);
+      li.appendChild(head);
+      li.appendChild(tags(g.items));
+      return li;
+    }));
+
+    // Awards
+    var aw = C.awards || {};
+    fill($("#awards-list"), (aw.items || []).map(function (a) {
+      var li = el("li", "award");
+      li.innerHTML = spriteSVG(ICONS[a.icon] || ICONS.trophy);
+      li.appendChild(el("p", "award__place", a.place));
+      li.appendChild(el("p", "award__event", a.event));
+      li.appendChild(el("p", "award__detail", a.detail));
+      return li;
+    }));
+
+    // Contact
+    var person = C.person || {};
+    var ct = C.contact || {};
+    if (person.email) {
+      var mail = "mailto:" + person.email;
+      var em = $("#contact-email");
+      em.href = mail;
+      em.textContent = person.email;
+      $("#mail-btn").href = mail;
+    }
+    fill($("#contact-links"), (ct.links || []).filter(function (l) { return l.href; }).map(function (l) {
+      var li = el("li");
+      li.appendChild(link(l));
+      return li;
+    }));
+
+    var year = $("#year");
+    if (year) year.textContent = new Date().getFullYear();
+
+    $$(".zone__title, .subhead, .card__title, .more__title, .slotbox__name").forEach(numify);
+  }
+
+  // Wrap digits in pixel-font headings so they render in the number font.
+  function numify(node) {
+    node.childNodes.forEach(function (n) {
+      if (n.nodeType !== 3 || !/\d/.test(n.data)) return;
+      var frag = document.createDocumentFragment();
+      n.data.split(/(\d[\d.,/]*)/).forEach(function (part, i) {
+        if (!part) return;
+        frag.appendChild(i % 2 ? el("span", "num", part) : document.createTextNode(part));
+      });
+      n.replaceWith(frag);
+    });
+  }
+
+  function projectCard(p) {
+    var li = el("li", "card");
+    var det = p.detect || { label: "project", confidence: 0.97 };
+
+    var box = el("div", "card__det");
+    box.setAttribute("aria-hidden", "true");
+    var label = el("span", "card__det-label", det.label + " " + det.confidence.toFixed(2));
+    box.appendChild(label);
+    li.appendChild(box);
+
+    var m = el("div", "card__media");
+    m.appendChild(media(p.image, p.slot, p.title, "GIF / image slot"));
+    li.appendChild(m);
+
+    var body = el("div", "card__body");
+    var meta = el("div", "card__meta");
+    meta.appendChild(el("span", "card__kind", p.kind));
+    if (p.stat) {
+      var st = el("span", "card__stat", p.stat.label + " ");
+      st.appendChild(el("b", null, p.stat.value));
+      meta.appendChild(st);
+    }
+    body.appendChild(meta);
+    body.appendChild(el("h3", "card__title", p.title));
+    body.appendChild(el("p", "card__summary", p.summary));
+    body.appendChild(tags(p.tags));
+    var links = el("div", "card__links");
+    (p.links || []).filter(function (l) { return l.href; }).forEach(function (l) {
+      var a = link(l);
+      a.setAttribute("aria-label", l.label + ": " + p.title);
+      links.appendChild(a);
+    });
+    body.appendChild(links);
+    li.appendChild(body);
+
+    // confidence counts up while the box draws
+    var raf = 0;
+    function run() {
+      cancelAnimationFrame(raf);
+      if (reduceMQ.matches) { label.textContent = det.label + " " + det.confidence.toFixed(2); return; }
+      var t0 = performance.now();
+      (function tick(now) {
+        var k = Math.min(1, (now - t0) / 360);
+        label.textContent = det.label + " " + (0.41 + (det.confidence - 0.41) * k).toFixed(2);
+        if (k < 1) raf = requestAnimationFrame(tick);
+      })(t0);
+    }
+    li.addEventListener("mouseenter", run);
+    li.addEventListener("focusin", function (e) {
+      if (!li.contains(e.relatedTarget)) run();
+    });
+    return li;
+  }
+
+  function logEntry(e) {
+    var li = el("li", "log__entry" + (e.status === "Active" ? " is-active" : ""));
+    var time = el("p", "log__time");
+    time.appendChild(el("span", null, e.dates));
+    if (e.status) time.appendChild(el("span", "log__status", e.status));
+    li.appendChild(time);
+    li.appendChild(el("h4", "log__role", e.role));
+    li.appendChild(el("p", "log__org", [e.org, e.place].filter(Boolean).join(" · ")));
+    if (e.points && e.points.length) {
+      var ul = el("ul", "log__points");
+      e.points.forEach(function (pt) { ul.appendChild(el("li", null, pt)); });
+      li.appendChild(ul);
+    }
+    return li;
   }
 
   /* ------------------------------------------------------------
@@ -192,37 +632,10 @@
   }
 
   /* ------------------------------------------------------------
-     3. Pixel ocean scene
+     3. Pixel scenes
+     One engine draws both the hero ocean and the seabed; the options
+     decide what goes in each.
      ------------------------------------------------------------ */
-
-  // Sprites: one character per pixel, "." is transparent.
-  // AUV is drawn facing right here and mirrored so it faces the text.
-  //  k outline  a/A/h amber body  p/w/d/G acrylic tube + electronics
-  //  g/G steel  c camera  L antenna light (blinks)  1/2 propeller frames
-  var AUV = [
-    "...............................L................",
-    "...............................k................",
-    "..........kkkkkkkkkkkkkkkkkkkkkkkkkkk...........",
-    "....kkk..kggpwwwwwwwwwwppppppppppppggk..kkk.....",
-    "...kgGGk.kggppGddddGddddGddddGddddpggk.kgGGk....",
-    "...kgGGk.kggppddddcdddadddcdddddddpggk.kgGGk....",
-    "...kgGGk.kGGpppppppppppppppppppppppGGk.kgGGk....",
-    "...kgGGk..kkkkkkkkkkkkkkkkkkkkkkkkkkk..kgGGk....",
-    "....kkk......GG.................GG......kkk.....",
-    "....kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk......",
-    "kkkkahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhkkk...",
-    "k1GkaaaaaaaaaaaAaaaaaaaaaaaaaaAaaaaaaaaaaakpck..",
-    "k2GkaaaaaaaaaaaAaakkkkkkkkkkaaAaaaaaaaaaaakcwck.",
-    "k1GkaaaaaaaaaaaAaaaaaaaaaaaaaaAaaaaaaaaaaakccck.",
-    "k2GkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAkdck..",
-    "kkkkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAkkk...",
-    "....kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk......",
-    "..........GG......................GG............",
-    "......kGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGk......."
-  ];
-  var FISH_A = [".fff.t", "efffft", ".fff.t"];
-  var FISH_B = [".fff..", "efffft", ".fff.."];
-
   var BAYER = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5].map(function (n) { return (n + 0.5) / 16; });
   var RAY_N = 512;
 
@@ -261,32 +674,72 @@
     return 1;
   }
 
-  function Scene(hero) {
-    var canvas = $(".hero__canvas", hero);
+  var SCENES = {
+    hero: {
+      canvas: ".hero__canvas",
+      ramp: ["--water-0", "--water-1", "--water-2", "--water-3", "--water-4",
+             "--water-5", "--water-6", "--water-7", "--water-8", "--water-9"],
+      level: function (yn) { return yn < 0.1 ? 2.2 + (yn / 0.1) * 2.8 : 5 + ((yn - 0.1) / 0.9) * 1.9; },
+      rays: 1.7,
+      rayFadeIn: 0,
+      surface: true,
+      damp: ".hero__copy",
+      avoid: [".hero__copy", ".viewport"],
+      anchor: ".viewport",
+      auv: "bob",
+      fish: true,
+      sand: false,
+      detect: true,
+      kelpSpots: [0.012, 0.04, 0.07, 0.31, 0.34, 0.5, 0.53, 0.72, 0.9, 0.935, 0.965, 0.99],
+      kelpHeight: [0.28, 0.58],
+      seed: 5
+    },
+    seabed: {
+      canvas: ".seabed__canvas",
+      // level 4 (deep-3) at the top matches the Awards zone above
+      ramp: ["--water-8", "--water-9", "--deep-1", "--deep-2", "--deep-3", "--deep-4", "--navy-950"],
+      level: function (yn) { return 4 + yn * 1.7; },
+      rays: 1.1,
+      rayFadeIn: 0.25,
+      surface: false,
+      damp: ".transmission",
+      avoid: [".transmission"],
+      anchor: ".seabed__dock",
+      auv: "rest",
+      fish: false,
+      sand: true,
+      detect: false,
+      kelpSpots: [0.015, 0.045, 0.08, 0.4, 0.44, 0.6, 0.64, 0.88, 0.93, 0.97],
+      kelpHeight: [0.18, 0.42],
+      seed: 21
+    }
+  };
+
+  function Scene(section, opt) {
+    var canvas = $(opt.canvas, section);
     var ctx = canvas.getContext("2d", { alpha: false });
-    var detect = $(".detect", hero);
-    var detectLabel = $(".detect__label", hero);
-    var tape = $(".hud__tape", hero);
-    var headingOut = $('[data-hud="heading"]', hero);
+    var detect = opt.detect ? $(".detect", section) : null;
+    var detectLabel = detect ? $(".detect__label", detect) : null;
+    var tape = $(".hud__tape", section);
+    var headingOut = $('[data-hud="heading"]', section);
 
     var hud = C.hud || {};
     var det = hud.detection || { label: "auv", confidence: 0.99 };
     var heading0 = Number(hud.heading) || 87;
 
     var W = 0, H = 0, S = 4, img = null, buf = null;
-    var WATER = [], COL = [];
-    var sprAuv, fishL, fishR, fishLB, fishRB;
-    var baseLv, rayFade, dampX, dampY, rayTex;
-    var stage = null, copy = null, kelp = [], bubbles = [], fishBand = null;
-    var t = 0, last = 0, rafId = 0, running = false, onScreen = true;
+    var RAMP = [], COL = [];
+    var sprAuv, fishL, fishR, fishLB, fishRB, sprRock, sprPebble, sprStar;
+    var baseLv, rayFade, dampX, dampY, rayTex, sandTop, sandLayer;
+    var anchor = null, avoid = [], damp = null, kelp = [], bubbles = [], fishBand = null, props = [];
+    var t = 0, last = 0, rafId = 0, running = false, onScreen = false;
     var par = { x: 0, y: 0, tx: 0, ty: 0 };
     var timers = { auv: 0, amb: 0, conf: 0, jit: 0 };
     var conf = det.confidence, jit = [0, 0, 0, 0];
-    var lastBox = "", lastHeading = -1;
+    var lastBox = "", lastHeading = -1, lastLabel = "";
 
     function readPalette() {
-      WATER = [];
-      for (var i = 0; i < 10; i++) WATER.push(pack(cssVar("--water-" + i)));
+      RAMP = opt.ramp.map(function (n) { return pack(cssVar(n)); });
       COL = [];
       var map = {
         k: "--navy-950", a: "--amber", A: "--amber-deep", h: "--amber-light",
@@ -300,12 +753,16 @@
       COL.f0 = pack(cssVar("--foam-100"));
       COL.f1 = pack(cssVar("--foam-200"));
       COL.f2 = pack(cssVar("--water-1"));
+      COL.sand = ["--sand-0", "--sand-1", "--sand-2", "--sand-3"].map(function (n) { return pack(cssVar(n)); });
     }
 
     function buildSprites() {
       sprAuv = compile(AUV, true); // propeller frames are swapped at draw time
       fishL = compile(FISH_A, false); fishLB = compile(FISH_B, false);
       fishR = compile(FISH_A, true); fishRB = compile(FISH_B, true);
+      sprRock = compile(ROCK, false);
+      sprPebble = compile(PEBBLE, false);
+      sprStar = compile(STAR, false);
     }
 
     function buildRays() {
@@ -320,14 +777,16 @@
       }
     }
 
-    function toArt(rect, hr) {
+    function toArt(node, hr) {
+      if (!node) return null;
+      var rect = node.getBoundingClientRect();
       var x0 = (rect.left - hr.left) / S, y0 = (rect.top - hr.top) / S;
       var w = rect.width / S, h = rect.height / S;
       return { x0: x0, y0: y0, x1: x0 + w, y1: y0 + h, w: w, h: h, cx: x0 + w / 2, cy: y0 + h / 2 };
     }
 
     function layout() {
-      var hr = hero.getBoundingClientRect();
+      var hr = section.getBoundingClientRect();
       if (!hr.width || !hr.height) return;
       var dpr = Math.min(window.devicePixelRatio || 1, 3);
       var target = hr.width >= 1100 ? 5 : 4;
@@ -342,51 +801,102 @@
       img = ctx.createImageData(W, H);
       buf = new Uint32Array(img.data.buffer);
 
-      root.style.setProperty("--art-px", S + "px");
-      root.style.setProperty("--grid", S * 12 + "px");
+      if (opt.detect) {
+        root.style.setProperty("--art-px", S + "px");
+        root.style.setProperty("--grid", S * 12 + "px");
+      }
 
-      stage = toArt($(".viewport", hero).getBoundingClientRect(), hr);
-      copy = toArt($(".hero__copy", hero).getBoundingClientRect(), hr);
+      anchor = toArt($(opt.anchor, section), hr);
+      damp = toArt($(opt.damp, section), hr);
+      avoid = opt.avoid.map(function (s) { return toArt($(s, section), hr); }).filter(Boolean);
 
-      // background water: banded gradient, a little lighter at the surface
+      var maxLv = RAMP.length - 1;
       baseLv = new Float32Array(H);
       rayFade = new Float32Array(H);
       for (var y = 0; y < H; y++) {
         var yn = y / H;
-        baseLv[y] = yn < 0.1 ? 2.2 + (yn / 0.1) * 2.8 : 5 + ((yn - 0.1) / 0.9) * 1.9;
-        rayFade[y] = Math.pow(Math.max(0, 1 - yn * 0.95), 1.6);
+        baseLv[y] = Math.min(maxLv, opt.level(yn));
+        var fadeIn = opt.rayFadeIn ? Math.min(1, yn / opt.rayFadeIn) : 1;
+        rayFade[y] = Math.pow(Math.max(0, 1 - yn * 0.95), 1.6) * fadeIn * opt.rays;
       }
       // light rays are damped behind the text so it stays readable
       dampX = new Float32Array(W);
       dampY = new Float32Array(H);
-      for (var x = 0; x < W; x++) dampX[x] = smoothInside(x, copy.x0, copy.x1, 8);
-      for (y = 0; y < H; y++) dampY[y] = smoothInside(y, copy.y0, copy.y1, 8);
+      if (damp) {
+        for (var x = 0; x < W; x++) dampX[x] = smoothInside(x, damp.x0, damp.x1, 8);
+        for (y = 0; y < H; y++) dampY[y] = smoothInside(y, damp.y0, damp.y1, 8);
+      }
 
+      if (opt.sand) buildSand();
       plantKelp();
 
-      var beside = stage.x0 >= copy.x1 - 2;
-      fishBand = beside
-        ? { x0: copy.x1 + 6, x1: W + 14, y: stage.y0 + stage.h * 0.26 }
-        : { x0: -14, x1: W + 14, y: stage.y0 + stage.h * 0.24 };
+      if (opt.fish && anchor) {
+        var copy = avoid[0];
+        var beside = copy && anchor.x0 >= copy.x1 - 2;
+        fishBand = beside
+          ? { x0: copy.x1 + 6, x1: W + 14, y: anchor.y0 + anchor.h * 0.26 }
+          : { x0: -14, x1: W + 14, y: anchor.y0 + anchor.h * 0.24 };
+      }
 
       bubbles = [];
       if (reduceMQ.matches) seedStaticBubbles();
       draw();
     }
 
+    function floorY(x) {
+      if (!sandTop) return H;
+      return sandTop[Math.max(0, Math.min(W - 1, Math.round(x)))];
+    }
+
+    // Sand, pebbles, rocks and a starfish: drawn once per layout into a static layer.
+    function buildSand() {
+      var r = rng(opt.seed + 3);
+      var depth = Math.max(16, Math.round(H * 0.13));
+      sandTop = new Int16Array(W);
+      for (var x = 0; x < W; x++) {
+        sandTop[x] = H - depth + Math.round(Math.sin(x * 0.045 + 0.5) * 1.5 + Math.sin(x * 0.11) * 1);
+      }
+      sandLayer = new Uint32Array(W * H);
+      var S4 = COL.sand;
+      for (x = 0; x < W; x++) {
+        for (var y = sandTop[x]; y < H; y++) {
+          var d = y - sandTop[x];
+          var lv = d === 0 ? 0 : Math.min(3, 0.6 + d * 0.16);
+          var b = lv | 0, f = lv - b;
+          var c = f > BAYER[((y & 3) << 2) | (x & 3)] && b < 3 ? b + 1 : b;
+          sandLayer[y * W + x] = S4[c];
+        }
+        // ripples
+        if (r() < 0.12) sandLayer[(sandTop[x] + 2) * W + x] = S4[0];
+      }
+      props = [];
+      function place(spr, x) {
+        x = Math.round(x);
+        props.push({ spr: spr, x: x, y: floorY(x + spr.w / 2) - spr.h + 2 });
+      }
+      var cx = anchor ? anchor.cx : W * 0.7;
+      var half = sprAuv.w / 2;
+      if (cx + half + 4 + sprRock.w < W) place(sprRock, cx + half + 4);
+      else place(sprRock, cx - half - sprRock.w - 4);
+      place(sprStar, cx - half - 10);
+      for (var i = 0; i < 6; i++) place(sprPebble, r() * (W - 4));
+    }
+
     function plantKelp() {
-      var r = rng(5);
-      var spots = [0.012, 0.04, 0.07, 0.31, 0.34, 0.5, 0.53, 0.72, 0.9, 0.935, 0.965, 0.99];
+      var r = rng(opt.seed);
       kelp = [];
-      spots.forEach(function (f) {
+      opt.kelpSpots.forEach(function (f) {
         var x = Math.round(f * W + (r() - 0.5) * 3);
-        var h = Math.round(H * (0.28 + r() * 0.3));
-        // keep clear of the text block and the HUD frame
-        [copy, stage].forEach(function (bx) {
-          if (x >= bx.x0 - 6 && x <= bx.x1 + 6) h = Math.min(h, Math.floor(H - bx.y1 - 4));
+        var h = Math.round(H * (opt.kelpHeight[0] + r() * (opt.kelpHeight[1] - opt.kelpHeight[0])));
+        var base = opt.sand ? floorY(x) + 1 : H;
+        // keep clear of the text and the HUD frame
+        avoid.forEach(function (bx) {
+          if (x >= bx.x0 - 6 && x <= bx.x1 + 6) h = Math.min(h, Math.floor(base - bx.y1 - 4));
         });
+        // and of the resting AUV
+        if (opt.auv === "rest" && anchor && Math.abs(x - anchor.cx) < sprAuv.w / 2 + 14) h = 0;
         if (h >= 8) {
-          kelp.push({ x: x, h: h, ph: r() * 6.28, sp: 0.6 + r() * 0.5, amp: 1.5 + r() * 2.5, lo: (r() * 6) | 0 });
+          kelp.push({ x: x, base: base, h: h, ph: r() * 6.28, sp: 0.6 + r() * 0.5, amp: 1.5 + r() * 2.5, lo: (r() * 6) | 0 });
         }
       });
     }
@@ -394,7 +904,7 @@
     function seedStaticBubbles() {
       var r = rng(9);
       for (var i = 0; i < 18; i++) {
-        var x = r() * W, y = H * (0.15 + r() * 0.8);
+        var x = r() * W, y = H * (0.15 + r() * 0.7);
         bubbles.push({ x0: x, x: x, y: y, vy: 0, ph: 0, r: 1 + ((r() * 3) | 0) });
       }
     }
@@ -419,8 +929,9 @@
     function drawWater() {
       var phase = t * 2.4 + par.x * 3 + 64;
       var breathe = 0.85 + 0.15 * Math.sin(t * 0.6);
+      var maxLv = RAMP.length - 1;
       for (var y = 0; y < H; y++) {
-        var base = baseLv[y], fade = rayFade[y] * breathe * 1.7, row = y * W;
+        var base = baseLv[y], fade = rayFade[y] * breathe, row = y * W;
         var yo = y * 0.5 + phase, dy = dampY[y], by = (y & 3) << 2;
         for (var x = 0; x < W; x++) {
           var ray = rayTex[(x + yo) & (RAY_N - 1)] * fade * (1 - 0.82 * dampX[x] * dy);
@@ -428,16 +939,27 @@
           if (lv < 0) lv = 0;
           var b = lv | 0, f = lv - b;
           var ff = f < 0.45 ? 0 : (f - 0.45) / 0.55;
-          buf[row + x] = WATER[ff > BAYER[by | (x & 3)] && b < 9 ? b + 1 : b];
+          buf[row + x] = RAMP[ff > BAYER[by | (x & 3)] && b < maxLv ? b + 1 : b];
         }
       }
+      if (!opt.surface) return;
       // underside of the surface, rippling
       for (var sx = 0; sx < W; sx++) {
         var ys = Math.round(2 + Math.sin(sx * 0.21 + t * 1.7) + Math.sin(sx * 0.067 - t * 0.9) * 0.8);
         if (ys < 0) ys = 0;
-        for (var sy = 0; sy < ys; sy++) buf[sy * W + sx] = WATER[1];
-        buf[ys * W + sx] = WATER[0];
+        for (var sy = 0; sy < ys; sy++) buf[sy * W + sx] = RAMP[1];
+        buf[ys * W + sx] = RAMP[0];
       }
+    }
+
+    function drawSand() {
+      for (var x = 0; x < W; x++) {
+        for (var y = sandTop[x]; y < H; y++) {
+          var i = y * W + x;
+          buf[i] = sandLayer[i];
+        }
+      }
+      for (var n = 0; n < props.length; n++) blit(props[n].spr, props[n].x, props[n].y, false, false);
     }
 
     function drawKelp() {
@@ -445,7 +967,7 @@
       for (var n = 0; n < kelp.length; n++) {
         var k = kelp[n], x = 0, y = 0;
         for (var j = 0; j < k.h; j++) {
-          y = H - 1 - j;
+          y = k.base - 1 - j;
           var f = j / k.h;
           x = Math.round(k.x + Math.sin(t * k.sp + k.ph + j * 0.08) * k.amp * f * f + par.x * 6 * f);
           put(x, y, kd);
@@ -492,9 +1014,14 @@
     }
 
     function auvPos() {
+      if (!anchor) return { x: -999, y: -999 };
+      if (opt.auv === "rest") {
+        var x = Math.round(anchor.cx - sprAuv.w / 2);
+        return { x: x, y: Math.min(floorY(x + 8), floorY(x + sprAuv.w - 8)) - sprAuv.h + 2 };
+      }
       return {
-        x: Math.round(stage.cx - sprAuv.w / 2 + par.x * 4 + Math.sin(t * 0.35) * 1.2),
-        y: Math.round(stage.cy - sprAuv.h / 2 + par.y * 3 + Math.sin(t * 1.25) * 1.6)
+        x: Math.round(anchor.cx - sprAuv.w / 2 + par.x * 4 + Math.sin(t * 0.35) * 1.2),
+        y: Math.round(anchor.cy - sprAuv.h / 2 + par.y * 3 + Math.sin(t * 1.25) * 1.6)
       };
     }
 
@@ -514,31 +1041,35 @@
 
     function updateHud() {
       var hdg = Math.round(heading0 + Math.sin(t * 0.3) * 3 + par.x * 4);
-      if (hdg !== lastHeading) {
+      if (hdg !== lastHeading && headingOut) {
         lastHeading = hdg;
         var shown = ((hdg % 360) + 360) % 360;
         headingOut.textContent = ("00" + shown).slice(-3) + "°";
-        tape.style.setProperty("--tape-x", -hdg * 1.2 + "px");
+        if (tape) tape.style.setProperty("--tape-x", -hdg * 1.2 + "px");
       }
-      detectLabel.textContent = det.label + " " + conf.toFixed(2);
+      var label = det.label + " " + conf.toFixed(2);
+      if (label !== lastLabel) {
+        lastLabel = label;
+        detectLabel.textContent = label;
+      }
     }
 
     function update(dt) {
-      // eased parallax
       var k = Math.min(1, dt * 4);
       par.x += (par.tx - par.x) * k;
       par.y += (par.ty - par.y) * k;
 
       var p = auvPos();
       timers.auv -= dt;
-      if (timers.auv <= 0) {
+      if (timers.auv <= 0 && anchor) {
         // rear thruster is on the right (sprite is mirrored)
         spawn(p.x + sprAuv.w - 1, p.y + 12 + ((Math.random() * 3) | 0) - 1, Math.random() < 0.3 ? 2 : 1, 7);
-        timers.auv = 0.25 + Math.random() * 0.5;
+        timers.auv = opt.auv === "rest" ? 1.2 + Math.random() * 1.6 : 0.25 + Math.random() * 0.5;
       }
       timers.amb -= dt;
       if (timers.amb <= 0) {
-        spawn(Math.random() * W, H + 2, 1 + ((Math.random() * 3) | 0), 9);
+        var bx = Math.random() * W;
+        spawn(bx, opt.sand ? floorY(bx) : H + 2, 1 + ((Math.random() * 3) | 0), 9);
         timers.amb = 0.5 + Math.random() * 0.9;
       }
       for (var i = bubbles.length - 1; i >= 0; i--) {
@@ -548,6 +1079,7 @@
         if (bb.y < 4) bubbles.splice(i, 1);
       }
 
+      if (!detect) return;
       timers.conf -= dt;
       if (timers.conf <= 0) {
         var roll = Math.random();
@@ -569,14 +1101,18 @@
     function draw() {
       if (!buf) return;
       drawWater();
-      drawFish();
+      if (opt.fish && fishBand) drawFish();
+      if (opt.sand) drawSand();
       drawKelp();
       var p = auvPos();
-      blit(sprAuv, p.x, p.y, ((t * 12) | 0) % 2 === 1, ((t * 1.4) | 0) % 2 === 0);
+      var spin = opt.auv === "bob" && ((t * 12) | 0) % 2 === 1;
+      blit(sprAuv, p.x, p.y, spin, ((t * 1.4) | 0) % 2 === 0);
       drawBubbles();
       ctx.putImageData(img, 0, 0);
-      updateDetect(p);
-      updateHud();
+      if (detect) {
+        updateDetect(p);
+        updateHud();
+      }
     }
 
     /* ---- loop: 30 fps, only while on screen and motion is allowed ---- */
@@ -603,14 +1139,13 @@
 
     function setMotion() {
       stop();
+      bubbles = [];
       if (reduceMQ.matches) {
         t = 2;
         par.x = par.y = par.tx = par.ty = 0;
-        bubbles = [];
         seedStaticBubbles();
         draw();
       } else {
-        bubbles = [];
         start();
       }
     }
@@ -626,7 +1161,10 @@
       new IntersectionObserver(function (entries) {
         onScreen = entries[0].isIntersecting;
         onScreen ? start() : stop();
-      }).observe(hero);
+      }, { rootMargin: "100px 0px" }).observe(section);
+    } else {
+      onScreen = true;
+      start();
     }
     document.addEventListener("visibilitychange", function () {
       document.hidden ? stop() : start();
@@ -638,7 +1176,7 @@
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(layout, 120);
     }
-    if ("ResizeObserver" in window) new ResizeObserver(onResize).observe(hero);
+    if ("ResizeObserver" in window) new ResizeObserver(onResize).observe(section);
     else window.addEventListener("resize", onResize);
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(layout);
 
@@ -652,15 +1190,131 @@
   }
 
   /* ------------------------------------------------------------
+     4a. Depth meter: live depth from scroll position; doubles as nav
+     ------------------------------------------------------------ */
+  function depthMeter() {
+    var zones = (C.zones || []).filter(function (z) { return document.getElementById(z.id); });
+    if (!zones.length) return;
+
+    $$("[data-zone-tag]").forEach(function (node) {
+      var z = zones.filter(function (q) { return q.id === node.dataset.zoneTag; })[0];
+      if (z) node.textContent = z.depth + " m · " + z.label;
+    });
+
+    var stops = $("#meter-stops");
+    var marker = $(".meter__marker");
+    var track = $(".meter__track");
+    var readout = $('[data-hud="meter"]');
+    var heroDepth = $('[data-hud="depth"]');
+    if (marker) marker.innerHTML = spriteSVG(ICONS.marker);
+
+    var links = zones.map(function (z) {
+      var li = el("li");
+      var a = el("a");
+      a.href = "#" + z.id;
+      a.appendChild(el("span", "meter__name", z.label));
+      a.appendChild(el("span", "meter__depth", z.depth + " m"));
+      li.appendChild(a);
+      stops.appendChild(li);
+      return a;
+    });
+    var sections = zones.map(function (z) { return document.getElementById(z.id); });
+    var topbar = $(".topbar");
+    var queued = false, lastActive = -1, lastDepth = -1;
+
+    function update() {
+      queued = false;
+      var y = window.scrollY, vh = window.innerHeight;
+      // probe just under the sticky top bar; reads 0 m at the very top
+      var bar = topbar ? topbar.offsetHeight + 8 : 72;
+      var probe = y + Math.min(y, bar);
+      var tops = sections.map(function (s) { return s.getBoundingClientRect().top + y; });
+      var n = zones.length, i = 0, frac = 0;
+      if (y + vh >= document.documentElement.scrollHeight - 2) {
+        i = n - 1;
+      } else {
+        while (i < n - 1 && tops[i + 1] <= probe) i++;
+        if (i < n - 1) frac = Math.max(0, Math.min(1, (probe - tops[i]) / (tops[i + 1] - tops[i])));
+      }
+      var depth = i < n - 1 ? zones[i].depth + frac * (zones[i + 1].depth - zones[i].depth) : zones[n - 1].depth;
+      depth = Math.round(depth);
+      if (depth !== lastDepth) {
+        lastDepth = depth;
+        if (readout) readout.textContent = depth + " m";
+        if (heroDepth) heroDepth.textContent = depth;
+      }
+      if (track && marker) {
+        marker.style.setProperty("--marker-y", ((i + frac) / (n - 1)) * track.clientHeight + "px");
+      }
+      var active = frac > 0.5 ? i + 1 : i;
+      if (active !== lastActive) {
+        if (links[lastActive]) { links[lastActive].classList.remove("is-active"); links[lastActive].removeAttribute("aria-current"); }
+        links[active].classList.add("is-active");
+        links[active].setAttribute("aria-current", "location");
+        lastActive = active;
+      }
+    }
+    function queue() {
+      if (!queued) { queued = true; requestAnimationFrame(update); }
+    }
+    window.addEventListener("scroll", queue, { passive: true });
+    window.addEventListener("resize", queue);
+    update();
+  }
+
+  /* ------------------------------------------------------------
+     4b. Copy email
+     ------------------------------------------------------------ */
+  function copyEmail() {
+    var btn = $("#copy-btn"), status = $("#copy-status");
+    var email = (C.person || {}).email;
+    if (!btn || !email) return;
+    var ct = C.contact || {};
+    var timer = 0;
+    function done(ok) {
+      status.textContent = ok ? (ct.copiedLabel || "Copied") : email;
+      clearTimeout(timer);
+      timer = setTimeout(function () { status.textContent = ""; }, 2400);
+    }
+    function fallback() {
+      var ta = el("textarea");
+      ta.value = email;
+      ta.setAttribute("readonly", "");
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      var ok = false;
+      try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+      ta.remove();
+      done(ok);
+    }
+    btn.addEventListener("click", function () {
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(email).then(function () { done(true); }, fallback);
+      } else {
+        fallback();
+      }
+    });
+  }
+
+  /* ------------------------------------------------------------
      Boot
      ------------------------------------------------------------ */
   renderContent();
-  var heroEl = $(".hero");
-  var scene = null;
-  try {
-    if (heroEl && heroEl.querySelector(".hero__canvas").getContext) scene = Scene(heroEl);
-  } catch (err) {
-    if (window.console) console.error(err);
-  }
-  buildName(scene ? scene.artPx() : 4);
+  depthMeter();
+  copyEmail();
+
+  var heroScene = null;
+  [["hero", ".hero"], ["seabed", ".seabed"]].forEach(function (s) {
+    var section = $(s[1]);
+    if (!section) return;
+    try {
+      var sc = Scene(section, SCENES[s[0]]);
+      if (s[0] === "hero") heroScene = sc;
+    } catch (err) {
+      if (window.console) console.error(err);
+    }
+  });
+  buildName(heroScene ? heroScene.artPx() : 4);
 })();

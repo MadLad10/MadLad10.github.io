@@ -4,13 +4,13 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Yaad Kamrul Bari | AI &amp; Robotics Engineer</title>
-  <meta name="description" content="Yaad Kamrul Bari: AI &amp; robotics engineer working on agentic AI, computer vision and autonomous underwater vehicles.">
+  <meta name="description" content="Yaad Kamrul Bari: Computer Science graduate (BRAC University, CGPA 3.96) working on agentic AI, computer vision and autonomous underwater vehicles.">
   <meta name="theme-color" content="#060d22">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8' shape-rendering='crispEdges'%3E%3Crect width='8' height='8' fill='%23060d22'/%3E%3Crect x='1' y='3' width='6' height='3' fill='%23ffb547'/%3E%3Crect x='3' y='2' width='3' height='1' fill='%23bdeff2'/%3E%3Crect x='1' y='3' width='1' height='1' fill='%235ef0ff'/%3E%3C/svg%3E">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Pixelify+Sans:wght@400..700&family=Silkscreen&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Jersey+10&family=Pixelify+Sans:wght@400..700&family=Silkscreen&display=swap">
   <link rel="stylesheet" href="styles.css">
 
   <script>document.documentElement.classList.replace("no-js", "js");</script>
@@ -40,9 +40,19 @@
     </div>
   </header>
 
+  <!-- Depth meter: fixed on wide screens, doubles as section navigation -->
+  <nav class="meter" aria-label="Sections by depth">
+    <p class="meter__readout" aria-hidden="true"><span class="meter__label">Depth</span><span class="meter__value" data-hud="meter">0 m</span></p>
+    <div class="meter__track">
+      <span class="meter__marker" aria-hidden="true"></span>
+      <ol class="meter__stops" id="meter-stops"></ol>
+    </div>
+  </nav>
+
   <main id="main">
+    <!-- 0 m: surface -->
     <section class="hero" id="top" aria-labelledby="hero-name">
-      <canvas class="hero__canvas" aria-hidden="true"></canvas>
+      <canvas class="hero__canvas scene-canvas" aria-hidden="true"></canvas>
       <div class="hero__fx" aria-hidden="true"></div>
       <div class="detect" aria-hidden="true"><span class="detect__label">auv 0.99</span></div>
 
@@ -60,7 +70,7 @@
           <div class="viewport" aria-hidden="true">
             <div class="hud hud--tl">
               <span data-text="hud.depthLabel">Depth</span>
-              <span class="hud__val"><span data-text="hud.depth">0.0</span> <span data-text="hud.depthUnit">m</span></span>
+              <span class="hud__val"><span data-hud="depth">0</span> <span data-text="hud.depthUnit">m</span></span>
             </div>
             <div class="hud hud--tr">
               <span data-text="hud.headingLabel">Hdg</span>
@@ -80,6 +90,133 @@
         </div>
       </div>
     </section>
+
+    <!-- About -->
+    <section class="zone zone--about" id="about" aria-labelledby="about-title">
+      <div class="zone__inner">
+        <header class="zone__head">
+          <p class="zone__tag" data-zone-tag="about"></p>
+          <h2 class="zone__title" id="about-title" data-text="about.title">About</h2>
+        </header>
+        <div class="about">
+          <div class="about__text prose" id="about-text"></div>
+          <aside class="idcard" aria-labelledby="idcard-title">
+            <p class="idcard__title" id="idcard-title" data-text="about.card.title">Operator ID</p>
+            <div class="idcard__body">
+              <div class="idcard__photo" id="about-photo"></div>
+              <dl class="idcard__facts" id="about-facts"></dl>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured story -->
+    <section class="zone zone--featured" id="robosub" aria-labelledby="featured-title">
+      <div class="zone__inner">
+        <header class="zone__head">
+          <p class="zone__tag" data-zone-tag="robosub"></p>
+          <p class="zone__kicker" data-text="featured.tag"></p>
+          <h2 class="zone__title zone__title--wide" id="featured-title" data-text="featured.title"></h2>
+        </header>
+        <div class="featured">
+          <div class="featured__media" id="featured-media"></div>
+          <div class="featured__body">
+            <div class="prose" id="featured-text"></div>
+            <div class="featured__links" id="featured-links"></div>
+          </div>
+          <ul class="featured__stats" id="featured-stats"></ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Projects -->
+    <section class="zone zone--projects" id="projects" aria-labelledby="projects-title">
+      <div class="zone__inner">
+        <header class="zone__head">
+          <p class="zone__tag" data-zone-tag="projects"></p>
+          <h2 class="zone__title" id="projects-title" data-text="projects.title">Projects</h2>
+          <p class="zone__lede" data-text="projects.lede"></p>
+        </header>
+        <ul class="cards" id="project-cards"></ul>
+
+        <h3 class="subhead" data-text="projects.moreTitle">More projects</h3>
+        <ul class="more" id="more-projects"></ul>
+      </div>
+    </section>
+
+    <!-- Experience + education -->
+    <section class="zone zone--log" id="experience" aria-labelledby="log-title">
+      <div class="zone__inner">
+        <header class="zone__head">
+          <p class="zone__tag" data-zone-tag="experience"></p>
+          <h2 class="zone__title" id="log-title" data-text="experience.title">Mission log</h2>
+          <p class="zone__lede" data-text="experience.lede"></p>
+        </header>
+        <div class="log">
+          <div class="log__col">
+            <h3 class="subhead" data-text="experience.missionsTitle">Missions</h3>
+            <ol class="log__list" id="log-missions"></ol>
+          </div>
+          <div class="log__col">
+            <h3 class="subhead" data-text="experience.trainingTitle">Training</h3>
+            <ol class="log__list" id="log-training"></ol>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Skills -->
+    <section class="zone zone--skills" id="skills" aria-labelledby="skills-title">
+      <div class="zone__inner">
+        <header class="zone__head">
+          <p class="zone__tag" data-zone-tag="skills"></p>
+          <h2 class="zone__title" id="skills-title" data-text="skills.title">Inventory</h2>
+          <p class="zone__lede" data-text="skills.lede"></p>
+        </header>
+        <ul class="inventory" id="inventory"></ul>
+      </div>
+    </section>
+
+    <!-- Awards -->
+    <section class="zone zone--awards" id="awards" aria-labelledby="awards-title">
+      <div class="zone__inner">
+        <header class="zone__head">
+          <p class="zone__tag" data-zone-tag="awards"></p>
+          <h2 class="zone__title" id="awards-title" data-text="awards.title">Awards</h2>
+        </header>
+        <ul class="awards" id="awards-list"></ul>
+      </div>
+    </section>
+
+    <!-- Contact at the seabed -->
+    <section class="seabed" id="contact" aria-labelledby="contact-title">
+      <canvas class="seabed__canvas scene-canvas" aria-hidden="true"></canvas>
+      <div class="zone__inner seabed__inner">
+        <div class="transmission">
+          <p class="zone__tag" data-zone-tag="contact"></p>
+          <h2 class="zone__title" id="contact-title" data-text="contact.title">Send transmission</h2>
+          <p class="transmission__text" data-text="contact.text"></p>
+          <p class="transmission__email"><a id="contact-email" href="mailto:yaadbari21@gmail.com">yaadbari21@gmail.com</a></p>
+          <div class="transmission__actions">
+            <a class="btn" id="mail-btn" href="mailto:yaadbari21@gmail.com" data-text="contact.mailLabel">Email me</a>
+            <button class="btn btn--secondary" id="copy-btn" type="button" data-text="contact.copyLabel">Copy email</button>
+            <span class="transmission__copied" id="copy-status" role="status" aria-live="polite"></span>
+          </div>
+          <ul class="transmission__links" id="contact-links"></ul>
+          <p class="transmission__meta"><span data-text="person.location"></span></p>
+          <p class="transmission__refs" data-text="contact.references"></p>
+        </div>
+        <div class="seabed__dock" aria-hidden="true"></div>
+      </div>
+    </section>
   </main>
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <p>© <span id="year">2026</span> <span data-text="person.name">Yaad Kamrul Bari</span>. <span data-text="footer.text"></span></p>
+      <a href="#top" data-text="footer.top">Back to the surface</a>
+    </div>
+  </footer>
 </body>
 </html>
