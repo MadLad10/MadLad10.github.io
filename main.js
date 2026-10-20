@@ -1331,11 +1331,74 @@
   }
 
   /* ------------------------------------------------------------
+     4c. Portrait resolves from chunky pixels to the real photo, once
+     A canvas sits over the <img>; the real photo is never altered.
+     ------------------------------------------------------------ */
+  var PHOTO_STEPS = [8, 12, 18, 28, 44, 70, 110]; // columns of pixels per step
+  var PHOTO_STEP_MS = 120;
+
+  function photoReveal() {
+    var box = $(".idcard__photo");
+    var img = box && $("img", box);
+    if (!img || reduceMQ.matches || !("IntersectionObserver" in window)) return;
+
+    var canvas = el("canvas", "photo-pixels");
+    canvas.setAttribute("aria-hidden", "true");
+    box.appendChild(canvas);
+    var ctx = canvas.getContext("2d");
+    var small = document.createElement("canvas");
+    var sctx = small.getContext("2d");
+    var visible = false, started = false;
+
+    function paint(cols) {
+      var r = box.getBoundingClientRect();
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.max(1, Math.round(r.width * dpr));
+      canvas.height = Math.max(1, Math.round(r.height * dpr));
+      small.width = cols;
+      small.height = Math.max(1, Math.round((cols * r.height) / r.width));
+      sctx.drawImage(img, 0, 0, small.width, small.height);
+      ctx.imageSmoothingEnabled = false;
+      ctx.drawImage(small, 0, 0, canvas.width, canvas.height);
+    }
+    function run() {
+      if (started || !visible || !img.naturalWidth) return;
+      started = true;
+      var i = 0;
+      (function step() {
+        if (i < PHOTO_STEPS.length) {
+          paint(PHOTO_STEPS[i++]);
+          setTimeout(step, PHOTO_STEP_MS);
+        } else {
+          canvas.remove();
+        }
+      })();
+    }
+
+    // until it scrolls into view, show the coarsest version
+    if (img.complete && img.naturalWidth) paint(PHOTO_STEPS[0]);
+    img.addEventListener("load", function () {
+      if (!started) paint(PHOTO_STEPS[0]);
+      run();
+    });
+    img.addEventListener("error", function () { canvas.remove(); });
+
+    var io = new IntersectionObserver(function (entries) {
+      if (!entries[0].isIntersecting) return;
+      visible = true;
+      run();
+      if (started) io.disconnect();
+    }, { threshold: 0.6 });
+    io.observe(box);
+  }
+
+  /* ------------------------------------------------------------
      Boot
      ------------------------------------------------------------ */
   renderContent();
   depthMeter();
   copyEmail();
+  photoReveal();
 
   var heroScene = null;
   [["hero", ".hero"], ["seabed", ".seabed"]].forEach(function (s) {

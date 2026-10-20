@@ -784,6 +784,14 @@ a { color: inherit; }
   border: 1px solid var(--line);
 }
 .idcard__photo .slot { padding: 0.5rem; }
+.idcard__photo { position: relative; }
+.photo-pixels {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+}
 .idcard__facts { margin: 0; }
 .idcard__facts div + div { margin-top: 0.65rem; }
 .idcard__facts dt {
