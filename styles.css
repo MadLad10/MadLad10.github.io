@@ -779,6 +779,7 @@ a { color: inherit; }
 .idcard__photo {
   aspect-ratio: 4 / 5;
   overflow: hidden;
+  border: 1px solid var(--line);
 }
 .idcard__photo .slot { padding: 0.5rem; }
 .idcard__facts { margin: 0; }

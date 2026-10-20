@@ -78,7 +78,7 @@ window.CONTENT = {
     card: {
       title: "Operator ID",
       // PHOTO SLOT: a portrait, about 600x750 px, e.g. "assets/photo.jpg"
-      image: "",
+      image: "assets/photo.jpg",
       slot: "assets/photo.jpg · 4:5 portrait",
       alt: "Portrait of Yaad Kamrul Bari",
       facts: [
