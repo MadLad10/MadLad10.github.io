@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Yaad Kamrul Bari | AI &amp; Robotics Engineer</title>
+  <meta name="description" content="Yaad Kamrul Bari: AI &amp; robotics engineer working on agentic AI, computer vision and autonomous underwater vehicles.">
+  <meta name="theme-color" content="#060d22">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8' shape-rendering='crispEdges'%3E%3Crect width='8' height='8' fill='%23060d22'/%3E%3Crect x='1' y='3' width='6' height='3' fill='%23ffb547'/%3E%3Crect x='3' y='2' width='3' height='1' fill='%23bdeff2'/%3E%3Crect x='1' y='3' width='1' height='1' fill='%235ef0ff'/%3E%3C/svg%3E">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Pixelify+Sans:wght@400..700&family=Silkscreen&display=swap">
+  <link rel="stylesheet" href="styles.css">
+
+  <script>document.documentElement.classList.replace("no-js", "js");</script>
+  <script src="content.js" defer></script>
+  <script src="main.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="topbar">
+    <div class="topbar__inner">
+      <a class="brand" href="#top">
+        <span class="brand__mark" data-text="person.initials">YKB</span>
+        <span class="brand__name" data-text="person.name">Yaad Kamrul Bari</span>
+      </a>
+
+      <nav class="topnav" aria-label="Primary">
+        <ul class="topnav__list" id="nav-links"></ul>
+      </nav>
+
+      <a class="btn btn--small" id="cv-link" href="assets/Yaad_Kamrul_Bari_CV.pdf" download>
+        <svg class="btn__icon" viewBox="0 0 7 8" width="14" height="16" shape-rendering="crispEdges" aria-hidden="true">
+          <path fill="currentColor" d="M3 0h1v4H3zM1 3h1v1H1zM5 3h1v1H5zM2 4h1v1H2zM4 4h1v1H4zM3 5h1v1H3zM0 7h7v1H0z"/>
+        </svg>
+        <span data-text="nav.cv.label">Download CV</span>
+      </a>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top" aria-labelledby="hero-name">
+      <canvas class="hero__canvas" aria-hidden="true"></canvas>
+      <div class="hero__fx" aria-hidden="true"></div>
+      <div class="detect" aria-hidden="true"><span class="detect__label">auv 0.99</span></div>
+
+      <div class="hero__inner">
+        <div class="hero__copy">
+          <p class="chip" data-text="hero.eyebrow"></p>
+          <h1 class="hero__name is-pending" id="hero-name" data-text="hero.name">Yaad Kamrul Bari</h1>
+          <p class="hero__role" data-text="hero.role"></p>
+          <p class="hero__intro" data-text="hero.intro"></p>
+          <div class="hero__actions" id="hero-actions"></div>
+          <ul class="hero__facts" id="hero-facts"></ul>
+        </div>
+
+        <div class="hero__stage">
+          <div class="viewport" aria-hidden="true">
+            <div class="hud hud--tl">
+              <span data-text="hud.depthLabel">Depth</span>
+              <span class="hud__val"><span data-text="hud.depth">0.0</span> <span data-text="hud.depthUnit">m</span></span>
+            </div>
+            <div class="hud hud--tr">
+              <span data-text="hud.headingLabel">Hdg</span>
+              <span class="hud__tape"></span>
+              <span class="hud__val" data-hud="heading">087°</span>
+            </div>
+            <div class="hud hud--br">
+              <span data-text="hud.batteryLabel">Batt</span>
+              <svg class="hud__batt" viewBox="0 0 13 7" width="26" height="14" shape-rendering="crispEdges" aria-hidden="true">
+                <path fill="currentColor" d="M0 0h11v1H0zM0 6h11v1H0zM0 1h1v5H0zM10 1h1v5h-1zM11 2h2v3h-2z"/>
+                <path class="hud__batt-cells" d="M2 2h1v3H2zM4 2h1v3H4zM6 2h1v3H6zM8 2h1v3H8z"/>
+              </svg>
+              <span class="hud__val" data-text="hud.battery">92%</span>
+            </div>
+          </div>
+          <p class="status"><span class="status__dot" aria-hidden="true"></span><span data-text="hud.status"></span></p>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
