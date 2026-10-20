@@ -1381,6 +1381,162 @@
   }
 
   /* ------------------------------------------------------------
+     4d. Marine snow in the middle sections
+     One low-res canvas fixed to the viewport, drawn *under* the section
+     content (zone__inner sits above it), only between About and Contact.
+     Specks are fainter over the reading column than in the margins.
+     ------------------------------------------------------------ */
+  function marineSnow() {
+    var topSec = $("#about"), endSec = $("#contact");
+    if (!topSec || !endSec || reduceMQ.matches) return;
+
+    var canvas = el("canvas", "snow");
+    canvas.setAttribute("aria-hidden", "true");
+    document.body.appendChild(canvas);
+    var ctx = canvas.getContext("2d");
+    var snowColor = cssVar("--foam-200"), bubbleColor = cssVar("--foam-100");
+
+    var S = 4, W = 0, H = 0, colL = 0, colR = 0;
+    var r = rng(77), flakes = [], bubbles = [];
+    for (var i = 0; i < 150; i++) {
+      flakes.push({
+        x: r(), y: r(),                 // 0..1, scaled to the viewport on draw
+        z: 0.35 + r() * 0.55,           // parallax depth: how much it moves with scroll
+        s: r() < 0.12 ? 2 : 1,          // size in art pixels
+        a: 0.16 + r() * 0.3,            // base opacity
+        vy: 0.8 + r() * 2.2,            // sinking speed, art px per second
+        ph: r() * 6.28
+      });
+    }
+
+    function layout() {
+      S = parseFloat(cssVar("--art-px")) || 4;
+      W = Math.ceil(window.innerWidth / S);
+      H = Math.ceil(window.innerHeight / S);
+      canvas.width = W;
+      canvas.height = H;
+      canvas.style.width = W * S + "px";
+      canvas.style.height = H * S + "px";
+      // the reading column, from the first section's content box
+      var inner = $(".zone__inner", topSec), cs = getComputedStyle(inner), rc = inner.getBoundingClientRect();
+      colL = (rc.left + parseFloat(cs.paddingLeft)) / S;
+      colR = (rc.right - parseFloat(cs.paddingRight)) / S;
+    }
+
+    function columnFade(x) {
+      var ramp = 6, inside = 0.32;
+      if (x < colL - ramp || x > colR + ramp) return 1;
+      if (x < colL) return 1 - (1 - inside) * (x - (colL - ramp)) / ramp;
+      if (x > colR) return inside + (1 - inside) * (x - colR) / ramp;
+      return inside;
+    }
+
+    var t = 0, last = 0, rafId = 0, running = false, bubbleTimer = 0;
+
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+      var top = topSec.getBoundingClientRect().top / S;
+      var bottom = endSec.getBoundingClientRect().top / S;
+      var y0 = Math.max(0, Math.floor(top)), y1 = Math.min(H, Math.ceil(bottom));
+      if (y1 <= y0) return;
+
+      // denser the deeper you are between About and Contact
+      var span = Math.max(1, bottom - top - H);
+      var depth = Math.max(0, Math.min(1, -top / span));
+      var count = Math.round(flakes.length * (0.35 + 0.65 * depth));
+      var scroll = window.scrollY / S, wrap = H + 20;
+
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(0, y0, W, y1 - y0);
+      ctx.clip();
+      ctx.fillStyle = snowColor;
+      for (var i = 0; i < count; i++) {
+        var f = flakes[i];
+        var sy = ((f.y * wrap + t * f.vy - scroll * f.z) % wrap + wrap) % wrap - 10;
+        var sx = Math.round(f.x * W + Math.sin(t * 0.35 + f.ph) * 1.5);
+        ctx.globalAlpha = f.a * columnFade(sx);
+        ctx.fillRect(sx, Math.round(sy), f.s, f.s);
+      }
+      ctx.fillStyle = bubbleColor;
+      for (var b = 0; b < bubbles.length; b++) {
+        var bb = bubbles[b], bx = Math.round(bb.x + Math.sin(t * 2 + bb.ph) * 0.8), by = Math.round(bb.y);
+        ctx.globalAlpha = 0.5 * columnFade(bx);
+        if (bb.r === 1) {
+          ctx.fillRect(bx, by, 1, 1);
+        } else {
+          ctx.fillRect(bx + 1, by, 1, 1); ctx.fillRect(bx, by + 1, 1, 1);
+          ctx.fillRect(bx + 2, by + 1, 1, 1); ctx.fillRect(bx + 1, by + 2, 1, 1);
+        }
+      }
+      ctx.restore();
+    }
+
+    function update(dt) {
+      bubbleTimer -= dt;
+      if (bubbleTimer <= 0 && bubbles.length < 8) {
+        // bubbles rise in the side margins (or near the screen edges on phones)
+        var left = colL - 4 > 6, side = Math.random() < 0.5;
+        var x = left
+          ? (side ? 2 + Math.random() * (colL - 8) : colR + 4 + Math.random() * (W - colR - 8))
+          : (side ? 1 + Math.random() * 3 : W - 4 - Math.random() * 3);
+        bubbles.push({ x: x, y: H + 2, vy: 7 + Math.random() * 7, r: Math.random() < 0.6 ? 1 : 2, ph: Math.random() * 6.28 });
+        bubbleTimer = 0.9 + Math.random() * 1.6;
+      }
+      for (var i = bubbles.length - 1; i >= 0; i--) {
+        bubbles[i].y -= bubbles[i].vy * dt;
+        if (bubbles[i].y < -4) bubbles.splice(i, 1);
+      }
+    }
+
+    function loop(now) {
+      rafId = requestAnimationFrame(loop);
+      var elapsed = now - last;
+      if (elapsed < 1000 / 30 - 2) return;
+      last = now;
+      var dt = Math.min(0.1, elapsed / 1000);
+      t += dt;
+      update(dt);
+      draw();
+    }
+    function start() {
+      if (running || document.hidden) return;
+      running = true;
+      last = performance.now();
+      rafId = requestAnimationFrame(loop);
+    }
+    function stop() {
+      running = false;
+      cancelAnimationFrame(rafId);
+      ctx.clearRect(0, 0, W, H);
+    }
+
+    layout();
+    // run only while some middle section is on screen
+    var visible = new Set();
+    var zones = $$("main > .zone");
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { e.isIntersecting ? visible.add(e.target) : visible.delete(e.target); });
+      visible.size ? start() : stop();
+    });
+    zones.forEach(function (z) { io.observe(z); });
+    document.addEventListener("visibilitychange", function () {
+      document.hidden ? stop() : (visible.size && start());
+    });
+    if (reduceMQ.addEventListener) {
+      reduceMQ.addEventListener("change", function () {
+        if (reduceMQ.matches) { stop(); io.disconnect(); canvas.remove(); }
+      });
+    }
+    var resizeTimer = 0;
+    window.addEventListener("resize", function () {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(layout, 120);
+    });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(layout);
+  }
+
+  /* ------------------------------------------------------------
      Boot
      ------------------------------------------------------------ */
   renderContent();
@@ -1400,4 +1556,5 @@
     }
   });
   buildName(heroScene ? heroScene.artPx() : 4);
+  marineSnow();
 })();

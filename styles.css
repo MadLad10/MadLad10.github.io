@@ -638,6 +638,7 @@ a { color: inherit; }
 
 .zone__inner {
   position: relative;
+  z-index: 2;             /* above the marine-snow layer */
   width: 100%;
   max-width: var(--max);
   margin: 0 auto;
@@ -760,6 +761,17 @@ a { color: inherit; }
   color: var(--foam-100);
   font-size: 0.8125rem;
   line-height: 1.4;
+}
+
+/* Marine snow: a fixed low-res canvas under the middle sections' content */
+.snow {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 1;
+  pointer-events: none;
+  image-rendering: crisp-edges;
+  image-rendering: pixelated;
 }
 
 /* ---------- About ---------- */
@@ -1556,7 +1568,7 @@ a { color: inherit; }
   body * { font-size: 10pt !important; line-height: 1.45 !important; }
   .prose, .hero__intro, .transmission__text { max-width: none !important; }
 
-  .skip-link, .topbar, .meter, .scene-canvas, .hero__fx, .detect, .hero__stage,
+  .skip-link, .topbar, .meter, .scene-canvas, .snow, .hero__fx, .detect, .hero__stage,
   .hero__actions, .chip, .zone__tag, .zone__lede, .zone__kicker, .slot,
   .idcard__photo, .idcard__title, .card__media, .card__det,
   .transmission__actions, .seabed__dock, .footer a, .zone::before { display: none !important; }
