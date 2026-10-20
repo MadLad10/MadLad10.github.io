@@ -48,8 +48,11 @@ window.CONTENT = {
     eyebrow: "", // small label above the name; "" hides it
     name: "Yaad Kamrul Bari",
     titles: ["Autonomous Systems Engineer", "Computer Vision Engineer", "Agentic AI Engineer"],
-    intro:
-      "I build perception and agentic AI systems that help robots see, decide and act on their own. At BRACU Duburi, Bangladesh's first autonomous underwater vehicle, my computer vision work helped the team place 8th of 58 at RoboSub in 2025 and 2026.",
+    // Short lines under the title tags; the first one is shown slightly stronger.
+    intro: [
+      "Research-driven engineer with a foot in both academia and industry.",
+      "Taught algorithm design as an undergraduate TA at BRAC University; now working on underwater robotics R&D at Dubotech."
+    ],
     actions: [
       { label: "See projects", href: "#projects", style: "primary" },
       { label: "Get in touch", href: "#contact", style: "secondary" }

@@ -331,6 +331,8 @@
       return b;
     }));
     fill($("#hero-titles"), (hero.titles || []).map(function (t) { return el("li", null, t); }));
+    var intro = [].concat(hero.intro || []);
+    fill($("#hero-intro"), intro.map(function (line) { return el("p", null, line); }));
     var facts = $("#hero-facts");
     if (facts) {
       fill(facts, (hero.facts || []).map(function (f) { return el("li", null, f); }));

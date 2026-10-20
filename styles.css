@@ -362,6 +362,12 @@ a { color: inherit; }
   line-height: 1.65;
   text-shadow: 0 1px 0 rgba(6, 13, 34, 0.45);
 }
+.hero__intro p { margin: 0; }
+.hero__intro p + p { margin-top: 0.35rem; }
+.hero__intro p:first-child {
+  color: var(--foam-100);
+  font-weight: 600;
+}
 
 .hero__actions {
   display: flex;
