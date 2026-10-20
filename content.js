@@ -74,8 +74,9 @@ window.CONTENT = {
   about: {
     title: "About",
     paragraphs: [
-      "I'm a Computer Science graduate from BRAC University (CGPA 3.96/4.0), working where AI meets robots. At BRACU Duburi, Bangladesh's first autonomous underwater vehicle, I led the AI and Machine Vision sub-team and took the perception pipeline from data curation all the way to TensorRT deployment on a Jetson, inside a ROS2 stack.",
-      "I also build LLM agents, multi-agent systems and RAG applications with LangGraph, FastAPI and PostgreSQL/pgvector. I want to join a research-driven team building reliable AI and autonomous systems for real-world, resource-constrained environments."
+      "I like problems where software meets the physical world. Underwater, cameras blur, sensors drift and there's no cloud to fall back on, so models have to be small, fast and robust.",
+      "My work sits where perception meets decision-making: vision models that run in real time on a Jetson, and LLM agents that turn plain English into plans a robot can carry out, with guardrails for when things go wrong.",
+      "Next, I want to do this in a research team, building AI and autonomous systems that hold up outside the lab."
     ],
     card: {
       title: "Operator ID",
