@@ -363,19 +363,7 @@
 
     // Projects
     var pr = C.projects || {};
-    fill($("#project-cards"), (pr.featured || []).map(projectCard));
-    fill($("#more-projects"), (pr.more || []).map(function (p) {
-      var li = el("li", "more__item");
-      li.appendChild(el("h4", "more__title", p.title));
-      var mid = el("div");
-      mid.appendChild(el("p", "more__summary", p.summary));
-      mid.appendChild(tags(p.tags));
-      li.appendChild(mid);
-      var links = el("div", "more__links");
-      (p.links || []).filter(function (l) { return l.href; }).forEach(function (l) { links.appendChild(link(l)); });
-      li.appendChild(links);
-      return li;
-    }));
+    fill($("#project-cards"), (pr.featured || []).concat(pr.more || []).map(projectCard));
 
     // Experience + education
     var ex = C.experience || {};
@@ -442,6 +430,7 @@
 
     var m = el("div", "card__media");
     var pm = p.image && p.pixel ? pixMedia(p, li) : null;
+    if (!pm && !p.image && p.icon) pm = noSignal(p);
     m.appendChild(pm || media(p.image, p.slot, p.alt || p.title, "GIF / image slot"));
     li.appendChild(m);
 
@@ -513,6 +502,16 @@
     li.appendChild(el("p", "log__org", [e.org, e.place].filter(Boolean).join(" · ")));
     if (e.grade) li.appendChild(el("p", "edu__grade", e.grade));
     return li;
+  }
+
+  // A card without media: a pixel "no signal" screen with the project's icon.
+  function noSignal(p) {
+    var box = el("div", "nofeed");
+    box.setAttribute("aria-hidden", "true");
+    box.innerHTML = spriteSVG(ICONS[p.icon] || ICONS.code, "nofeed__icon");
+    var tag = el("span", "pixmedia__tag nofeed__tag");
+    box.appendChild(tag);
+    return box;
   }
 
   // Card media: pixel-art version by default, real footage on hover / focus / tap.

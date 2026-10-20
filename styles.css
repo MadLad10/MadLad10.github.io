@@ -902,7 +902,7 @@ a { color: inherit; }
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 48px 40px;
-  margin: 0 0 clamp(56px, 7vw, 88px);
+  margin: 0;
   padding: 0;
   list-style: none;
 }
@@ -963,6 +963,24 @@ a { color: inherit; }
   .pixmedia__tag::before { content: "TAP: HI-RES"; }
   .pixmedia.is-real .pixmedia__tag::before { content: "TAP: LO-RES"; }
 }
+
+/* card without media: pixel "no signal" screen */
+.nofeed {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  background:
+    repeating-linear-gradient(to bottom, rgba(94, 240, 255, 0.05) 0 2px, transparent 2px 6px),
+    conic-gradient(var(--deep-2) 0 25%, var(--navy-950) 0 50%, var(--deep-2) 0 75%, var(--navy-950) 0) 0 0 / calc(var(--art-px) * 2) calc(var(--art-px) * 2);
+}
+.nofeed__icon {
+  width: 96px;
+  height: 96px;
+  opacity: 0.9;
+}
+.nofeed__tag::before { content: "NO SIGNAL" !important; }
 
 .card__body {
   display: flex;
@@ -1050,35 +1068,6 @@ a { color: inherit; }
 @keyframes det-label {
   from { opacity: 0; }
   to   { opacity: 1; }
-}
-
-/* More projects: compact list */
-.more {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  border-top: 1px solid rgba(94, 240, 255, 0.18);
-}
-.more__item {
-  display: grid;
-  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.6fr) auto;
-  gap: 0.6rem 2rem;
-  align-items: start;
-  padding: 1.25rem 0;
-  border-bottom: 1px solid rgba(94, 240, 255, 0.18);
-}
-.more__title {
-  margin: 0;
-  font: 400 1.5rem/1.15 var(--font-pixel);
-}
-.more__summary {
-  margin: 0 0 0.6rem;
-  color: var(--text-dim);
-  line-height: 1.55;
-}
-.more__links {
-  display: flex;
-  gap: 1.25rem;
 }
 
 /* ---------- Experience (mission log) + education ---------- */
@@ -1572,7 +1561,6 @@ a { color: inherit; }
   .seabed__inner { grid-template-columns: minmax(0, 1fr); }
   .cards { grid-template-columns: minmax(0, 1fr); gap: 40px; }
   .awards { grid-template-columns: minmax(0, 1fr); }
-  .more__item { grid-template-columns: minmax(0, 1fr); }
   .seabed__dock { height: 40px; }
 }
 
@@ -1642,17 +1630,17 @@ a { color: inherit; }
     font-size: 13pt !important;
   }
   .subhead { margin: 8pt 0 4pt !important; font-size: 11pt !important; }
-  .card__title, .more__title { font-size: 11pt !important; }
+  .card__title { font-size: 11pt !important; }
 
   .logo { display: none !important; }
   .log__entry { display: block !important; }
   .edu__head { display: block !important; margin: 0 !important; }
   .edu__grade { font-size: 10pt !important; padding: 0 !important; }
-  .about, .mission, .cards, .edu, .inventory, .awards, .more__item {
+  .about, .mission, .cards, .edu, .inventory, .awards {
     display: block !important;
     margin: 0 !important;
   }
-  .idcard, .card, .slotbox, .award, .transmission, .featured__stats li, .more__item, .edu__card, .mission {
+  .idcard, .card, .slotbox, .award, .transmission, .featured__stats li, .edu__card, .mission {
     border: 0 !important;
     padding: 0 !important;
     margin: 0 0 6pt !important;

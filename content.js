@@ -112,7 +112,7 @@ window.CONTENT = {
 
   projects: {
     title: "Projects",
-    lede: "Four levels I'm proudest of. Hover or tab through them to run detection.",
+    lede: "Hover over a card, or tap its image, to run detection and switch to the real footage.",
     featured: [
       {
         title: "Agentic AUV",
@@ -173,12 +173,19 @@ window.CONTENT = {
         links: [{ label: "Code", href: "https://github.com/MadLad10/bari.com" }]
       }
     ],
-    moreTitle: "More projects",
+    // Shown as the same cards, after the four above. Without image/pixel a card shows a
+    // pixel "no signal" screen with `icon` (code, agent, eye, robot, chip, db, screen, tool).
     more: [
       {
         title: "Pinstagram",
-        summary: "Instagram-style app for discovering places in Bangladesh, with semantic search, RAG review summaries and an AI trip agent.",
+        kind: "Full-stack + AI",
+        summary: "Instagram-style app for discovering places in Bangladesh, with a map, reviews, bus and ride-hail directions, semantic search and an AI trip agent.",
+        stat: { label: "Integration tests", value: "163" },
         tags: ["FastAPI", "React Native", "Next.js", "PostGIS", "pgvector"],
+        image: "assets/projects/pinstagram.jpg",
+        pixel: "assets/projects/pinstagram-pixel.png",
+        alt: "Pinstagram screens: place map of Dhaka, photo feed and bus directions",
+        detect: { label: "pinstagram", confidence: 0.95 },
         links: [
           { label: "Code", href: "https://github.com/MadLad10/Pinstagram" },
           { label: "Live", href: "https://pinstagram-mobile.vercel.app" }
@@ -186,20 +193,33 @@ window.CONTENT = {
       },
       {
         title: "Duburi Vision Pipeline Dashboard",
-        summary: "Dashboard for reviewing training results per task, plus n8n workflows that send video clips to annotators and collect labels.",
+        kind: "ML tooling",
+        summary: "Dashboard for the Duburi team to review training results per task, plus n8n workflows that send video clips to annotators and collect labels.",
         tags: ["Streamlit", "Plotly", "n8n"],
+        image: "assets/projects/duburi-dashboard.jpg",
+        pixel: "assets/projects/duburi-dashboard-pixel.png",
+        alt: "YOLO training curves: box, class and DFL losses, precision and mAP50",
+        detect: { label: "ml_dashboard", confidence: 0.94 },
         links: [{ label: "Code", href: "https://github.com/MadLad10/BRACU-Duburi-Vision-Pipeline-Dashboard" }]
       },
       {
         title: "Weather-Robust Object Detection with GANs",
-        summary: "Pix2Pix generates snow, rain and fog scenes so a YOLOv5 detector stays reliable in bad weather.",
+        kind: "Generative vision",
+        summary: "Pix2Pix generates snow, rain and fog scenes so a YOLOv5 detector for autonomous vehicles stays reliable in bad weather.",
         tags: ["PyTorch", "Pix2Pix", "YOLOv5"],
+        image: "",
+        icon: "eye",
+        detect: { label: "weather_gan", confidence: 0.93 },
         links: [{ label: "Code", href: "https://github.com/MadLad10/An-efficient-object-detection-technique-for-autonomous-vehicles-using-advanced-GAN-model-" }]
       },
       {
         title: "MindWell",
-        summary: "Employee wellness platform with periodic check-ins, email reminders and role-based dashboards; FastAPI backend with JWT auth.",
+        kind: "Backend",
+        summary: "Employee wellness platform: companies invite staff, employees do periodic check-ins with email reminders, admins use role-based dashboards. FastAPI backend with JWT auth.",
         tags: ["FastAPI", "React", "PostgreSQL"],
+        image: "",
+        icon: "screen",
+        detect: { label: "mindwell", confidence: 0.92 },
         // Add the repo link here if it's public: { label: "Code", href: "https://github.com/..." }
         links: []
       }
