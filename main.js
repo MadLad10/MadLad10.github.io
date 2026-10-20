@@ -256,7 +256,7 @@
     if (l.download) {
       a.setAttribute("download", "");
       a.insertAdjacentHTML("beforeend", ARROW_DOWN);
-    } else if (/^https?:/.test(l.href)) {
+    } else if (l.newTab || /^https?:/.test(l.href)) {
       a.target = "_blank";
       a.rel = "noopener";
       a.insertAdjacentHTML("beforeend", ARROW_OUT);
@@ -325,6 +325,11 @@
     }));
     var cv = $("#cv-link");
     if (cv && nav.cv && nav.cv.href) cv.href = nav.cv.href;
+    var preview = $("#cv-preview");
+    if (preview) {
+      if (nav.cvPreview && nav.cvPreview.href) preview.href = nav.cvPreview.href;
+      else preview.hidden = true;
+    }
 
     // Hero
     var hero = C.hero || {};

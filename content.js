@@ -29,7 +29,8 @@ window.CONTENT = {
       { label: "Contact", href: "#contact" }
     ],
     // Put a PDF in assets/ with this exact name (use a version WITHOUT your phone number).
-    cv: { label: "Download CV", href: "assets/Yaad_Kamrul_Bari_CV.pdf" }
+    cv: { label: "Download CV", href: "assets/Yaad_Kamrul_Bari_CV.pdf" },
+    cvPreview: { label: "Preview CV", href: "assets/Yaad_Kamrul_Bari_CV.pdf" } // opens in a new tab
   },
 
   // Depth meter stops, in page order. `id` must match a section id in index.html.
@@ -356,6 +357,7 @@ window.CONTENT = {
       { label: "GitHub", href: "https://github.com/MadLad10" },
       // Paste your LinkedIn profile URL here; the link stays hidden while it's empty.
       { label: "LinkedIn", href: "" },
+      { label: "Preview CV", href: "assets/Yaad_Kamrul_Bari_CV.pdf", newTab: true },
       { label: "Download CV", href: "assets/Yaad_Kamrul_Bari_CV.pdf", download: true }
     ],
     references: "References from Dr. Md. Khalilur Rhaman and Dr. Md. Golam Rabiul Alam (Professors, CSE, BRAC University) are available on request."
