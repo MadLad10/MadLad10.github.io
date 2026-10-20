@@ -308,6 +308,7 @@
     $$("[data-text]").forEach(function (node) {
       var v = get(node.dataset.text);
       if (typeof v === "string" || typeof v === "number") node.textContent = v;
+      if (v === "") node.hidden = true; // empty text in content.js hides the element
     });
 
     // Nav + CV

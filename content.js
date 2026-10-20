@@ -247,7 +247,7 @@ window.CONTENT = {
 
   education: {
     title: "Education",
-    lede: "Training log, newest first.",
+    lede: "",
     items: [
       {
         degree: "BSc in Computer Science",
