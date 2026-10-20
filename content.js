@@ -121,9 +121,12 @@ window.CONTENT = {
           "Fault-tolerant multi-agent LLM system that plans underwater missions from plain English and keeps working through sensor faults.",
         stat: { label: "Fusion", value: "EKF · Sonar · VLM" },
         tags: ["LangGraph", "VLM", "Tool calling", "Sensor fusion", "Guardrails"],
-        // IMAGE/GIF SLOT, 16:9, e.g. "assets/projects/agentic-auv.gif"
-        image: "",
-        slot: "assets/projects/agentic-auv.gif · 16:9",
+        // image: real footage (shown on hover/tap); pixel: pixel-art version (shown by default).
+        // For .mp4 files, a still with the same name (.jpg for real, .png for pixel) is used as the poster.
+        image: "assets/projects/agentic-auv.mp4",
+        pixel: "assets/projects/agentic-auv-pixel.mp4",
+        alt: "Simulated AUV run with camera, sonar and navigation views while the DVL drops out",
+        slot: "assets/projects/agentic-auv.mp4 · 16:9",
         detect: { label: "agentic_auv", confidence: 0.98 },
         links: [{ label: "Code", href: "https://github.com/MadLad10/Agentic-AUV-multimodal-multi-agent-autonomy-for-an-underwater-robot" }]
       },
@@ -134,8 +137,10 @@ window.CONTENT = {
           "Perception for Bangladesh's first AUV, from annotation to real-time detection and ByteTrack tracking on a Jetson Orin Nano.",
         stat: { label: "mAP50", value: "0.995" },
         tags: ["YOLO11", "PyTorch", "TensorRT", "ROS2", "Jetson"],
-        image: "",
-        slot: "assets/projects/duburi-vision.gif · 16:9",
+        image: "assets/projects/duburi-vision.mp4",
+        pixel: "assets/projects/duburi-vision-pixel.mp4",
+        alt: "Underwater validation frames with YOLO detection boxes for torpedo, blood and hole targets",
+        slot: "assets/projects/duburi-vision.mp4 · 16:9",
         detect: { label: "vision_pipeline", confidence: 0.99 },
         links: [{ label: "Code", href: "https://github.com/MadLad10/BRACU-Duburi-AUV-Vision-Pipeline" }]
       },
@@ -146,8 +151,10 @@ window.CONTENT = {
           "Turns plain-English commands into robot missions; guardrails validate every plan and the agent re-plans on failure.",
         stat: { label: "Gazebo missions", value: "25" },
         tags: ["LLM agents", "Ollama", "Structured outputs", "ROS2", "Gazebo"],
-        image: "",
-        slot: "assets/projects/mission-planner.gif · 16:9",
+        image: "assets/projects/mission-planner.mp4",
+        pixel: "assets/projects/mission-planner-pixel.mp4",
+        alt: "Onboard camera of the simulated AUV approaching the gate and buoys in Gazebo",
+        slot: "assets/projects/mission-planner.mp4 · 16:9",
         detect: { label: "mission_planner", confidence: 0.97 },
         links: [{ label: "Code", href: "https://github.com/MadLad10/AUV-LLM-Mission-Planner-Agentic-AI-for-Autonomous-Underwater-Vehicles" }]
       },
@@ -158,8 +165,10 @@ window.CONTENT = {
           "AI housing assistant for students in Dhaka, in English and Bangla, with hybrid vector search, re-ranking and human-in-the-loop approval.",
         stat: { label: "Injection attacks blocked", value: "100%" },
         tags: ["LangGraph", "RAG", "FastAPI", "React", "pgvector"],
-        image: "",
-        slot: "assets/projects/bari.png · 16:9",
+        image: "assets/projects/bari.jpg",
+        pixel: "assets/projects/bari-pixel.png",
+        alt: "bari moderation queue holding a duplicate listing and a likely scam, with the reasons shown",
+        slot: "assets/projects/bari.jpg · 16:9",
         detect: { label: "rag_agent", confidence: 0.96 },
         links: [{ label: "Code", href: "https://github.com/MadLad10/bari.com" }]
       }

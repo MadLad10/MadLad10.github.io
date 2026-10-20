@@ -441,7 +441,8 @@
     li.appendChild(box);
 
     var m = el("div", "card__media");
-    m.appendChild(media(p.image, p.slot, p.title, "GIF / image slot"));
+    var pm = p.image && p.pixel ? pixMedia(p, li) : null;
+    m.appendChild(pm || media(p.image, p.slot, p.alt || p.title, "GIF / image slot"));
     li.appendChild(m);
 
     var body = el("div", "card__body");
@@ -512,6 +513,55 @@
     li.appendChild(el("p", "log__org", [e.org, e.place].filter(Boolean).join(" · ")));
     if (e.grade) li.appendChild(el("p", "edu__grade", e.grade));
     return li;
+  }
+
+  // Card media: pixel-art version by default, real footage on hover / focus / tap.
+  function pixMedia(p, card) {
+    var isVideo = function (src) { return /\.(mp4|webm)$/i.test(src); };
+    function layer(src, cls, still, eager) {
+      var node;
+      if (isVideo(src)) {
+        node = el("video", cls);
+        node.muted = true;
+        node.setAttribute("muted", "");
+        node.loop = true;
+        node.playsInline = true;
+        node.poster = src.replace(/\.(mp4|webm)$/i, still);
+        node.preload = eager ? "auto" : "metadata";
+        if (eager && !reduceMQ.matches) node.autoplay = true;
+        node.src = src;
+      } else {
+        node = el("img", cls);
+        node.src = src;
+        node.loading = "lazy";
+        node.decoding = "async";
+      }
+      return node;
+    }
+    var box = el("div", "pixmedia");
+    var real = layer(p.image, "pixmedia__real", ".jpg", false);
+    var pix = layer(p.pixel, "pixmedia__pixel", ".png", true);
+    real.setAttribute(real.tagName === "IMG" ? "alt" : "aria-label", p.alt || p.title);
+    if (real.tagName === "IMG") pix.alt = ""; else pix.setAttribute("aria-hidden", "true");
+    var tag = el("span", "pixmedia__tag");
+    tag.setAttribute("aria-hidden", "true");
+    box.append(pix, real, tag);
+
+    function show(on) {
+      box.classList.toggle("is-real", on);
+      if (real.tagName !== "VIDEO") return;
+      if (on && !reduceMQ.matches) { var pr = real.play(); if (pr && pr.catch) pr.catch(function () {}); }
+      else real.pause();
+    }
+    // hover swaps only for a real mouse; on touch screens a tap on the image toggles it
+    card.addEventListener("pointerenter", function (e) { if (e.pointerType === "mouse") show(true); });
+    card.addEventListener("pointerleave", function (e) {
+      if (e.pointerType === "mouse" && !card.contains(document.activeElement)) show(false);
+    });
+    card.addEventListener("focusin", function () { show(true); });
+    card.addEventListener("focusout", function (e) { if (!card.contains(e.relatedTarget)) show(false); });
+    box.addEventListener("click", function () { show(!box.classList.contains("is-real")); }); // touch screens
+    return box;
   }
 
   function logEntry(e, showPoints) {
