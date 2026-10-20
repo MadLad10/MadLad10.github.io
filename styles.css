@@ -40,6 +40,7 @@
   --acrylic-dark: #1d5d6e;
   /* Deep water below the hero (section backgrounds + seabed scene) */
   --deep-1: #0a2242;
+  --deep-1b: #0a1f3d;
   --deep-2: #091b38;
   --deep-3: #07152e;
   --deep-4: #061026;
@@ -610,7 +611,8 @@ a { color: inherit; }
 .zone--featured { --zone-bg: var(--water-8); --zone-prev: var(--water-7); }
 .zone--projects { --zone-bg: var(--water-9); --zone-prev: var(--water-8); }
 .zone--log      { --zone-bg: var(--deep-1);  --zone-prev: var(--water-9); }
-.zone--skills   { --zone-bg: var(--deep-2);  --zone-prev: var(--deep-1); }
+.zone--edu      { --zone-bg: var(--deep-1b); --zone-prev: var(--deep-1); }
+.zone--skills   { --zone-bg: var(--deep-2);  --zone-prev: var(--deep-1b); }
 .zone--awards   { --zone-bg: var(--deep-3);  --zone-prev: var(--deep-2); }
 
 .zone__inner {
@@ -983,15 +985,34 @@ a { color: inherit; }
   gap: 1.25rem;
 }
 
-/* ---------- Mission log ---------- */
+/* ---------- Experience (mission log) + education ---------- */
 
-.log {
+/* Institution logo tile; logos sit on a light plate so any logo colour works */
+.logo {
   display: grid;
-  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
-  gap: clamp(40px, 6vw, 88px);
+  place-items: center;
+  flex: none;
+  width: 64px;
+  height: 64px;
+  padding: 6px;
+  background: var(--text);
+  border: 1px solid var(--line);
 }
+.logo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.logo--mark {
+  background: var(--navy-950);
+  color: var(--cyan);
+  font: 700 1.25rem/1 var(--font-pixel);
+}
+
 .log__list {
   position: relative;
+  max-width: 58rem;
   margin: 0;
   padding: 0 0 0 1.75rem;
   list-style: none;
@@ -1007,14 +1028,18 @@ a { color: inherit; }
 }
 .log__entry {
   position: relative;
-  padding-bottom: 2rem;
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr);
+  gap: 0 1.25rem;
+  align-items: start;
+  padding-bottom: 2.25rem;
 }
 .log__entry:last-child { padding-bottom: 0; }
 .log__entry::before {
   content: "";
   position: absolute;
   left: calc(-1.75rem);
-  top: 5px;
+  top: 27px;
   width: 10px;
   height: 10px;
   background: var(--deep-1);
@@ -1062,6 +1087,43 @@ a { color: inherit; }
 }
 .log__points li + li { margin-top: 0.3rem; }
 .log__points li::marker { color: var(--amber); }
+
+.edu {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.edu__card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 1.25rem 1.25rem 1.35rem;
+  background: rgba(6, 13, 34, 0.45);
+  border: 1px solid rgba(94, 240, 255, 0.16);
+}
+.edu__head {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+.edu__head .log__time { margin: 0; }
+.edu__head .logo { width: 80px; height: 80px; padding: 7px; }
+.edu__degree {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+.edu__grade {
+  margin: auto 0 0;
+  padding-top: 0.6rem;
+  color: var(--amber);
+  font: 400 1.75rem/1 var(--font-num);
+}
 
 /* ---------- Skills: inventory ---------- */
 
@@ -1398,7 +1460,7 @@ a { color: inherit; }
 @media (max-width: 899px) {
   .about,
   .featured,
-  .log,
+  .edu,
   .seabed__inner { grid-template-columns: minmax(0, 1fr); }
   .cards { grid-template-columns: minmax(0, 1fr); gap: 40px; }
   .awards { grid-template-columns: minmax(0, 1fr); }
@@ -1408,6 +1470,10 @@ a { color: inherit; }
 }
 
 @media (max-width: 480px) {
+  .log__entry { grid-template-columns: 48px minmax(0, 1fr); gap: 0 0.9rem; }
+  .log__entry::before { top: 19px; }
+  .logo { width: 48px; height: 48px; padding: 4px; }
+  .logo--mark { font-size: 1rem; }
   .idcard__body { grid-template-columns: 38% minmax(0, 1fr); gap: 0.85rem; padding: 0.85rem; }
   .featured__stats li { padding: 0.85rem; }
   .card__body { padding: 1.1rem 1.1rem 1.25rem; }
@@ -1466,11 +1532,15 @@ a { color: inherit; }
   .subhead { margin: 8pt 0 4pt !important; font-size: 11pt !important; }
   .card__title, .more__title { font-size: 11pt !important; }
 
-  .about, .featured, .cards, .log, .inventory, .awards, .more__item {
+  .logo { display: none !important; }
+  .log__entry { display: block !important; }
+  .edu__head { display: block !important; margin: 0 !important; }
+  .edu__grade { font-size: 10pt !important; padding: 0 !important; }
+  .about, .featured, .cards, .edu, .inventory, .awards, .more__item {
     display: block !important;
     margin: 0 !important;
   }
-  .idcard, .card, .slotbox, .award, .transmission, .featured__stats li, .more__item {
+  .idcard, .card, .slotbox, .award, .transmission, .featured__stats li, .more__item, .edu__card {
     border: 0 !important;
     padding: 0 !important;
     margin: 0 0 6pt !important;

@@ -38,7 +38,8 @@ window.CONTENT = {
     { id: "about", label: "About", depth: 20 },
     { id: "robosub", label: "RoboSub", depth: 60 },
     { id: "projects", label: "Projects", depth: 150 },
-    { id: "experience", label: "Mission log", depth: 320 },
+    { id: "experience", label: "Experience", depth: 320 },
+    { id: "education", label: "Education", depth: 430 },
     { id: "skills", label: "Inventory", depth: 550 },
     { id: "awards", label: "Awards", depth: 800 },
     { id: "contact", label: "Seabed", depth: 1100 }
@@ -201,18 +202,19 @@ window.CONTENT = {
     ]
   },
 
+  // logo: a file in assets/logos/ (square PNG works best). Leave it "" to show the `mark` monogram instead.
   experience: {
-    title: "Mission log",
-    lede: "Experience and education, newest first.",
-    missionsTitle: "Missions",
-    trainingTitle: "Training",
-    missions: [
+    title: "Experience",
+    lede: "Mission log, newest first.",
+    items: [
       {
         role: "Research Assistant",
         org: "Dubotech Digital Ltd.",
         place: "Dhaka, Bangladesh",
         dates: "May 2026 – Present",
         status: "Active",
+        logo: "", // e.g. "assets/logos/dubotech.png"
+        mark: "DT",
         points: [
           "Contribute to research and development on underwater robotic systems, supporting design, implementation and testing across the vehicle stack."
         ]
@@ -223,6 +225,8 @@ window.CONTENT = {
         place: "Dhaka, Bangladesh",
         dates: "Apr 2026 – Jul 2026",
         status: "Complete",
+        logo: "", // e.g. "assets/logos/duburi.png"
+        mark: "BD",
         points: [
           "Led the end-to-end ML pipeline for underwater object detection and tracking with YOLO and tracking algorithms: dataset curation, annotation, training and deployment.",
           "Contributed to the team's 8th-place finish among 58 international teams at RoboSub 2026."
@@ -234,33 +238,46 @@ window.CONTENT = {
         place: "Dhaka, Bangladesh",
         dates: "Feb 2025 – May 2026",
         status: "Complete",
+        logo: "assets/logos/bracu.png",
+        mark: "BU",
         points: [
           "Ran 15 hours of weekly consultation, helping students with coursework and problem-solving.",
           "Guided students through algorithm design and analysis."
         ]
       }
-    ],
-    training: [
+    ]
+  },
+
+  education: {
+    title: "Education",
+    lede: "Training log, newest first.",
+    items: [
       {
-        role: "BSc in Computer Science",
+        degree: "BSc in Computer Science",
         org: "BRAC University",
         place: "Dhaka, Bangladesh",
         dates: "Sep 2022 – Jun 2026",
-        status: "CGPA 3.96 / 4.0"
+        grade: "CGPA 3.96 / 4.0",
+        logo: "assets/logos/bracu.png",
+        mark: "BU"
       },
       {
-        role: "Higher Secondary Certificate (2021)",
+        degree: "Higher Secondary Certificate (2021)",
         org: "Notre Dame College",
         place: "Dhaka, Bangladesh",
         dates: "Jul 2019 – Dec 2021",
-        status: "GPA 5.0"
+        grade: "GPA 5.0 / 5.0",
+        logo: "assets/logos/ndc.png",
+        mark: "ND"
       },
       {
-        role: "Secondary School Certificate (2019)",
+        degree: "Secondary School Certificate (2019)",
         org: "Dhaka Residential Model College",
         place: "Dhaka, Bangladesh",
         dates: "Jan 2011 – Mar 2019",
-        status: "GPA 5.0"
+        grade: "GPA 5.0 / 5.0",
+        logo: "assets/logos/drmc.png",
+        mark: "DR"
       }
     ]
   },

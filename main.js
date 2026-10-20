@@ -375,10 +375,9 @@
       return li;
     }));
 
-    // Mission log
-    var ex = C.experience || {};
-    fill($("#log-missions"), (ex.missions || []).map(logEntry));
-    fill($("#log-training"), (ex.training || []).map(logEntry));
+    // Experience + education
+    fill($("#log-missions"), ((C.experience || {}).items || []).map(logEntry));
+    fill($("#edu-list"), ((C.education || {}).items || []).map(eduCard));
 
     // Inventory
     var sk = C.skills || {};
@@ -497,18 +496,50 @@
     return li;
   }
 
+  // Institution logo, or a pixel monogram until a logo file is added.
+  function logoTile(e) {
+    var box = el("span", "logo" + (e.logo ? "" : " logo--mark"));
+    if (e.logo) {
+      var img = el("img");
+      img.src = e.logo;
+      img.alt = "";
+      img.loading = "lazy";
+      img.decoding = "async";
+      box.appendChild(img);
+    } else {
+      box.textContent = e.mark || (e.org || "?").charAt(0);
+      box.setAttribute("aria-hidden", "true");
+    }
+    return box;
+  }
+
+  function eduCard(e) {
+    var li = el("li", "edu__card");
+    var head = el("div", "edu__head");
+    head.appendChild(logoTile(e));
+    head.appendChild(el("p", "log__time", e.dates));
+    li.appendChild(head);
+    li.appendChild(el("h3", "edu__degree", e.degree));
+    li.appendChild(el("p", "log__org", [e.org, e.place].filter(Boolean).join(" · ")));
+    if (e.grade) li.appendChild(el("p", "edu__grade", e.grade));
+    return li;
+  }
+
   function logEntry(e) {
     var li = el("li", "log__entry" + (e.status === "Active" ? " is-active" : ""));
+    li.appendChild(logoTile(e));
+    var text = el("div", "log__text");
+    li.appendChild(text);
     var time = el("p", "log__time");
     time.appendChild(el("span", null, e.dates));
     if (e.status) time.appendChild(el("span", "log__status", e.status));
-    li.appendChild(time);
-    li.appendChild(el("h4", "log__role", e.role));
-    li.appendChild(el("p", "log__org", [e.org, e.place].filter(Boolean).join(" · ")));
+    text.appendChild(time);
+    text.appendChild(el("h3", "log__role", e.role));
+    text.appendChild(el("p", "log__org", [e.org, e.place].filter(Boolean).join(" · ")));
     if (e.points && e.points.length) {
       var ul = el("ul", "log__points");
       e.points.forEach(function (pt) { ul.appendChild(el("li", null, pt)); });
-      li.appendChild(ul);
+      text.appendChild(ul);
     }
     return li;
   }
