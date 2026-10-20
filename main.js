@@ -499,6 +499,7 @@
   // Institution logo, or a pixel monogram until a logo file is added.
   function logoTile(e) {
     var box = el("span", "logo" + (e.logo ? "" : " logo--mark"));
+    if (e.logo && e.logoBg) box.style.background = e.logoBg;
     if (e.logo) {
       var img = el("img");
       img.src = e.logo;

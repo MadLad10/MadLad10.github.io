@@ -203,6 +203,7 @@ window.CONTENT = {
   },
 
   // logo: a file in assets/logos/ (square PNG works best). Leave it "" to show the `mark` monogram instead.
+  // Logos sit on a light plate; set logoBg (a colour) for a logo that needs a different background.
   experience: {
     title: "Experience",
     lede: "Mission log, newest first.",
@@ -213,7 +214,8 @@ window.CONTENT = {
         place: "Dhaka, Bangladesh",
         dates: "May 2026 – Present",
         status: "Active",
-        logo: "", // e.g. "assets/logos/dubotech.png"
+        logo: "assets/logos/dubotech.png",
+        logoBg: "#09335d", // white logo, shown on Dubotech's brand navy
         mark: "DT",
         points: [
           "Contribute to research and development on underwater robotic systems, supporting design, implementation and testing across the vehicle stack."
@@ -225,7 +227,7 @@ window.CONTENT = {
         place: "Dhaka, Bangladesh",
         dates: "Apr 2026 – Jul 2026",
         status: "Complete",
-        logo: "", // e.g. "assets/logos/duburi.png"
+        logo: "assets/logos/duburi.png",
         mark: "BD",
         points: [
           "Led the end-to-end ML pipeline for underwater object detection and tracking with YOLO and tracking algorithms: dataset curation, annotation, training and deployment.",

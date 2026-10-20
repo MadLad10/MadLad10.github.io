@@ -1029,7 +1029,7 @@ a { color: inherit; }
 .log__entry {
   position: relative;
   display: grid;
-  grid-template-columns: 64px minmax(0, 1fr);
+  grid-template-columns: 88px minmax(0, 1fr);
   gap: 0 1.25rem;
   align-items: start;
   padding-bottom: 2.25rem;
@@ -1087,6 +1087,7 @@ a { color: inherit; }
 }
 .log__points li + li { margin-top: 0.3rem; }
 .log__points li::marker { color: var(--amber); }
+.log__entry .logo { width: 88px; height: 64px; } /* landscape, so wide logos stay readable */
 
 .edu {
   display: grid;
@@ -1470,7 +1471,8 @@ a { color: inherit; }
 }
 
 @media (max-width: 480px) {
-  .log__entry { grid-template-columns: 48px minmax(0, 1fr); gap: 0 0.9rem; }
+  .log__entry { grid-template-columns: 66px minmax(0, 1fr); gap: 0 0.9rem; }
+  .log__entry .logo { width: 66px; height: 48px; }
   .log__entry::before { top: 19px; }
   .logo { width: 48px; height: 48px; padding: 4px; }
   .logo--mark { font-size: 1rem; }
