@@ -201,6 +201,7 @@ window.CONTENT = {
   experience: {
     title: "Experience",
     lede: "Mission log, newest first.",
+    showPoints: false, // set to true to show the bullet points under each role
     items: [
       {
         role: "Research Assistant",

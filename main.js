@@ -374,7 +374,8 @@
     }));
 
     // Experience + education
-    fill($("#log-missions"), ((C.experience || {}).items || []).map(logEntry));
+    var ex = C.experience || {};
+    fill($("#log-missions"), (ex.items || []).map(function (e) { return logEntry(e, ex.showPoints !== false); }));
     fill($("#edu-list"), ((C.education || {}).items || []).map(eduCard));
 
     // Inventory
@@ -524,7 +525,7 @@
     return li;
   }
 
-  function logEntry(e) {
+  function logEntry(e, showPoints) {
     var li = el("li", "log__entry" + (e.status === "Active" ? " is-active" : ""));
     li.appendChild(logoTile(e));
     var text = el("div", "log__text");
@@ -535,7 +536,7 @@
     text.appendChild(time);
     text.appendChild(el("h3", "log__role", e.role));
     text.appendChild(el("p", "log__org", [e.org, e.place].filter(Boolean).join(" · ")));
-    if (e.points && e.points.length) {
+    if (showPoints && e.points && e.points.length) {
       var ul = el("ul", "log__points");
       e.points.forEach(function (pt) { ul.appendChild(el("li", null, pt)); });
       text.appendChild(ul);
