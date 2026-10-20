@@ -201,7 +201,8 @@ window.CONTENT = {
         kind: "Generative vision",
         summary: "Pix2Pix generates snow, rain and fog scenes so a YOLOv5 detector for autonomous vehicles stays reliable in bad weather.",
         tags: ["PyTorch", "Pix2Pix", "YOLOv5"],
-        image: "",
+        image: "assets/projects/weather-gan.jpg",
+        alt: "Road scene with synthetic snow added by Automold, next to the original clean image",
         icon: "eye",
         detect: { label: "weather_gan", confidence: 0.93 },
         links: [{ label: "Code", href: "https://github.com/MadLad10/An-efficient-object-detection-technique-for-autonomous-vehicles-using-advanced-GAN-model-" }]
