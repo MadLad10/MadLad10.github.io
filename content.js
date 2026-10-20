@@ -200,7 +200,7 @@ window.CONTENT = {
   // Logos sit on a light plate; set logoBg (a colour) for a logo that needs a different background.
   experience: {
     title: "Experience",
-    lede: "Mission log, newest first.",
+    lede: "",
     showPoints: false, // set to true to show the bullet points under each role
     items: [
       {
