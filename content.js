@@ -107,6 +107,7 @@ window.CONTENT = {
     ],
     links: [
       { label: "See the vision pipeline", href: "https://github.com/MadLad10/BRACU-Duburi-AUV-Vision-Pipeline" },
+      { label: "RoboSub 2026 design report", href: "https://robonation.org/app/uploads/sites/4/2026/07/RS26_TDR_BRACU.pdf" },
       { label: "About RoboSub", href: "https://robonation.org/programs/robosub/" }
     ]
   },
@@ -217,8 +218,7 @@ window.CONTENT = {
         alt: "MindWell promo: weekly check-in card, email reminder and admin dashboard",
         icon: "screen",
         detect: { label: "mindwell", confidence: 0.92 },
-        // Add the repo link here if it's public: { label: "Code", href: "https://github.com/..." }
-        links: []
+        links: [{ label: "Code", href: "https://github.com/MadLad10/Depression_detection" }]
       }
     ]
   },
@@ -348,19 +348,14 @@ window.CONTENT = {
   },
 
   contact: {
-    title: "Send transmission",
-    text: "I'm looking to join a research lab or an AI and robotics team. Email is the fastest way to reach me.",
+    title: "Ping me",
     copyLabel: "Copy email",
     copiedLabel: "Copied",
     mailLabel: "Email me",
     links: [
-      { label: "GitHub", href: "https://github.com/MadLad10" },
-      // Paste your LinkedIn profile URL here; the link stays hidden while it's empty.
-      { label: "LinkedIn", href: "" },
-      { label: "Preview CV", href: "assets/Yaad_Kamrul_Bari_CV.pdf", newTab: true },
-      { label: "Download CV", href: "assets/Yaad_Kamrul_Bari_CV.pdf", download: true }
-    ],
-    references: "References from Dr. Md. Khalilur Rhaman and Dr. Md. Golam Rabiul Alam (Professors, CSE, BRAC University) are available on request."
+      { label: "LinkedIn", href: "https://www.linkedin.com/in/yaad-bari-655b0b250/" },
+      { label: "GitHub", href: "https://github.com/MadLad10" }
+    ]
   },
 
   footer: {
