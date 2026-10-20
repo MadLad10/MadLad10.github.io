@@ -163,7 +163,7 @@ window.CONTENT = {
         stat: { label: "Injection attacks blocked", value: "100%" },
         tags: ["LangGraph", "RAG", "FastAPI", "React", "pgvector"],
         image: "assets/projects/bari.jpg",
-        alt: "bari moderation queue holding a duplicate listing and a likely scam, with the reasons shown",
+        alt: "bari promo: find a safe home near campus, with the moderation queue holding scam and duplicate listings",
         slot: "assets/projects/bari.jpg · 16:9",
         detect: { label: "rag_agent", confidence: 0.96 },
         links: [{ label: "Code", href: "https://github.com/MadLad10/bari.com" }]
@@ -179,7 +179,7 @@ window.CONTENT = {
         stat: { label: "Integration tests", value: "163" },
         tags: ["FastAPI", "React Native", "Next.js", "PostGIS", "pgvector"],
         image: "assets/projects/pinstagram.jpg",
-        alt: "Pinstagram screens: place map of Dhaka, photo feed and bus directions",
+        alt: "Pinstagram promo: discover places across Bangladesh, with map, feed and directions screens",
         detect: { label: "pinstagram", confidence: 0.95 },
         links: [
           { label: "Code", href: "https://github.com/MadLad10/Pinstagram" },
