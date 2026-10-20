@@ -79,7 +79,7 @@ window.CONTENT = {
       "Outside of that, I build things for fun: agents, vision pipelines and robot planners in simulation. I like to experiment and see what breaks, but I always aim for something meaningful that could actually add value for someone."
     ],
     card: {
-      title: "Operator ID",
+      title: "Person of interest",
       // PHOTO SLOT: a portrait, about 600x750 px, e.g. "assets/photo.jpg"
       image: "assets/photo.jpg",
       slot: "assets/photo.jpg · 4:5 portrait",
