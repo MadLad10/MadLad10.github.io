@@ -45,11 +45,11 @@ window.CONTENT = {
   ],
 
   hero: {
-    eyebrow: "BRACU Duburi · AI & Machine Vision Lead",
+    eyebrow: "", // small label above the name; "" hides it
     name: "Yaad Kamrul Bari",
-    role: "AI & Robotics Engineer: agentic AI, computer vision, autonomous robots",
+    titles: ["Autonomous Systems Engineer", "Computer Vision Engineer", "Agentic AI Engineer"],
     intro:
-      "I led the AI & Machine Vision sub-team for BRACU Duburi, Bangladesh's first autonomous underwater vehicle, which placed 8th of 58 teams at RoboSub 2025 and 2026. I build perception and agentic AI systems that help robots see, decide and act on their own.",
+      "I build perception and agentic AI systems that help robots see, decide and act on their own. At BRACU Duburi, Bangladesh's first autonomous underwater vehicle, my computer vision work helped the team place 8th of 58 at RoboSub in 2025 and 2026.",
     actions: [
       { label: "See projects", href: "#projects", style: "primary" },
       { label: "Get in touch", href: "#contact", style: "secondary" }

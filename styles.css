@@ -112,6 +112,8 @@ section[id] { scroll-margin-top: var(--topbar-h); }
 
 a { color: inherit; }
 
+[hidden] { display: none !important; }
+
 :focus-visible {
   outline: 3px solid var(--amber);
   outline-offset: 3px;
@@ -326,17 +328,36 @@ a { color: inherit; }
   pointer-events: none;
 }
 
-.hero__role {
-  margin: 1.4rem 0 0;
-  color: var(--foam-100);
-  font-weight: 600;
-  font-size: clamp(1.05rem, 0.95rem + 0.4vw, 1.25rem);
-  line-height: 1.4;
+/* job titles under the name */
+.hero__titles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin: 1.6rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+.hero__titles li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.5rem 0.75rem 0.55rem;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  color: var(--text);
+  font: 500 clamp(0.95rem, 0.9rem + 0.25vw, 1.0625rem)/1.1 var(--font-pixel);
+}
+.hero__titles li::before {
+  content: "";
+  flex: none;
+  width: 6px;
+  height: 6px;
+  background: var(--cyan);
 }
 
 .hero__intro {
   max-width: 34rem;
-  margin: 0.85rem 0 0;
+  margin: 1.25rem 0 0;
   font-size: 1.0625rem;
   line-height: 1.65;
   text-shadow: 0 1px 0 rgba(6, 13, 34, 0.45);
@@ -1546,7 +1567,11 @@ a { color: inherit; }
     padding: 0 !important;
   }
   .hero__name { font-size: 22pt !important; line-height: 1.1 !important; color: #000 !important; }
-  .hero__role { margin-top: 4pt !important; font-size: 11pt !important; }
+  .hero__titles { display: block !important; margin-top: 4pt !important; }
+  .hero__titles li { display: inline !important; padding: 0 !important; border: 0 !important; font-weight: 600; }
+  .hero__titles li::before { display: none !important; }
+  .hero__titles li + li::after { content: none; }
+  .hero__titles li:not(:last-child)::after { content: " · "; }
   .hero__intro, .hero__facts { margin-top: 4pt !important; font-size: 10pt !important; }
   .hero__facts li::before { display: none !important; }
 

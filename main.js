@@ -330,6 +330,7 @@
       b.href = a.href;
       return b;
     }));
+    fill($("#hero-titles"), (hero.titles || []).map(function (t) { return el("li", null, t); }));
     var facts = $("#hero-facts");
     if (facts) {
       fill(facts, (hero.facts || []).map(function (f) { return el("li", null, f); }));
