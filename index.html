@@ -108,40 +108,17 @@
             </div>
           </aside>
         </div>
-      </div>
-    </section>
 
-    <!-- Featured story -->
-    <section class="zone zone--featured" id="robosub" aria-labelledby="featured-title">
-      <div class="zone__inner">
-        <header class="zone__head">
-          <p class="zone__tag" data-zone-tag="robosub"></p>
-          <p class="zone__kicker" data-text="featured.tag"></p>
-          <h2 class="zone__title zone__title--wide" id="featured-title" data-text="featured.title"></h2>
-        </header>
-        <div class="featured">
-          <div class="featured__media" id="featured-media"></div>
-          <div class="featured__body">
-            <div class="prose" id="featured-text"></div>
+        <!-- Headline mission: compact RoboSub highlight -->
+        <article class="mission" aria-labelledby="featured-title">
+          <div class="mission__body">
+            <p class="zone__kicker" data-text="featured.tag"></p>
+            <h3 class="mission__title" id="featured-title" data-text="featured.title"></h3>
+            <p class="mission__text" data-text="featured.text"></p>
             <div class="featured__links" id="featured-links"></div>
           </div>
-          <ul class="featured__stats" id="featured-stats"></ul>
-        </div>
-      </div>
-    </section>
-
-    <!-- Projects -->
-    <section class="zone zone--projects" id="projects" aria-labelledby="projects-title">
-      <div class="zone__inner">
-        <header class="zone__head">
-          <p class="zone__tag" data-zone-tag="projects"></p>
-          <h2 class="zone__title" id="projects-title" data-text="projects.title">Projects</h2>
-          <p class="zone__lede" data-text="projects.lede"></p>
-        </header>
-        <ul class="cards" id="project-cards"></ul>
-
-        <h3 class="subhead" data-text="projects.moreTitle">More projects</h3>
-        <ul class="more" id="more-projects"></ul>
+          <ul class="featured__stats mission__stats" id="featured-stats"></ul>
+        </article>
       </div>
     </section>
 
@@ -166,6 +143,21 @@
           <p class="zone__lede" data-text="education.lede"></p>
         </header>
         <ol class="edu" id="edu-list"></ol>
+      </div>
+    </section>
+
+    <!-- Projects -->
+    <section class="zone zone--projects" id="projects" aria-labelledby="projects-title">
+      <div class="zone__inner">
+        <header class="zone__head">
+          <p class="zone__tag" data-zone-tag="projects"></p>
+          <h2 class="zone__title" id="projects-title" data-text="projects.title">Projects</h2>
+          <p class="zone__lede" data-text="projects.lede"></p>
+        </header>
+        <ul class="cards" id="project-cards"></ul>
+
+        <h3 class="subhead" data-text="projects.moreTitle">More projects</h3>
+        <ul class="more" id="more-projects"></ul>
       </div>
     </section>
 

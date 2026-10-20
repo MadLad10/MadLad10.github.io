@@ -23,8 +23,8 @@ window.CONTENT = {
 
   nav: {
     links: [
-      { label: "Projects", href: "#projects" },
       { label: "Experience", href: "#experience" },
+      { label: "Projects", href: "#projects" },
       { label: "Skills", href: "#skills" },
       { label: "Contact", href: "#contact" }
     ],
@@ -36,10 +36,9 @@ window.CONTENT = {
   zones: [
     { id: "top", label: "Surface", depth: 0 },
     { id: "about", label: "About", depth: 20 },
-    { id: "robosub", label: "RoboSub", depth: 60 },
-    { id: "projects", label: "Projects", depth: 150 },
-    { id: "experience", label: "Experience", depth: 320 },
-    { id: "education", label: "Education", depth: 430 },
+    { id: "experience", label: "Experience", depth: 120 },
+    { id: "education", label: "Education", depth: 220 },
+    { id: "projects", label: "Projects", depth: 350 },
     { id: "skills", label: "Inventory", depth: 550 },
     { id: "awards", label: "Awards", depth: 800 },
     { id: "contact", label: "Seabed", depth: 1100 }
@@ -92,17 +91,12 @@ window.CONTENT = {
     }
   },
 
+  // Compact RoboSub highlight at the bottom of About.
   featured: {
     tag: "Headline mission",
     title: "Bangladesh's first AUV. 8th of 58 at RoboSub. Twice.",
-    // IMAGE SLOT: a wide team / vehicle photo, about 1600x700 px, e.g. "assets/robosub-team.jpg"
-    image: "",
-    slot: "assets/robosub-team.jpg · wide photo, 16:7",
-    alt: "BRACU Duburi team with their AUV at RoboSub",
-    paragraphs: [
-      "RoboSub is RoboNation's international autonomous underwater robotics competition, held at the Woollett Aquatics Center in California. With BRACU Duburi I placed 8th of 58 teams in 2025 as Technical Coordinator, and again in 2026 as Sub-Team Lead of AI and Machine Vision.",
-      "My sub-team owned the vehicle's eyes: we curated and annotated the underwater dataset, trained YOLO11 to 0.995 mAP50, pruned the model and deployed it with TensorRT on a Jetson Orin Nano with ByteTrack tracking, all inside the ROS2 stack."
-    ],
+    text:
+      "At RoboNation's RoboSub in California, BRACU Duburi placed 8th of 58 teams in 2025 (me as Technical Coordinator) and again in 2026 (me as Sub-Team Lead, AI and Machine Vision). My sub-team gave the vehicle its eyes: YOLO11 at 0.995 mAP50, pruned and deployed with TensorRT on a Jetson Orin Nano with ByteTrack tracking.",
     stats: [
       { value: "8th / 58", label: "RoboSub 2026 · AI & Vision lead" },
       { value: "8th / 58", label: "RoboSub 2025 · Technical Coordinator" },

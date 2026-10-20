@@ -347,10 +347,8 @@
       return d;
     }));
 
-    // Featured story
+    // Headline mission (RoboSub), inside About
     var ft = C.featured || {};
-    fill($("#featured-media"), [media(ft.image, ft.slot, ft.alt, "Photo slot")]);
-    fill($("#featured-text"), (ft.paragraphs || []).map(function (p) { return el("p", null, p); }));
     fill($("#featured-links"), (ft.links || []).map(link));
     fill($("#featured-stats"), (ft.stats || []).map(function (s) {
       var li = el("li");
@@ -426,7 +424,7 @@
     var year = $("#year");
     if (year) year.textContent = new Date().getFullYear();
 
-    $$(".zone__title, .subhead, .card__title, .more__title, .slotbox__name").forEach(numify);
+    $$(".zone__title, .subhead, .card__title, .more__title, .slotbox__name, .mission__title").forEach(numify);
   }
 
   // Wrap digits in pixel-font headings so they render in the number font.

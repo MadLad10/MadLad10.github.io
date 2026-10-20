@@ -40,7 +40,6 @@
   --acrylic-dark: #1d5d6e;
   /* Deep water below the hero (section backgrounds + seabed scene) */
   --deep-1: #0a2242;
-  --deep-1b: #0a1f3d;
   --deep-2: #091b38;
   --deep-3: #07152e;
   --deep-4: #061026;
@@ -607,12 +606,12 @@ a { color: inherit; }
     conic-gradient(var(--zone-prev) 0 25%, transparent 0 50%, var(--zone-prev) 0 75%, transparent 0) 0 var(--cell) / var(--cell) var(--cell) repeat-x,
     conic-gradient(var(--zone-prev) 0 25%, transparent 0) 0 calc(var(--cell) * 2) / var(--cell) var(--cell) repeat-x;
 }
+/* page order: about, experience, education, projects, skills, awards */
 .zone--about    { --zone-bg: var(--water-7); --zone-prev: var(--water-6); }
-.zone--featured { --zone-bg: var(--water-8); --zone-prev: var(--water-7); }
-.zone--projects { --zone-bg: var(--water-9); --zone-prev: var(--water-8); }
-.zone--log      { --zone-bg: var(--deep-1);  --zone-prev: var(--water-9); }
-.zone--edu      { --zone-bg: var(--deep-1b); --zone-prev: var(--deep-1); }
-.zone--skills   { --zone-bg: var(--deep-2);  --zone-prev: var(--deep-1b); }
+.zone--log      { --zone-bg: var(--water-8); --zone-prev: var(--water-7); }
+.zone--edu      { --zone-bg: var(--water-9); --zone-prev: var(--water-8); }
+.zone--projects { --zone-bg: var(--deep-1);  --zone-prev: var(--water-9); }
+.zone--skills   { --zone-bg: var(--deep-2);  --zone-prev: var(--deep-1); }
 .zone--awards   { --zone-bg: var(--deep-3);  --zone-prev: var(--deep-2); }
 
 .zone__inner {
@@ -806,19 +805,28 @@ a { color: inherit; }
   line-height: 1.4;
 }
 
-/* ---------- Featured story ---------- */
+/* ---------- Headline mission (compact RoboSub highlight in About) ---------- */
 
-.featured {
+.mission {
   display: grid;
-  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
-  gap: clamp(28px, 4vw, 56px);
-}
-.featured__media {
-  grid-column: 1 / -1;
-  aspect-ratio: 16 / 7;
-  overflow: hidden;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  gap: 1.5rem clamp(28px, 4vw, 56px);
+  align-items: center;
+  margin-top: clamp(40px, 5vw, 64px);
+  padding: clamp(20px, 2.5vw, 32px);
+  background: var(--water-8);
   border: 1px solid var(--line);
 }
+.mission__title {
+  margin: 0;
+  font: 700 clamp(1.4rem, 1.1rem + 1vw, 1.9rem)/1.15 var(--font-pixel);
+  text-wrap: balance;
+}
+.mission__text {
+  margin: 0.75rem 0 0;
+  line-height: 1.65;
+}
+.mission .featured__links { margin-top: 1rem; }
 .featured__links {
   display: flex;
   flex-wrap: wrap;
@@ -837,7 +845,7 @@ a { color: inherit; }
   border: 1px solid var(--line);
 }
 .featured__stats li {
-  padding: 1rem 1.1rem 1.1rem;
+  padding: 0.85rem 1rem 0.95rem;
   background: var(--water-8);
 }
 .stat__value {
@@ -1468,12 +1476,11 @@ a { color: inherit; }
 
 @media (max-width: 899px) {
   .about,
-  .featured,
+  .mission,
   .edu,
   .seabed__inner { grid-template-columns: minmax(0, 1fr); }
   .cards { grid-template-columns: minmax(0, 1fr); gap: 40px; }
   .awards { grid-template-columns: minmax(0, 1fr); }
-  .featured__media { aspect-ratio: 16 / 9; }
   .more__item { grid-template-columns: minmax(0, 1fr); }
   .seabed__dock { height: 40px; }
 }
@@ -1518,7 +1525,7 @@ a { color: inherit; }
 
   .skip-link, .topbar, .meter, .scene-canvas, .hero__fx, .detect, .hero__stage,
   .hero__actions, .chip, .zone__tag, .zone__lede, .zone__kicker, .slot,
-  .featured__media, .idcard__photo, .idcard__title, .card__media, .card__det,
+  .idcard__photo, .idcard__title, .card__media, .card__det,
   .transmission__actions, .seabed__dock, .footer a, .zone::before { display: none !important; }
 
   .hero, .zone, .seabed { min-height: 0 !important; padding: 0 !important; overflow: visible !important; }
@@ -1546,11 +1553,11 @@ a { color: inherit; }
   .log__entry { display: block !important; }
   .edu__head { display: block !important; margin: 0 !important; }
   .edu__grade { font-size: 10pt !important; padding: 0 !important; }
-  .about, .featured, .cards, .edu, .inventory, .awards, .more__item {
+  .about, .mission, .cards, .edu, .inventory, .awards, .more__item {
     display: block !important;
     margin: 0 !important;
   }
-  .idcard, .card, .slotbox, .award, .transmission, .featured__stats li, .more__item, .edu__card {
+  .idcard, .card, .slotbox, .award, .transmission, .featured__stats li, .more__item, .edu__card, .mission {
     border: 0 !important;
     padding: 0 !important;
     margin: 0 0 6pt !important;
