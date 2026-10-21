@@ -345,7 +345,8 @@ window.CONTENT = {
         icon: "medal",
         place: "2nd Runner Up",
         event: "National Telco Warfare Datathon 2024",
-        detail: "East West University. VGG19-based image classification model with about 90% accuracy."
+        detail: "Data War track, East West University. Team BracU_Back Propagators: a VGG19-based image classification model with about 90% accuracy.",
+        certificate: { href: "assets/certificates/telco-warfare-2024.jpg", image: "assets/certificates/telco-warfare-2024-thumb.jpg" }
       }
     ]
   },
