@@ -355,6 +355,7 @@ window.CONTENT = {
     copyLabel: "Copy email",
     copiedLabel: "Copied",
     mailLabel: "Email me",
+    compose: "gmail", // "gmail" opens Gmail's compose page in a new tab; "mailto" uses the visitor's mail app
     links: [
       { label: "LinkedIn", href: "https://www.linkedin.com/in/yaad-bari-655b0b250/" },
       { label: "GitHub", href: "https://github.com/MadLad10" }

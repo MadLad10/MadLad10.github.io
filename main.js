@@ -427,7 +427,10 @@
     var person = C.person || {};
     var ct = C.contact || {};
     if (person.email) {
-      var mail = "mailto:" + person.email;
+      // Gmail's compose page works in any browser; mailto: needs a desktop mail app.
+      var mail = (C.contact && C.contact.compose === "mailto")
+        ? "mailto:" + person.email
+        : "https://mail.google.com/mail/?view=cm&fs=1&to=" + encodeURIComponent(person.email);
       var em = $("#contact-email");
       em.href = mail;
       em.textContent = person.email;
