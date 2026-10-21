@@ -132,12 +132,12 @@ window.CONTENT = {
         links: [{ label: "Code", href: "https://github.com/MadLad10/Agentic-AUV-multimodal-multi-agent-autonomy-for-an-underwater-robot" }]
       },
       {
-        title: "BRACU Duburi Vision Pipeline",
-        kind: "Computer vision",
+        title: "AUV Vision Pipeline",
+        kind: "Computer vision · BRACU Duburi",
         summary:
-          "Perception for Bangladesh's first AUV, from annotation to real-time detection and ByteTrack tracking on a Jetson Orin Nano.",
-        stat: { label: "mAP50", value: "0.995" },
-        tags: ["YOLO11", "PyTorch", "TensorRT", "ROS2", "Jetson"],
+          "The full perception stack of BRACU Duburi's AUV: physics-based underwater augmentation, structured pruning and TensorRT on a Jetson Orin Nano, then a ROS 2 node that detects and tracks targets in real time.",
+        stat: { label: "mAP50-95", value: "0.968" },
+        tags: ["YOLO11n", "TensorRT", "ROS 2", "ByteTrack", "Jetson Orin Nano"],
         image: "assets/projects/duburi-vision.mp4",
         alt: "Underwater validation frames with YOLO detection boxes for torpedo, blood and hole targets",
         slot: "assets/projects/duburi-vision.mp4 · 16:9",
