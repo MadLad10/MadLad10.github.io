@@ -473,9 +473,7 @@
           thumb.decoding = "async";
           cert.appendChild(thumb);
         }
-        var label = el("span", "link", "View certificate");
-        label.insertAdjacentHTML("beforeend", ARROW_OUT);
-        cert.appendChild(label);
+        cert.setAttribute("aria-label", "Open the certificate for " + a.event + " (new tab)");
         li.appendChild(cert);
       }
       return li;
