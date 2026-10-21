@@ -325,15 +325,15 @@
   function media(src, slot, alt, title) {
     if (src) {
       if (/\.(mp4|webm)$/i.test(src)) {
+        // Nothing is downloaded until the video is near the screen (see lazyVideos).
         var v = el("video", "media-img");
         v.muted = true;
         v.setAttribute("muted", "");
         v.loop = true;
         v.playsInline = true;
-        v.preload = "metadata";
-        v.poster = src.replace(/\.(mp4|webm)$/i, ".jpg");
-        v.autoplay = !reduceMQ.matches;
-        v.src = src;
+        v.preload = "none";
+        v.dataset.src = src;
+        v.dataset.poster = src.replace(/\.(mp4|webm)$/i, ".jpg");
         v.setAttribute("aria-label", alt || "");
         return v;
       }
@@ -641,7 +641,7 @@
 
     var cs = getComputedStyle(h1);
     var font = cs.fontWeight + " " + cs.fontSize + " " + cs.fontFamily;
-    var timeout = new Promise(function (r) { setTimeout(r, 1500); });
+    var timeout = new Promise(function (r) { setTimeout(r, 1000); });
 
     Promise.race([document.fonts.load(font, h1.textContent), timeout])
       .then(function () {
@@ -1375,6 +1375,40 @@
   }
 
   /* ------------------------------------------------------------
+     4a2. Card videos: load when near the screen, play only while visible
+     ------------------------------------------------------------ */
+  function lazyVideos() {
+    var vids = $$("video[data-src]");
+    if (!vids.length) return;
+    function load(v) {
+      if (v.dataset.loaded) return;
+      v.dataset.loaded = "1";
+      v.poster = v.dataset.poster;
+      v.src = v.dataset.src;
+      v.preload = reduceMQ.matches ? "metadata" : "auto";
+    }
+    if (!("IntersectionObserver" in window)) { vids.forEach(load); return; }
+    var near = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { load(e.target); near.unobserve(e.target); }
+      });
+    }, { rootMargin: "400px 0px" });
+    var onScreen = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        var v = e.target;
+        if (e.isIntersecting && !reduceMQ.matches) {
+          load(v);
+          var pr = v.play();
+          if (pr && pr.catch) pr.catch(function () {});
+        } else {
+          v.pause();
+        }
+      });
+    }, { threshold: 0.25 });
+    vids.forEach(function (v) { near.observe(v); onScreen.observe(v); });
+  }
+
+  /* ------------------------------------------------------------
      4b. Copy email
      ------------------------------------------------------------ */
   function copyEmail() {
@@ -1633,6 +1667,7 @@
      ------------------------------------------------------------ */
   renderContent();
   depthMeter();
+  lazyVideos();
   copyEmail();
   photoReveal();
 
