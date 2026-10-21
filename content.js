@@ -42,7 +42,6 @@ window.CONTENT = {
     { id: "projects", label: "Projects", depth: 350 },
     { id: "skills", label: "Inventory", depth: 550 },
     { id: "awards", label: "Awards", depth: 800 },
-    { id: "offduty", label: "Off duty", depth: 950 },
     { id: "contact", label: "Seabed", depth: 1100 }
   ],
 
@@ -348,18 +347,6 @@ window.CONTENT = {
         detail: "",
         certificate: { href: "assets/certificates/telco-warfare-2024.jpg", image: "assets/certificates/telco-warfare-2024-thumb.jpg" }
       }
-    ]
-  },
-
-  // Interests. `detail` is an optional short line (e.g. your team or favourite show); "" hides it.
-  // icon: football, cricket, tv, sofa (or any inventory icon)
-  offduty: {
-    title: "Off duty",
-    items: [
-      { icon: "football", name: "Football", detail: "" },
-      { icon: "cricket", name: "Cricket", detail: "" },
-      { icon: "tv", name: "TV shows", detail: "" },
-      { icon: "sofa", name: "Sitcoms", detail: "" }
     ]
   },
 

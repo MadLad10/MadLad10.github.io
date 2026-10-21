@@ -67,7 +67,6 @@
   /* Deep water below the hero (section backgrounds + seabed scene) */
   --deep-1: #0a2242;
   --deep-2: #091b38;
-  --deep-2b: #08182f;
   --deep-3: #07152e;
   --deep-4: #061026;
   --sand-0: #c9a66b;
@@ -673,8 +672,7 @@ a { color: inherit; }
 .zone--edu      { --zone-bg: var(--water-9); --zone-prev: var(--water-8); }
 .zone--projects { --zone-bg: var(--deep-1);  --zone-prev: var(--water-9); }
 .zone--skills   { --zone-bg: var(--deep-2);  --zone-prev: var(--deep-1); }
-.zone--awards   { --zone-bg: var(--deep-2b); --zone-prev: var(--deep-2); }
-.zone--offduty  { --zone-bg: var(--deep-3);  --zone-prev: var(--deep-2b); }
+.zone--awards   { --zone-bg: var(--deep-3);  --zone-prev: var(--deep-2); }
 
 .zone__inner {
   position: relative;
@@ -1347,58 +1345,6 @@ a { color: inherit; }
 }
 .award__cert:hover img { border-color: var(--cyan); }
 
-/* ---------- Off duty ---------- */
-
-.hobbies {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 16px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-.hobby {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 1rem 1.1rem;
-  background: rgba(6, 13, 34, 0.45);
-  border: 1px solid rgba(94, 240, 255, 0.16);
-  box-shadow:
-    inset 2px 2px 0 rgba(255, 255, 255, 0.05),
-    inset -2px -2px 0 rgba(0, 0, 0, 0.3);
-}
-.hobby__icon {
-  display: grid;
-  place-items: center;
-  flex: none;
-  width: 60px;
-  height: 60px;
-  background: var(--navy-950);
-  border: 1px solid rgba(94, 240, 255, 0.22);
-}
-.hobby__icon svg { width: 40px; height: 40px; }
-.hobby__name {
-  margin: 0;
-  font: 400 1.6rem/1 var(--font-pixel);
-}
-.hobby__detail {
-  margin: 0.35rem 0 0;
-  color: var(--text-dim);
-  font-size: 0.9rem;
-  line-height: 1.4;
-}
-@media (max-width: 899px) {
-  .hobbies { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
-@media (max-width: 480px) {
-  .hobbies { gap: 10px; }
-  .hobby { gap: 0.7rem; padding: 0.7rem; }
-  .hobby__icon { width: 44px; height: 44px; }
-  .hobby__icon svg { width: 30px; height: 30px; }
-  .hobby__name { font-size: 1.3rem; }
-}
-
 /* ---------- Contact: the seabed ---------- */
 
 .seabed {
@@ -1731,11 +1677,7 @@ a { color: inherit; }
   .log__list::before, .log__entry::before { display: none !important; }
   .log__entry { padding-bottom: 6pt !important; break-inside: avoid; }
   .slotbox__head { margin: 0 !important; }
-  .slotbox__icon, .award > svg, .hobby__icon, .award__cert img { display: none !important; }
-  .hobbies { display: block !important; }
-  .hobby { display: inline !important; padding: 0 !important; border: 0 !important; }
-  .hobby__name { display: inline; font-size: 10pt !important; }
-  .hobby:not(:last-child) .hobby__name::after { content: " · "; }
+  .slotbox__icon, .award > svg, .award__cert img { display: none !important; }
   .tags { display: inline !important; }
   .tags li { display: inline; padding: 0 !important; border: 0 !important; }
   .tags li + li::before { content: ", "; }

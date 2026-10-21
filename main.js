@@ -224,63 +224,7 @@
       "gaaaaaaac",
       "..AAAAA.."
     ]
-,
-    football: [
-      "....wwww....",
-      "..wwwGGwww..",
-      ".wwwwwwwwww.",
-      ".wwwwwwwwww.",
-      "wGwwwGGwwwGw",
-      "wGGwGGGGwGGw",
-      "wwwwwGGwwwww",
-      "wwwwwwwwwwww",
-      ".wwwwwwwwww.",
-      ".wwGGwwGGww.",
-      "..wwGwwGww..",
-      "....wwww...."
-    ],
-    cricket: [
-      "............",
-      ".........GG.",
-      ".........GG.",
-      "........aa..",
-      ".......aa...",
-      "......aa....",
-      ".....aa.....",
-      "....aa......",
-      "...aa.......",
-      "..ha....hA..",
-      "..hh....AA..",
-      "............"
-    ],
-    tv: [
-      "...g....g...",
-      "....g..g....",
-      ".....gg.....",
-      "gggggggggggg",
-      "gccccccccggg",
-      "gcwwcccccgag",
-      "gcwccccccggg",
-      "gccccccccgGg",
-      "gccccccccggg",
-      "gggggggggggg",
-      ".G........G.",
-      "............"
-    ],
-    sofa: [
-      "............",
-      "............",
-      "............",
-      "..aaaAAaaa..",
-      "..aaaaaaaa..",
-      "AAaaaaaaaaAA",
-      "AAaaaaaaaaAA",
-      "AAhhhhhhhhAA",
-      "AAhhhhhhhhAA",
-      "AAAAAAAAAAAA",
-      ".G........G.",
-      "............"
-    ]
+
   };
 
   // Inline SVG from a sprite; colours come from .px-* classes in styles.css.
@@ -476,19 +420,6 @@
         cert.setAttribute("aria-label", "Open the certificate for " + a.event + " (new tab)");
         li.appendChild(cert);
       }
-      return li;
-    }));
-
-    // Off duty
-    fill($("#hobbies"), ((C.offduty || {}).items || []).map(function (h) {
-      var li = el("li", "hobby");
-      var icon = el("span", "hobby__icon");
-      icon.innerHTML = spriteSVG(ICONS[h.icon] || ICONS.code);
-      li.appendChild(icon);
-      var text = el("div");
-      text.appendChild(el("h3", "hobby__name", h.name));
-      if (h.detail) text.appendChild(el("p", "hobby__detail", h.detail));
-      li.appendChild(text);
       return li;
     }));
 
