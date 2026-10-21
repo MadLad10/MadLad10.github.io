@@ -224,6 +224,63 @@
       "gaaaaaaac",
       "..AAAAA.."
     ]
+,
+    football: [
+      "....wwww....",
+      "..wwwGGwww..",
+      ".wwwwwwwwww.",
+      ".wwwwwwwwww.",
+      "wGwwwGGwwwGw",
+      "wGGwGGGGwGGw",
+      "wwwwwGGwwwww",
+      "wwwwwwwwwwww",
+      ".wwwwwwwwww.",
+      ".wwGGwwGGww.",
+      "..wwGwwGww..",
+      "....wwww...."
+    ],
+    cricket: [
+      "............",
+      ".........GG.",
+      ".........GG.",
+      "........aa..",
+      ".......aa...",
+      "......aa....",
+      ".....aa.....",
+      "....aa......",
+      "...aa.......",
+      "..ha....hA..",
+      "..hh....AA..",
+      "............"
+    ],
+    tv: [
+      "...g....g...",
+      "....g..g....",
+      ".....gg.....",
+      "gggggggggggg",
+      "gccccccccggg",
+      "gcwwcccccgag",
+      "gcwccccccggg",
+      "gccccccccgGg",
+      "gccccccccggg",
+      "gggggggggggg",
+      ".G........G.",
+      "............"
+    ],
+    sofa: [
+      "............",
+      "............",
+      "............",
+      "..aaaAAaaa..",
+      "..aaaaaaaa..",
+      "AAaaaaaaaaAA",
+      "AAaaaaaaaaAA",
+      "AAhhhhhhhhAA",
+      "AAhhhhhhhhAA",
+      "AAAAAAAAAAAA",
+      ".G........G.",
+      "............"
+    ]
   };
 
   // Inline SVG from a sprite; colours come from .px-* classes in styles.css.
@@ -403,6 +460,37 @@
       li.appendChild(el("p", "award__place", a.place));
       li.appendChild(el("p", "award__event", a.event));
       li.appendChild(el("p", "award__detail", a.detail));
+      if (a.certificate && a.certificate.href) {
+        var cert = el("a", "award__cert");
+        cert.href = a.certificate.href;
+        cert.target = "_blank";
+        cert.rel = "noopener";
+        if (a.certificate.image) {
+          var thumb = el("img");
+          thumb.src = a.certificate.image;
+          thumb.alt = "Certificate of participation, " + a.event;
+          thumb.loading = "lazy";
+          thumb.decoding = "async";
+          cert.appendChild(thumb);
+        }
+        var label = el("span", "link", "View certificate");
+        label.insertAdjacentHTML("beforeend", ARROW_OUT);
+        cert.appendChild(label);
+        li.appendChild(cert);
+      }
+      return li;
+    }));
+
+    // Off duty
+    fill($("#hobbies"), ((C.offduty || {}).items || []).map(function (h) {
+      var li = el("li", "hobby");
+      var icon = el("span", "hobby__icon");
+      icon.innerHTML = spriteSVG(ICONS[h.icon] || ICONS.code);
+      li.appendChild(icon);
+      var text = el("div");
+      text.appendChild(el("h3", "hobby__name", h.name));
+      if (h.detail) text.appendChild(el("p", "hobby__detail", h.detail));
+      li.appendChild(text);
       return li;
     }));
 

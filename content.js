@@ -42,6 +42,7 @@ window.CONTENT = {
     { id: "projects", label: "Projects", depth: 350 },
     { id: "skills", label: "Inventory", depth: 550 },
     { id: "awards", label: "Awards", depth: 800 },
+    { id: "offduty", label: "Off duty", depth: 950 },
     { id: "contact", label: "Seabed", depth: 1100 }
   ],
 
@@ -324,18 +325,20 @@ window.CONTENT = {
 
   awards: {
     title: "Awards",
-    // icon: trophy or medal
+    // icon: trophy or medal. certificate (optional): a PDF + preview image, shown on the card
     items: [
       {
         icon: "trophy",
         place: "8th of 58",
         event: "RoboSub 2026",
+        certificate: { href: "assets/certificates/robosub-2026.pdf", image: "assets/certificates/robosub-2026.jpg" },
         detail: "RoboNation, Woollett Aquatics Center, California. Sub-Team Lead of AI and Machine Vision."
       },
       {
         icon: "trophy",
         place: "8th of 58",
         event: "RoboSub 2025",
+        certificate: { href: "assets/certificates/robosub-2025.pdf", image: "assets/certificates/robosub-2025.jpg" },
         detail: "RoboNation, Woollett Aquatics Center, California. Technical Coordinator."
       },
       {
@@ -344,6 +347,18 @@ window.CONTENT = {
         event: "National Telco Warfare Datathon 2024",
         detail: "East West University. VGG19-based image classification model with about 90% accuracy."
       }
+    ]
+  },
+
+  // Interests. `detail` is an optional short line (e.g. your team or favourite show); "" hides it.
+  // icon: football, cricket, tv, sofa (or any inventory icon)
+  offduty: {
+    title: "Off duty",
+    items: [
+      { icon: "football", name: "Football", detail: "" },
+      { icon: "cricket", name: "Cricket", detail: "" },
+      { icon: "tv", name: "TV shows", detail: "" },
+      { icon: "sofa", name: "Sitcoms", detail: "" }
     ]
   },
 
