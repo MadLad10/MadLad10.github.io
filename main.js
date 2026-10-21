@@ -459,7 +459,7 @@
       li.innerHTML = spriteSVG(ICONS[a.icon] || ICONS.trophy);
       li.appendChild(el("p", "award__place", a.place));
       li.appendChild(el("p", "award__event", a.event));
-      li.appendChild(el("p", "award__detail", a.detail));
+      if (a.detail) li.appendChild(el("p", "award__detail", a.detail));
       if (a.certificate && a.certificate.href) {
         var cert = el("a", "award__cert");
         cert.href = a.certificate.href;
