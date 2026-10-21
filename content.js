@@ -133,9 +133,9 @@ window.CONTENT = {
       },
       {
         title: "AUV Vision Pipeline",
-        kind: "Computer vision · BRACU Duburi",
+        kind: "Computer vision",
         summary:
-          "The full perception stack of BRACU Duburi's AUV: physics-based underwater augmentation, structured pruning and TensorRT on a Jetson Orin Nano, then a ROS 2 node that detects and tracks targets in real time.",
+          "The full perception stack of an autonomous underwater vehicle: physics-based underwater augmentation, structured pruning and TensorRT on a Jetson Orin Nano, then a ROS 2 node that detects and tracks targets in real time.",
         stat: { label: "mAP50-95", value: "0.968" },
         tags: ["YOLO11n", "TensorRT", "ROS 2", "ByteTrack", "Jetson Orin Nano"],
         image: "assets/projects/duburi-vision.mp4",
