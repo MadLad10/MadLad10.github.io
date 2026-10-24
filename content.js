@@ -57,7 +57,6 @@ window.CONTENT = {
       { label: "See projects", href: "#projects", style: "primary" },
       { label: "Get in touch", href: "#contact", style: "secondary" }
     ],
-    contactLinks: true, // Email + the contact.links (LinkedIn, GitHub) under the buttons; false hides the row
     facts: [] // short facts under the buttons, e.g. ["CGPA 3.96"]; empty hides the row
   },
 
@@ -86,6 +85,7 @@ window.CONTENT = {
       image: "assets/photo.jpg",
       slot: "assets/photo.jpg · 4:5 portrait",
       alt: "Portrait of Yaad Kamrul Bari",
+      links: true, // Email + the contact.links below as icons under the photo; false hides them
       facts: [
         { label: "Based in", value: "Dhaka, Bangladesh" },
         { label: "Now", value: "Research Assistant, Dubotech Digital" },
@@ -358,8 +358,9 @@ window.CONTENT = {
     mailLabel: "Email me",
     compose: "gmail", // "gmail" opens Gmail's compose page in a new tab; "mailto" uses the visitor's mail app
     links: [
-      { label: "LinkedIn", href: "https://www.linkedin.com/in/yaad-bari-655b0b250/" },
-      { label: "GitHub", href: "https://github.com/MadLad10" }
+      // icon (optional): linkedin or github, for the icons on the About card
+      { label: "LinkedIn", href: "https://www.linkedin.com/in/yaad-bari-655b0b250/", icon: "linkedin" },
+      { label: "GitHub", href: "https://github.com/MadLad10", icon: "github" }
     ]
   },
 

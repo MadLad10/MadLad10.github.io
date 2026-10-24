@@ -227,6 +227,55 @@
 
   };
 
+  // Contact icons, drawn in "x" = the link's text colour
+  var BRAND = {
+    mail: [
+      ".............",
+      ".............",
+      "xxxxxxxxxxxxx",
+      "xx.........xx",
+      "x.x.......x.x",
+      "x..x.....x..x",
+      "x...x...x...x",
+      "x....xxx....x",
+      "x...........x",
+      "x...........x",
+      "xxxxxxxxxxxxx",
+      ".............",
+      "............."
+    ],
+    linkedin: [
+      ".xxxxxxxxxxx.",
+      "xxxxxxxxxxxxx",
+      "xx..xxxxxxxxx",
+      "xx..xxxxxxxxx",
+      "xxxxxxxxxxxxx",
+      "xx..x.....xxx",
+      "xx..x..xx..xx",
+      "xx..x..xx..xx",
+      "xx..x..xx..xx",
+      "xx..x..xx..xx",
+      "xx..x..xx..xx",
+      "xxxxxxxxxxxxx",
+      ".xxxxxxxxxxx."
+    ],
+    github: [
+      "....xxxxx....",
+      "..xxxxxxxxx..",
+      ".xx.xxxxx.xx.",
+      ".xx..xxx..xx.",
+      "xx.........xx",
+      "xx.........xx",
+      "xx.........xx",
+      "xxx.......xxx",
+      "xxxx.....xxxx",
+      ".x..xx...xxx.",
+      "..xx.x...xx..",
+      "...xxx...x...",
+      ".....x...x..."
+    ]
+  };
+
   // Inline SVG from a sprite; colours come from .px-* classes in styles.css.
   function spriteSVG(rows, cls) {
     var w = rows[0].length, h = rows.length, out = [];
@@ -443,16 +492,24 @@
       return li;
     }));
 
-    // Same links at the top of the page, so nobody has to scroll to the seabed
-    var heroLinks = $("#hero-links");
-    if (heroLinks) {
-      var top = (person.email && mail ? [{ label: "Email", href: mail }] : []).concat(ctLinks);
-      fill(heroLinks, top.map(function (l) {
+    // Same links as icons under the photo on the About card
+    var cardLinks = $("#about-links");
+    if (cardLinks) {
+      var icons = (person.email && mail ? [{ label: "Email", href: mail, icon: "mail" }] : [])
+        .concat(ctLinks.filter(function (l) { return BRAND[l.icon]; }));
+      fill(cardLinks, icons.map(function (l) {
         var li = el("li");
-        li.appendChild(link(l));
+        var a = el("a", "idcard__link");
+        a.href = l.href;
+        a.target = "_blank";
+        a.rel = "noopener";
+        a.title = l.label;
+        a.setAttribute("aria-label", l.label + " (new tab)");
+        a.innerHTML = spriteSVG(BRAND[l.icon]);
+        li.appendChild(a);
         return li;
       }));
-      heroLinks.hidden = (C.hero || {}).contactLinks === false || !top.length;
+      cardLinks.hidden = (C.about && C.about.card || {}).links === false || !icons.length;
     }
 
     var year = $("#year");

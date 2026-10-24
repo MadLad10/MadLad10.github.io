@@ -863,6 +863,7 @@ a { color: inherit; }
   overflow: hidden;
   border: 1px solid var(--line);
 }
+.idcard__side { min-width: 0; }
 .idcard__photo .slot { padding: 0.5rem; }
 .idcard__photo { position: relative; }
 .photo-pixels {
@@ -872,6 +873,27 @@ a { color: inherit; }
   height: 100%;
   image-rendering: pixelated;
 }
+.idcard__links {
+  display: flex;
+  gap: 0.4rem;
+  margin: 0.6rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+.idcard__links li { flex: 1; }
+.idcard__link {
+  display: grid;
+  place-items: center;
+  height: 2.25rem;
+  border: 1px solid var(--line);
+  color: var(--cyan);
+  transition: color 0.15s, border-color 0.15s;
+}
+.idcard__link:hover,
+.idcard__link:focus-visible { color: var(--amber); border-color: var(--amber); }
+.idcard__link svg { width: 18px; height: 18px; }
+.px-x { fill: currentColor; }
+
 .idcard__facts { margin: 0; }
 .idcard__facts div + div { margin-top: 0.65rem; }
 .idcard__facts dt {
@@ -1635,7 +1657,7 @@ a { color: inherit; }
   .prose, .hero__intro, .transmission__text { max-width: none !important; }
 
   .skip-link, .topbar, .meter, .scene-canvas, .snow, .hero__fx, .detect, .hero__stage,
-  .hero__actions, .hero__links, .chip, .zone__tag, .zone__lede, .zone__kicker, .slot,
+  .hero__actions, .idcard__links, .chip, .zone__tag, .zone__lede, .zone__kicker, .slot,
   .idcard__photo, .idcard__title, .card__media, .card__det,
   .transmission__actions, .seabed__dock, .footer a, .zone::before { display: none !important; }
 
