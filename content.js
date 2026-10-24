@@ -81,6 +81,10 @@ window.CONTENT = {
     ],
     card: {
       title: "Person of interest",
+      // ID badge extras; "" hides any of them. The barcode is drawn from `number`.
+      role: "AI and Robotics Engineer",
+      number: "ID YKB-0008",
+      clearance: "Cleared for all depths",
       // PHOTO SLOT: a portrait, about 600x750 px, e.g. "assets/photo.jpg"
       image: "assets/photo.jpg",
       slot: "assets/photo.jpg · 4:5 portrait",
