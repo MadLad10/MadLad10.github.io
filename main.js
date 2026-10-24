@@ -332,21 +332,6 @@
     return s;
   }
 
-  // Decorative barcode: each character sets the widths of a bar and the gap after it.
-  function barcodeSVG(text) {
-    var x = 0, bars = [];
-    for (var i = 0; i < text.length; i++) {
-      var c = text.charCodeAt(i);
-      [c % 3 + 1, (c >> 2) % 2 + 1, (c >> 3) % 3 + 1].forEach(function (w, j) {
-        if (j !== 1) bars.push('<rect x="' + x + '" width="' + w + '" height="1"/>');
-        x += w;
-      });
-      x += 1;
-    }
-    return '<svg viewBox="0 0 ' + x + ' 1" preserveAspectRatio="none" shape-rendering="crispEdges" aria-hidden="true" focusable="false"><g fill="currentColor">' +
-      bars.join("") + "</g></svg>";
-  }
-
   function tags(list) {
     var ul = el("ul", "tags");
     (list || []).forEach(function (t) { ul.appendChild(el("li", null, t)); });
@@ -404,11 +389,6 @@
     fill($("#about-text"), (about.paragraphs || []).map(function (p) { return el("p", null, p); }));
     var card = about.card || {};
     fill($("#about-photo"), [media(card.image, card.slot, card.alt, "Photo slot")]);
-    var barcode = $("#about-barcode");
-    if (barcode) {
-      if (card.number) barcode.innerHTML = barcodeSVG(card.number);
-      else barcode.hidden = true;
-    }
     fill($("#about-facts"), (card.facts || []).map(function (f) {
       var d = el("div");
       d.appendChild(el("dt", null, f.label));
