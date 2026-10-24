@@ -81,7 +81,6 @@ window.CONTENT = {
     ],
     card: {
       title: "Person of interest",
-      role: "AI and Robotics Engineer", // shown under the name; "" hides it
       // PHOTO SLOT: a portrait, about 600x750 px, e.g. "assets/photo.jpg"
       image: "assets/photo.jpg",
       slot: "assets/photo.jpg · 4:5 portrait",

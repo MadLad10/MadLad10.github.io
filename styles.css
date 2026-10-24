@@ -888,14 +888,6 @@ a { color: inherit; }
   color: var(--foam-100);
   font: 400 1.75rem/1 var(--font-pixel);
 }
-.idcard__role {
-  margin: 0.35rem 0 0;
-  color: var(--amber);
-  font: 400 0.625rem/1.3 var(--font-hud);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-.idcard__role + .idcard__facts,
 .idcard__name + .idcard__facts {
   margin-top: 0.85rem;
   padding-top: 0.85rem;
@@ -1703,7 +1695,7 @@ a { color: inherit; }
 
   .skip-link, .topbar, .meter, .scene-canvas, .snow, .hero__fx, .detect, .hero__stage,
   .hero__actions, .idcard__links, .chip, .zone__tag, .zone__lede, .zone__kicker, .slot,
-  .idcard__photo, .idcard__band, .idcard__name, .idcard__role, .card__media, .card__det,
+  .idcard__photo, .idcard__band, .idcard__name, .card__media, .card__det,
   .transmission__actions, .seabed__dock, .footer a, .zone::before { display: none !important; }
 
   .hero, .zone, .seabed { min-height: 0 !important; padding: 0 !important; overflow: visible !important; }
