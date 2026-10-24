@@ -436,11 +436,24 @@
       em.textContent = person.email;
       $("#mail-btn").href = mail;
     }
-    fill($("#contact-links"), (ct.links || []).filter(function (l) { return l.href; }).map(function (l) {
+    var ctLinks = (ct.links || []).filter(function (l) { return l.href; });
+    fill($("#contact-links"), ctLinks.map(function (l) {
       var li = el("li");
       li.appendChild(link(l));
       return li;
     }));
+
+    // Same links at the top of the page, so nobody has to scroll to the seabed
+    var heroLinks = $("#hero-links");
+    if (heroLinks) {
+      var top = (person.email && mail ? [{ label: "Email", href: mail }] : []).concat(ctLinks);
+      fill(heroLinks, top.map(function (l) {
+        var li = el("li");
+        li.appendChild(link(l));
+        return li;
+      }));
+      heroLinks.hidden = (C.hero || {}).contactLinks === false || !top.length;
+    }
 
     var year = $("#year");
     if (year) year.textContent = new Date().getFullYear();

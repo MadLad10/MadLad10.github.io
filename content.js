@@ -57,6 +57,7 @@ window.CONTENT = {
       { label: "See projects", href: "#projects", style: "primary" },
       { label: "Get in touch", href: "#contact", style: "secondary" }
     ],
+    contactLinks: true, // Email + the contact.links (LinkedIn, GitHub) under the buttons; false hides the row
     facts: [] // short facts under the buttons, e.g. ["CGPA 3.96"]; empty hides the row
   },
 
