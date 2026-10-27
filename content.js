@@ -60,15 +60,21 @@ window.CONTENT = {
     facts: [] // short facts under the buttons, e.g. ["CGPA 3.96"]; empty hides the row
   },
 
-  // Small readouts around the pixel scene. Depth follows the scroll; the other two are real numbers.
+  // Small readouts around the pixel scene. Depth follows the scroll; the rest are about you.
   hud: {
     depthLabel: "Depth",
     depthUnit: "m",
     rankLabel: "RoboSub",
     rank: "8th / 58", // top right, next to a trophy
-    gaugeLabel: "CGPA",
-    gauge: "3.96", // bottom right, in the battery: its four cells stand for the 4.0 scale
-    status: "Mission: join a research team",
+    clockLabel: "Dhaka", // bottom right: your local time, with a sun by day and a moon by night
+    clockOffset: 6, // hours ahead of UTC (Bangladesh has no daylight saving)
+    // Bottom bar: typed out one line at a time, on a loop. With reduced motion only the first line shows.
+    status: [
+      "Mission: join a research team",
+      "Now: Research Assistant, Dubotech Digital",
+      "Led: AI and Machine Vision, BRACU Duburi",
+      "Degree: BSc Computer Science, CGPA 3.96"
+    ],
     detection: { label: "auv", confidence: 0.99 }
   },
 

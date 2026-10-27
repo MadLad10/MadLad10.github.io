@@ -217,6 +217,24 @@
       "......AAAAA.....",
       "................"
     ],
+    sun: [
+      "...a...",
+      ".a...a.",
+      "..hhh..",
+      "a.hhh.a",
+      "..hhh..",
+      ".a...a.",
+      "...a..."
+    ],
+    moon: [
+      "..www..",
+      ".www...",
+      "www...f",
+      "www....",
+      "www....",
+      ".www...",
+      "..www.."
+    ],
     marker: [
       "....a....",
       "...pppp..",
@@ -387,6 +405,8 @@
     }
     var trophy = $("#hud-trophy");
     if (trophy) trophy.innerHTML = spriteSVG(ICONS.trophy);
+    hudClock(C.hud || {});
+    missionLog(C.hud || {});
 
     // About
     var about = C.about || {};
@@ -506,6 +526,55 @@
 
     var year = $("#year");
     if (year) year.textContent = new Date().getFullYear();
+  }
+
+  // Bottom-right readout: the time where Yaad is, with a sun or a moon
+  function hudClock(hud) {
+    var out = $("#hud-clock"), sky = $("#hud-sky");
+    if (!out) return;
+    var offset = Number(hud.clockOffset) || 0, shown = "";
+    (function tick() {
+      var d = new Date(Date.now() + offset * 36e5);
+      var h = d.getUTCHours(), m = d.getUTCMinutes();
+      out.textContent = ("0" + h).slice(-2) + ":" + ("0" + m).slice(-2);
+      var now = h >= 6 && h < 18 ? "sun" : "moon";
+      if (sky && now !== shown) { shown = now; sky.innerHTML = spriteSVG(ICONS[now]); }
+      setTimeout(tick, 60000 - d.getUTCSeconds() * 1000 - d.getUTCMilliseconds());
+    })();
+  }
+
+  // Bottom bar: types the status lines out one at a time, like a mission log
+  function missionLog(hud) {
+    var box = $("#hud-status");
+    var lines = [].concat(hud.status || []).filter(Boolean);
+    if (!box || !lines.length) return;
+    var typed = el("span", "status__typed");
+    typed.setAttribute("aria-hidden", "true");
+    // every line sits invisibly in the same cell, so the bar keeps the size of the longest
+    var sizers = lines.map(function (l) {
+      var s = el("span", "status__line", l);
+      s.setAttribute("aria-hidden", "true");
+      return s;
+    });
+    fill(box, sizers.concat([typed, el("span", "visually-hidden", lines.join(". "))]));
+
+    var li = 0, ci = 0, paused = false;
+    box.parentNode.addEventListener("mouseenter", function () { paused = true; });
+    box.parentNode.addEventListener("mouseleave", function () { paused = false; });
+    function type() {
+      var line = lines[li];
+      ci = reduceMQ.matches ? line.length : ci + 1;
+      typed.textContent = line.slice(0, ci);
+      if (ci < line.length) setTimeout(type, 40);
+      else if (lines.length > 1 && !reduceMQ.matches) setTimeout(next, 2800);
+    }
+    function next() {
+      if (paused) { setTimeout(next, 400); return; }
+      li = (li + 1) % lines.length;
+      ci = 0;
+      type();
+    }
+    type();
   }
 
   function projectCard(p) {

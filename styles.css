@@ -518,10 +518,10 @@ a { color: inherit; }
   font-size: 0.875rem;
 }
 
-.hud__trophy { display: flex; }
+.hud__trophy,
+.hud__sky { display: flex; }
 .hud__trophy svg { width: 16px; height: 16px; }
-.hud__batt { color: var(--foam-200); }
-.hud__batt-cells { fill: var(--amber); }
+.hud__sky svg { width: 14px; height: 14px; }
 
 .status {
   display: flex;
@@ -545,6 +545,30 @@ a { color: inherit; }
   animation: blink 1.6s steps(1) infinite;
 }
 @keyframes blink { 50% { opacity: 0.2; } }
+
+/* mission log: the lines share one grid cell, so the bar holds the longest one's size */
+.status__text { display: grid; }
+.status__text > * { grid-area: 1 / 1; }
+.status__line { visibility: hidden; padding-right: 0.8em; }
+.status__typed::after {
+  content: "";
+  display: inline-block;
+  width: 0.55em;
+  height: 0.85em;
+  margin-left: 0.2em;
+  vertical-align: -0.05em;
+  background: var(--amber);
+  animation: blink 1s steps(1) infinite;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
 
 /* YOLO-style detection box; main.js moves it with the AUV */
 .detect {
@@ -619,7 +643,8 @@ a { color: inherit; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .status__dot { animation: none; }
+  .status__dot,
+  .status__typed::after { animation: none; }
   .btn:active { transform: none; }
 }
 
