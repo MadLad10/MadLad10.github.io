@@ -217,6 +217,15 @@
       "......AAAAA.....",
       "................"
     ],
+    cap: [
+      ".....w.....",
+      "..wwwwwww..",
+      "wwwwwwwwwww",
+      "..fffffff.a",
+      "...ggggg..a",
+      "...ggggg..a",
+      "...GGGGG.aa"
+    ],
     sun: [
       "...a...",
       ".a...a.",
@@ -403,8 +412,8 @@
       fill(facts, (hero.facts || []).map(function (f) { return el("li", null, f); }));
       facts.hidden = !(hero.facts && hero.facts.length);
     }
-    var trophy = $("#hud-trophy");
-    if (trophy) trophy.innerHTML = spriteSVG(ICONS.trophy);
+    var cap = $("#hud-cap");
+    if (cap) cap.innerHTML = spriteSVG(ICONS.cap);
     hudClock(C.hud || {});
     missionLog(C.hud || {});
 

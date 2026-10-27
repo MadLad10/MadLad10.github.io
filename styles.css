@@ -518,9 +518,9 @@ a { color: inherit; }
   font-size: 0.875rem;
 }
 
-.hud__trophy,
+.hud__cap,
 .hud__sky { display: flex; }
-.hud__trophy svg { width: 16px; height: 16px; }
+.hud__cap svg { width: 22px; height: 14px; }
 .hud__sky svg { width: 14px; height: 14px; }
 
 .status {

@@ -64,8 +64,8 @@ window.CONTENT = {
   hud: {
     depthLabel: "Depth",
     depthUnit: "m",
-    rankLabel: "RoboSub",
-    rank: "8th / 58", // top right, next to a trophy
+    cgpaLabel: "CGPA",
+    cgpa: "3.96 / 4.0", // top right, next to a graduation cap
     clockLabel: "Dhaka", // bottom right: your local time, with a sun by day and a moon by night
     clockOffset: 6, // hours ahead of UTC (Bangladesh has no daylight saving)
     // Bottom bar: typed out one line at a time, on a loop. With reduced motion only the first line shows.
@@ -73,7 +73,7 @@ window.CONTENT = {
       "Mission: join a research team",
       "Now: Research Assistant, Dubotech Digital",
       "Led: AI and Machine Vision, BRACU Duburi",
-      "Degree: BSc Computer Science, CGPA 3.96"
+      "RoboSub: 8th of 58, 2025 and 2026"
     ],
     detection: { label: "auv", confidence: 0.99 }
   },
