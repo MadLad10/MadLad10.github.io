@@ -281,6 +281,8 @@
   }
 
   var ARROW_OUT = '<svg viewBox="0 0 7 7" width="11" height="11" shape-rendering="crispEdges" aria-hidden="true" focusable="false"><path fill="currentColor" d="M2 0h5v1H2zM6 1h1v4H6zM5 1h1v1H5zM4 2h1v1H4zM3 3h1v1H3zM2 4h1v1H2zM1 5h1v1H1zM0 6h1v1H0z"/></svg>';
+  var ARROW_RIGHT = '<svg viewBox="0 0 7 7" width="11" height="11" shape-rendering="crispEdges" aria-hidden="true" focusable="false"><path fill="currentColor" d="M2 0h1v1H2zM3 1h1v1H3zM4 2h1v1H4zM5 3h1v1H5zM4 4h1v1H4zM3 5h1v1H3zM2 6h1v1H2z"/></svg>';
+  var CROSS = '<svg viewBox="0 0 7 7" width="14" height="14" shape-rendering="crispEdges" aria-hidden="true" focusable="false"><path fill="currentColor" d="M0 0h1v1H0zM6 0h1v1H6zM1 1h1v1H1zM5 1h1v1H5zM2 2h1v1H2zM4 2h1v1H4zM3 3h1v1H3zM2 4h1v1H2zM4 4h1v1H4zM1 5h1v1H1zM5 5h1v1H5zM0 6h1v1H0zM6 6h1v1H6z"/></svg>';
   var ARROW_DOWN = '<svg viewBox="0 0 7 8" width="11" height="12" shape-rendering="crispEdges" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 0h1v4H3zM1 3h1v1H1zM5 3h1v1H5zM2 4h1v1H2zM4 4h1v1H4zM3 5h1v1H3zM0 7h7v1H0z"/></svg>';
 
   /* ------------------------------------------------------------
@@ -531,6 +533,18 @@
     body.appendChild(el("p", "card__summary", p.summary));
     body.appendChild(tags(p.tags));
     var links = el("div", "card__links");
+    if (p.brief) {
+      var more = el("button", "link card__brief", null);
+      more.type = "button";
+      more.appendChild(el("span", null, (C.projects.briefLabels || {}).open || "Read more"));
+      more.insertAdjacentHTML("beforeend", ARROW_RIGHT);
+      more.setAttribute("aria-label", "Read more about " + p.title);
+      more.addEventListener("click", function () { openBrief(p); });
+      links.appendChild(more);
+      // the picture opens it too, for anyone who clicks there first
+      m.classList.add("card__media--open");
+      m.addEventListener("click", function () { openBrief(p); });
+    }
     (p.links || []).filter(function (l) { return l.href; }).forEach(function (l) {
       var a = link(l);
       a.setAttribute("aria-label", l.label + ": " + p.title);
@@ -589,6 +603,76 @@
   }
 
   // A card without media: a pixel "no signal" screen with the project's icon.
+  // The longer write-up behind a card's "Read more", shown in a <dialog>
+  function openBrief(p) {
+    var dlg = $("#brief");
+    if (!dlg || typeof dlg.showModal !== "function") return;
+    var labels = C.projects.briefLabels || {};
+    var b = p.brief || {};
+    var nodes = [];
+
+    if (p.image) {
+      var box = el("div", "brief__media");
+      var md = media(p.image, null, p.alt || p.title, p.title);
+      if (md.tagName === "VIDEO") {
+        md.poster = md.dataset.poster;
+        md.src = md.dataset.src;
+        md.preload = "auto";
+        if (!reduceMQ.matches) md.autoplay = true;
+      }
+      box.appendChild(md);
+      nodes.push(box);
+    }
+
+    var head = el("div", "brief__intro");
+    head.appendChild(el("p", "card__kind", p.kind));
+    var title = el("h2", "brief__title", p.title);
+    title.id = "brief-title";
+    head.appendChild(title);
+    if (b.tldr) head.appendChild(el("p", "brief__tldr", b.tldr));
+    nodes.push(head);
+
+    [["problem", "The problem"], ["why", "Why I built it"], ["how", "How it works"], ["results", "Results"]].forEach(function (s) {
+      var v = b[s[0]];
+      if (!v || !v.length) return;
+      var sec = el("section", "brief__section");
+      sec.appendChild(el("h3", "brief__h", labels[s[0]] || s[1]));
+      if (Array.isArray(v)) {
+        var ul = el("ul", "brief__list");
+        v.forEach(function (item) { ul.appendChild(el("li", null, item)); });
+        sec.appendChild(ul);
+      } else {
+        sec.appendChild(el("p", null, v));
+      }
+      nodes.push(sec);
+    });
+
+    if (p.tags && p.tags.length) {
+      var stack = el("section", "brief__section");
+      stack.appendChild(el("h3", "brief__h", labels.stack || "Stack"));
+      stack.appendChild(tags(p.tags));
+      nodes.push(stack);
+    }
+    var links = el("div", "brief__links");
+    (p.links || []).filter(function (l) { return l.href; }).forEach(function (l) { links.appendChild(link(l)); });
+    if (links.childNodes.length) nodes.push(links);
+
+    fill($("#brief-body"), nodes);
+    dlg.showModal();
+    $(".brief__scroll", dlg).scrollTop = 0;
+  }
+
+  function briefDialog() {
+    var dlg = $("#brief");
+    if (!dlg) return;
+    $(".brief__close", dlg).innerHTML = CROSS;
+    $(".brief__close", dlg).addEventListener("click", function () { dlg.close(); });
+    // a click on the dimmed backdrop lands on the <dialog> itself
+    dlg.addEventListener("click", function (e) { if (e.target === dlg) dlg.close(); });
+    // drop the content (and stop its video) once closed
+    dlg.addEventListener("close", function () { fill($("#brief-body"), []); });
+  }
+
   function noSignal(p) {
     var box = el("div", "nofeed");
     box.setAttribute("aria-hidden", "true");
@@ -1660,6 +1744,7 @@
   renderContent();
   depthMeter();
   lazyVideos();
+  briefDialog();
   copyEmail();
   photoReveal();
 

@@ -222,6 +222,17 @@
     </section>
   </main>
 
+  <!-- Project brief: filled from content.js when a card's "Read more" is clicked -->
+  <dialog class="brief" id="brief" aria-labelledby="brief-title">
+    <div class="brief__bar">
+      <p class="brief__tag" data-text="projects.briefLabels.tag">Mission brief</p>
+      <button class="brief__close" type="button" aria-label="Close"></button>
+    </div>
+    <div class="brief__scroll">
+      <div class="brief__body" id="brief-body"></div>
+    </div>
+  </dialog>
+
   <footer class="footer">
     <div class="footer__inner">
       <a href="#top" data-text="footer.top">Back to the surface</a>

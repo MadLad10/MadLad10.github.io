@@ -116,6 +116,17 @@ window.CONTENT = {
   projects: {
     title: "Projects",
     lede: "Hover over a card to run detection.",
+    // "Read more" on a card opens its `brief`. Leave a field "" (or leave it out) to hide that section.
+    // `why` is your own story: what got you started on it.
+    briefLabels: {
+      open: "Read more",
+      tag: "Mission brief",
+      problem: "The problem",
+      why: "Why I built it",
+      how: "How it works",
+      results: "Results",
+      stack: "Stack"
+    },
     featured: [
       {
         title: "Agentic AUV",
@@ -130,6 +141,23 @@ window.CONTENT = {
         alt: "Simulated AUV run with camera, sonar and navigation views while the DVL drops out",
         slot: "assets/projects/agentic-auv.mp4 · 16:9",
         detect: { label: "agentic_auv", confidence: 0.98 },
+        brief: {
+          tldr: "An underwater robot you give missions in plain English, which keeps working when its sensors fail. A team of LLM agents plans and supervises each mission, a rule-based safety layer can overrule any of them, and sensor fusion keeps the robot localised when the camera or the DVL goes blind.",
+          problem: "Underwater robots lose sensors all the time: the camera goes blind in murky water, the DVL loses the seabed, the compass gets thrown off. LLMs make plain-English missions possible, but they can misunderstand, make things up, or report success when nothing happened. Can AI agents backed by deterministic safety rules complete missions reliably while sensors are failing, and can that be proven with ground-truth measurements?",
+          why: "",
+          how: [
+            "An LLM supervisor writes the plan using typed tools. Perception, navigation, health and diagnostics agents check the robot after every step (LangGraph, with human approval and checkpointing).",
+            "A deterministic validator checks every plan, and a health monitor can veto any AI decision and bring the robot to the surface.",
+            "Camera and sonar tracking finds objects in murky water. An EKF fuses IMU, DVL, depth and compass with sonar wall ranges and a learned velocity model.",
+            "Everything runs in a custom MuJoCo simulation with 9 sensors and 11 injectable faults, scored by an independent ground-truth referee, never by the robot's own claims."
+          ],
+          results: [
+            "Murky water, touch the red buoy: 10/10 with camera–sonar fusion against 0/10 without, with zero collisions.",
+            "DVL lost: missions completed went from 11/20 to 20/20. Compass disturbed and DVL lost: from 1/20 to 20/20.",
+            "36-mission evaluation with a real local LLM: the multi-agent system passed 35/36 against 31/36 for a single agent, which kept driving through a leak.",
+            "A leak or a frozen depth sensor triggers an emergency surface within 3 s, and unsafe requests are refused."
+          ]
+        },
         links: [{ label: "Code", href: "https://github.com/MadLad10/Agentic-AUV-multimodal-multi-agent-autonomy-for-an-underwater-robot" }]
       },
       {
@@ -143,6 +171,24 @@ window.CONTENT = {
         alt: "Underwater validation frames with YOLO detection boxes for torpedo, blood and hole targets",
         slot: "assets/projects/duburi-vision.mp4 · 16:9",
         detect: { label: "vision_pipeline", confidence: 0.99 },
+        brief: {
+          tldr: "The full perception stack of an autonomous underwater vehicle: from raw dive video to a pruned, TensorRT-compiled YOLO11n on a Jetson Orin Nano, which detects and tracks competition targets in real time and sends steering offsets to the controller.",
+          problem: "Underwater images degrade in ways ordinary augmentation doesn't cover: colour absorption, haze, rippling light and dark corners. And the detector has to share a small Jetson with tracking, control and mission software, so it must be small and fast as well as accurate.",
+          why: "",
+          how: [
+            "Five physics-based augmentations reproduce how underwater images form: water attenuation, backscatter, caustics, light falloff and marine snow.",
+            "Structured channel pruning with a dependency graph, then recovery fine-tuning, so the network really gets smaller and faster on TensorRT.",
+            "Export to ONNX and a TensorRT FP16 or INT8 engine on the Jetson Orin Nano.",
+            "A ROS 2 node runs detection plus ByteTrack and smooths boxes over time, so the controller gets steady steering offsets.",
+            "One config-driven CLI for every stage, with dataset checks and unit tests in CI."
+          ],
+          results: [
+            "Gate model: 0.995 mAP50 and 0.968 mAP50-95, with every object found, on footage from the competition pool in California.",
+            "Torpedo model: 0.994 mAP50 and 0.940 mAP50-95.",
+            "Found and fixed a silent Ultralytics behaviour that rebuilt pruned models at full size during fine-tuning.",
+            "YOLO11n is the model BRACU Duburi deployed at RoboSub 2026, where the team placed 8th of 58."
+          ]
+        },
         links: [{ label: "Code", href: "https://github.com/MadLad10/BRACU-Duburi-AUV-Vision-Pipeline" }]
       },
       {
@@ -156,6 +202,24 @@ window.CONTENT = {
         alt: "Onboard camera of the simulated AUV approaching the gate and buoys in Gazebo",
         slot: "assets/projects/mission-planner.mp4 · 16:9",
         detect: { label: "mission_planner", confidence: 0.97 },
+        brief: {
+          tldr: "An LLM agent that turns plain-English commands into safe, validated missions for an underwater robot in a ROS 2 and Gazebo simulation, and re-plans when something goes wrong.",
+          problem: "Normally every new task for an underwater robot means writing new code. Letting an AI plan the mission instead is risky: it can misunderstand, hallucinate, or ask for something dangerous.",
+          why: "",
+          how: [
+            "The AI never controls the motors. It can only use 8 safe, high-level tools such as 'go to the gate' or 'surface'.",
+            "Plans are JSON validated with Pydantic, with constrained decoding so the output is always valid.",
+            "A rule-based safety checker rejects unsafe plans and tells the AI why, or repairs small omissions such as a missing 'surface at the end'.",
+            "If a step fails, the agent gets what happened and re-plans up to twice, then surfaces safely.",
+            "Runs on a laptop CPU with a local Qwen 2.5 3B model through Ollama."
+          ],
+          results: [
+            "A 25-mission benchmark, from easy missions to impossible and unsafe requests, scored by an independent referee.",
+            "Plan-only: 25/25 passed. Full simulation: 22/25 passed and 23/25 safe.",
+            "Every easy, medium and complex mission completed (16/16), and every impossible or unsafe request refused.",
+            "Across 125 test runs the robot never hit a wall, and the AI never produced invalid output."
+          ]
+        },
         links: [{ label: "Code", href: "https://github.com/MadLad10/AUV-LLM-Mission-Planner-Agentic-AI-for-Autonomous-Underwater-Vehicles" }]
       },
       {
@@ -169,6 +233,24 @@ window.CONTENT = {
         alt: "bari promo: find a safe home near campus, with the moderation queue holding scam and duplicate listings",
         slot: "assets/projects/bari.jpg · 16:9",
         detect: { label: "rag_agent", confidence: 0.96 },
+        brief: {
+          tldr: "An AI assistant that helps university students in Dhaka find safe, affordable housing. It searches listings, safety reviews and a community forum in English and Bangla, shows where every answer comes from, and never books anything without the student's approval.",
+          problem: "Students looking for a place near campus have to piece together listings, safety reviews and forum posts, in English and Bangla, and watch out for duplicate and scam listings.",
+          why: "bari started as a university course project: a rental website with a basic chatbot that pasted 20 listings into a prompt. I rebuilt it into a full AI system.",
+          how: [
+            "A tool-calling agent chooses between 9 tools (search, safety check, availability, price, booking) and streams its progress live.",
+            "Hybrid search over English and Bangla text: vector embeddings, keyword search and filters, then re-ranking.",
+            "Safety by design: a booking needs the student's own click, contact details never reach the AI, and instructions hidden in forum posts are blocked.",
+            "Scout, a LangGraph background agent, checks new listings every day, pauses for the student's approval and resumes days later.",
+            "Owner and moderation tools flag duplicate and scam listings and abusive posts for an admin."
+          ],
+          results: [
+            "Blocked 100% of prompt-injection and privacy attacks, with every model tested.",
+            "Bangla search success went from 50% to 100% after a fix to the search pipeline.",
+            "Search finds the right source in the top 5 for all 22 test searches.",
+            "Cut scam-detector false alarms from 48 to 16, with 276 automated tests."
+          ]
+        },
         links: [{ label: "Code", href: "https://github.com/MadLad10/bari.com" }]
       }
     ],
@@ -184,6 +266,23 @@ window.CONTENT = {
         image: "assets/projects/camera-sonar.mp4",
         alt: "Camera view with a YOLO gate detection next to a sonar fan image with detected buoys",
         detect: { label: "sonar_fusion", confidence: 0.97 },
+        brief: {
+          tldr: "A Python toolkit that detects and tracks underwater objects with a camera and a forward-looking sonar together. The camera says what an object is, the sonar says where it is, and fusion keeps both when one sensor becomes unreliable.",
+          problem: "In murky water a camera sees only a couple of metres. Sonar sees through the murk, but it can't tell colours apart and sometimes shows ghost objects.",
+          why: "",
+          how: [
+            "YOLO on camera images, with pinhole geometry and known object sizes to estimate range and bearing.",
+            "Sonar returns are clustered into contacts, with optional YOLO on the sonar fan image.",
+            "Multi-object tracking with Mahalanobis gating and Hungarian assignment. Camera labels stay attached to tracks that the sonar keeps updating.",
+            "Sonar-only tracks that the camera should be able to see are flagged as suspected phantom targets.",
+            "Extracted from Agentic AUV into a standalone package with replay, evaluation and tests."
+          ],
+          results: [
+            "In the Agentic AUV mission study: 10/10 murky-water red-buoy runs completed with tracking, against 0/10 without.",
+            "Fused position error of about 6 cm in normal, camera-blackout and phantom-target replays, against about 29 cm from the camera alone.",
+            "Camera detector: 0.944 mAP@0.5 on held-out synthetic scenes."
+          ]
+        },
         links: [{ label: "Code", href: "https://github.com/MadLad10/Camera-Sonar-Perception-Underwater-Object-Detection-and-Fusion-Tracking" }]
       },
       {
@@ -195,6 +294,23 @@ window.CONTENT = {
         image: "assets/projects/nav-fusion.mp4",
         alt: "Plots of position estimates and error: the plain EKF drifts after the DVL is lost while the wall-assisted EKF stays on the true path",
         detect: { label: "nav_fusion", confidence: 0.96 },
+        brief: {
+          tldr: "A Python toolkit that estimates an underwater vehicle's position, velocity and heading from IMU, DVL, depth, compass and landmark measurements, and keeps navigating when the DVL drops out.",
+          problem: "The DVL measures speed over the seabed and is the robot's main way of knowing how far it has moved. When it loses the seabed, position errors grow quickly.",
+          why: "",
+          how: [
+            "An 8-state EKF with IMU prediction and DVL, compass, depth and landmark updates, with outlier gating.",
+            "A GTSAM / iSAM2 factor-graph estimator as an alternative to compare against.",
+            "Sonar ranges to the known pool walls correct position and heading.",
+            "A small GRU, run in plain NumPy, predicts velocity during DVL outages, with the water current estimated online.",
+            "Extracted from Agentic AUV into a standalone package with log replay, a CLI and tests."
+          ],
+          results: [
+            "DVL lost: average error of 2.07 m with the plain EKF, against 0.03 m with wall ranges (replay, 3 seeds).",
+            "In 400 integrated missions with the compass disturbed, the DVL lost and long pauses: 35.9 m error down to 0.45 m with the full recovery stack.",
+            "The factor graph was not better than the EKF in these tests, and that is reported as a result too."
+          ]
+        },
         links: [{ label: "Code", href: "https://github.com/MadLad10/AUV-Navigation-Fusion-Underwater-State-Estimation-and-Sensor-Recovery" }]
       },
       {
@@ -206,6 +322,22 @@ window.CONTENT = {
         image: "assets/projects/marine-sim.mp4",
         alt: "Simulated AUV front camera facing a gate, beside a ground-truth view of the pool with the gate and buoys",
         detect: { label: "marine_sim", confidence: 0.95 },
+        brief: {
+          tldr: "An underwater robot simulator built on MuJoCo for testing vehicle dynamics, sensors, sensor failures and perception data generation in a repeatable pool.",
+          problem: "To test how an underwater robot copes when its sensors fail, you need to break them on purpose, at known times, and repeat the run exactly.",
+          why: "",
+          how: [
+            "A rigid-body vehicle with six thrusters, thrust limits and lag, buoyancy, drag and water current.",
+            "Simulated camera with underwater colour loss and noise, imaging sonar, DVL, IMU, compass, depth and health telemetry.",
+            "11 fault types scheduled at set times, including camera blackout, turbidity, DVL dropout, phantom sonar targets, dead thrusters and leaks.",
+            "Automatic YOLO labels for camera and sonar images, and a referee that scores gate passes, buoy touches and collisions."
+          ],
+          results: [
+            "Passed 54 compatibility checks against Agentic AUV, including mission execution, a YOLO check and a ROS 2 action test.",
+            "Installable as a Python package with a CLI, regression tests and CI.",
+            "Recorded demos of normal, murky-water, camera-blackout and DVL-dropout runs."
+          ]
+        },
         links: [{ label: "Code", href: "https://github.com/MadLad10/MuJoCo-Marine-Sim-Underwater-Vehicle-Dynamics-Sensors-and-Fault-Injection" }]
       },
       {
@@ -217,6 +349,23 @@ window.CONTENT = {
         image: "assets/projects/pinstagram.jpg",
         alt: "Pinstagram promo: discover places across Bangladesh, with map, feed and directions screens",
         detect: { label: "pinstagram", confidence: 0.95 },
+        brief: {
+          tldr: "A place-discovery app for Bangladesh: an Instagram-style feed of real places, a map and reviews, plus practical directions: which bus to take and what it costs, ride-hail estimates, train times, or whether it's walkable.",
+          why: "",
+          how: [
+            "Hybrid semantic search merges pgvector embeddings with full-text search, so 'quiet cafe where I can work on my laptop' works.",
+            "Review summaries with RAG: every point must cite real reviews, and ungrounded points are dropped in code.",
+            "A trip-planning agent uses tool calling and answers only from the app's own places, routes and fares.",
+            "Bus routing on PostGIS scores each way of getting there on door-to-door time and fare.",
+            "Three apps share one FastAPI backend: a React Native app for iOS, Android and web, and a Next.js admin dashboard."
+          ],
+          results: [
+            "Hybrid search: hit@5 of 1.00 and MRR of 0.97, against 0.95 and 0.86 for keyword search alone.",
+            "Answers a Bangla query that keyword search returns nothing for.",
+            "163 tests at 90% coverage, run against real Postgres, PostGIS, pgvector and Redis.",
+            "Live on Vercel, with a demo account."
+          ]
+        },
         links: [
           { label: "Code", href: "https://github.com/MadLad10/Pinstagram" },
           { label: "Live", href: "https://pinstagram-mobile.vercel.app" }
@@ -230,6 +379,20 @@ window.CONTENT = {
         image: "assets/projects/duburi-dashboard.jpg",
         alt: "YOLO training curves: box, class and DFL losses, precision and mAP50",
         detect: { label: "ml_dashboard", confidence: 0.94 },
+        brief: {
+          tldr: "A Streamlit dashboard for BRACU Duburi's RoboSub 2026 vision work. It turns raw YOLO training output into per-task analytics, and runs n8n workflows that send video clips to annotators and collect the labels.",
+          why: "",
+          how: [
+            "Point it at a YOLO run, or upload a zip, to get loss curves, mAP over epochs with the best epoch marked, precision–recall curves, the confusion matrix and prediction galleries.",
+            "Reads runs from different Ultralytics versions without edits.",
+            "Two n8n workflows email clips to annotators, collect YOLO-format labels and report back when a round is complete.",
+            "Tasks and page content are editable in the app in admin mode."
+          ],
+          results: [
+            "Torpedo detector tracked in the dashboard: 0.995 mAP50, 0.846 mAP50-95 and recall 1.000 (YOLO11n, a small dataset, so a working baseline).",
+            "Live on Streamlit Community Cloud."
+          ]
+        },
         links: [{ label: "Code", href: "https://github.com/MadLad10/BRACU-Duburi-Vision-Pipeline-Dashboard" }]
       },
       {
@@ -241,6 +404,16 @@ window.CONTENT = {
         alt: "Road scene with synthetic snow added by Automold, next to the original clean image",
         icon: "eye",
         detect: { label: "weather_gan", confidence: 0.93 },
+        brief: {
+          tldr: "A Pix2Pix GAN generates snow, rain and fog versions of road scenes, so a YOLOv5 detector for autonomous vehicles can be trained to stay reliable in bad weather.",
+          problem: "A detector trained on clear-weather road images can miss objects in snow, rain or fog, which is exactly when a self-driving car needs it most.",
+          why: "",
+          how: [
+            "Pix2Pix generates realistic heavy snow, rain, fog and low-visibility versions of road scenes.",
+            "The generated scenes are used to train and test YOLOv5 for object detection in adverse weather.",
+            "Built for CSE463 (Computer Vision) at BRAC University."
+          ]
+        },
         links: [{ label: "Code", href: "https://github.com/MadLad10/An-efficient-object-detection-technique-for-autonomous-vehicles-using-advanced-GAN-model-" }]
       },
       {
@@ -252,6 +425,16 @@ window.CONTENT = {
         alt: "MindWell promo: weekly check-in card, email reminder and admin dashboard",
         icon: "screen",
         detect: { label: "mindwell", confidence: 0.92 },
+        brief: {
+          tldr: "An employee wellness platform: companies invite their staff, employees do regular check-ins with email reminders, and admins see role-based dashboards.",
+          why: "",
+          how: [
+            "FastAPI and PostgreSQL backend with JWT authentication and invitation-based onboarding.",
+            "Role-based dashboards for employees and admins, with a React and Vite frontend.",
+            "A background job emails each employee a reminder the day before their next check-in.",
+            "One command starts the backend and frontend together, for development or a production-like run."
+          ]
+        },
         links: [{ label: "Code", href: "https://github.com/MadLad10/Depression_detection" }]
       }
     ]
