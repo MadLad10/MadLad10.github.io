@@ -518,32 +518,8 @@ a { color: inherit; }
   font-size: 0.875rem;
 }
 
-/* heading tape: ticks scroll under a fixed amber caret */
-.hud__tape {
-  --tape-x: 0px;
-  position: relative;
-  width: 72px;
-  height: 12px;
-  background-image:
-    linear-gradient(to right, var(--foam-200) 1px, transparent 1px),
-    linear-gradient(to right, var(--text) 1px, transparent 1px);
-  background-size: 6px 5px, 36px 11px;
-  background-repeat: repeat-x;
-  background-position: var(--tape-x) 100%, var(--tape-x) 100%;
-  -webkit-mask-image: linear-gradient(to right, transparent, #000 25%, #000 75%, transparent);
-  mask-image: linear-gradient(to right, transparent, #000 25%, #000 75%, transparent);
-}
-.hud__tape::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 0;
-  width: 2px;
-  height: 100%;
-  margin-left: -1px;
-  background: var(--amber);
-}
-
+.hud__trophy { display: flex; }
+.hud__trophy svg { width: 16px; height: 16px; }
 .hud__batt { color: var(--foam-200); }
 .hud__batt-cells { fill: var(--amber); }
 
@@ -633,7 +609,6 @@ a { color: inherit; }
   .hud--tl { left: 10px; }
   .hud--tr, .hud--br { right: 10px; }
   .hud--br { bottom: 10px; }
-  .hud__tape { width: 48px; }
 }
 
 @media (max-width: 380px) {

@@ -60,14 +60,14 @@ window.CONTENT = {
     facts: [] // short facts under the buttons, e.g. ["CGPA 3.96"]; empty hides the row
   },
 
-  // Small readouts around the pixel scene.
+  // Small readouts around the pixel scene. Depth follows the scroll; the other two are real numbers.
   hud: {
     depthLabel: "Depth",
     depthUnit: "m",
-    headingLabel: "Hdg",
-    heading: 87,
-    batteryLabel: "Batt",
-    battery: "92%",
+    rankLabel: "RoboSub",
+    rank: "8th / 58", // top right, next to a trophy
+    gaugeLabel: "CGPA",
+    gauge: "3.96", // bottom right, in the battery: its four cells stand for the 4.0 scale
     status: "Mission: join a research team",
     detection: { label: "auv", confidence: 0.99 }
   },

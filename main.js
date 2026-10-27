@@ -385,6 +385,8 @@
       fill(facts, (hero.facts || []).map(function (f) { return el("li", null, f); }));
       facts.hidden = !(hero.facts && hero.facts.length);
     }
+    var trophy = $("#hud-trophy");
+    if (trophy) trophy.innerHTML = spriteSVG(ICONS.trophy);
 
     // About
     var about = C.about || {};
@@ -909,12 +911,9 @@
     var ctx = canvas.getContext("2d", { alpha: false });
     var detect = opt.detect ? $(".detect", section) : null;
     var detectLabel = detect ? $(".detect__label", detect) : null;
-    var tape = $(".hud__tape", section);
-    var headingOut = $('[data-hud="heading"]', section);
 
     var hud = C.hud || {};
     var det = hud.detection || { label: "auv", confidence: 0.99 };
-    var heading0 = Number(hud.heading) || 87;
 
     var W = 0, H = 0, S = 4, img = null, buf = null;
     var RAMP = [], COL = [];
@@ -925,7 +924,7 @@
     var par = { x: 0, y: 0, tx: 0, ty: 0 };
     var timers = { auv: 0, amb: 0, conf: 0, jit: 0 };
     var conf = det.confidence, jit = [0, 0, 0, 0];
-    var lastBox = "", lastHeading = -1, lastLabel = "";
+    var lastBox = "", lastLabel = "";
 
     function readPalette() {
       RAMP = opt.ramp.map(function (n) { return pack(cssVar(n)); });
@@ -1229,13 +1228,6 @@
     }
 
     function updateHud() {
-      var hdg = Math.round(heading0 + Math.sin(t * 0.3) * 3 + par.x * 4);
-      if (hdg !== lastHeading && headingOut) {
-        lastHeading = hdg;
-        var shown = ((hdg % 360) + 360) % 360;
-        headingOut.textContent = ("00" + shown).slice(-3) + "°";
-        if (tape) tape.style.setProperty("--tape-x", -hdg * 1.2 + "px");
-      }
       var label = det.label + " " + conf.toFixed(2);
       if (label !== lastLabel) {
         lastLabel = label;
