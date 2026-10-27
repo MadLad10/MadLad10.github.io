@@ -176,6 +176,39 @@ window.CONTENT = {
     // pixel "no signal" screen with `icon` (code, agent, eye, robot, chip, db, screen, tool).
     more: [
       {
+        title: "Camera–Sonar Perception",
+        kind: "Sensor fusion",
+        summary: "Fuses camera detections with forward-looking sonar to track underwater objects, keeping their positions and labels when one sensor fails and flagging phantom sonar targets.",
+        stat: { label: "Murky-water runs completed", value: "10/10" },
+        tags: ["YOLO", "Imaging sonar", "Multi-object tracking", "Hungarian assignment"],
+        image: "assets/projects/camera-sonar.mp4",
+        alt: "Camera view with a YOLO gate detection next to a sonar fan image with detected buoys",
+        detect: { label: "sonar_fusion", confidence: 0.97 },
+        links: [{ label: "Code", href: "https://github.com/MadLad10/Camera-Sonar-Perception-Underwater-Object-Detection-and-Fusion-Tracking" }]
+      },
+      {
+        title: "AUV Navigation Fusion",
+        kind: "State estimation",
+        summary: "Estimates an underwater robot's position, velocity and heading from IMU, DVL, depth and compass, and keeps navigating through DVL dropouts with sonar wall ranges and a learned velocity model.",
+        stat: { label: "Error after DVL loss", value: "2.07 → 0.03 m" },
+        tags: ["EKF", "GTSAM / iSAM2", "GRU", "Sensor fusion"],
+        image: "assets/projects/nav-fusion.mp4",
+        alt: "Plots of position estimates and error: the plain EKF drifts after the DVL is lost while the wall-assisted EKF stays on the true path",
+        detect: { label: "nav_fusion", confidence: 0.96 },
+        links: [{ label: "Code", href: "https://github.com/MadLad10/AUV-Navigation-Fusion-Underwater-State-Estimation-and-Sensor-Recovery" }]
+      },
+      {
+        title: "MuJoCo Marine Sim",
+        kind: "Robot simulation",
+        summary: "Underwater vehicle simulator with six thrusters, buoyancy, drag and currents, simulated camera, sonar, DVL and IMU, scheduled sensor faults and automatic YOLO labels.",
+        stat: { label: "Injectable fault types", value: "11" },
+        tags: ["MuJoCo", "Fault injection", "Synthetic data", "pytest"],
+        image: "assets/projects/marine-sim.mp4",
+        alt: "Simulated AUV front camera facing a gate, beside a ground-truth view of the pool with the gate and buoys",
+        detect: { label: "marine_sim", confidence: 0.95 },
+        links: [{ label: "Code", href: "https://github.com/MadLad10/MuJoCo-Marine-Sim-Underwater-Vehicle-Dynamics-Sensors-and-Fault-Injection" }]
+      },
+      {
         title: "Pinstagram",
         kind: "Full-stack + AI",
         summary: "Instagram-style app for discovering places in Bangladesh, with a map, reviews, bus and ride-hail directions, semantic search and an AI trip agent.",
