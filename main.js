@@ -541,6 +541,7 @@
       more.setAttribute("aria-label", "Read more about " + p.title);
       more.addEventListener("click", function () { openBrief(p); });
       links.appendChild(more);
+      li.classList.add("card--brief");
       // the picture opens it too, for anyone who clicks there first
       m.classList.add("card__media--open");
       m.addEventListener("click", function () { openBrief(p); });
