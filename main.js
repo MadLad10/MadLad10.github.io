@@ -244,18 +244,32 @@
       ".www...",
       "..www.."
     ],
-    compass: [
+    cube: [
       "............",
-      "....wwww....",
-      "..ww.aa.ww..",
-      ".w...aa...w.",
-      ".w..aaaa..w.",
-      "w...aaaa...w",
-      "w...gggg...w",
-      ".w..gggg..w.",
-      ".w...gg...w.",
-      "..ww.gg.ww..",
-      "....wwww....",
+      ".....cc.....",
+      "...cccccc...",
+      ".cccccccccc.",
+      ".ttccccccgg.",
+      ".ttttccgggg.",
+      ".tttttggggg.",
+      ".tttttggggg.",
+      ".tttttggggg.",
+      "...tttggg...",
+      ".....tg.....",
+      "............"
+    ],
+    cross: [
+      "............",
+      "....cccc....",
+      "....cccc....",
+      "....cccc....",
+      ".cccccccccc.",
+      ".cccccccccc.",
+      ".cccccccccc.",
+      ".cccccccccc.",
+      "....cccc....",
+      "....cccc....",
+      "....cccc....",
       "............"
     ],
     marker: [

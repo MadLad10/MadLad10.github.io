@@ -448,36 +448,28 @@ window.CONTENT = {
   },
 
   // Research interests, between About and Experience.
-  // icon: eye, compass, agent, screen, robot, chip, code, db or tool.
-  // projects: project titles exactly as written in `projects` below; each becomes a button that opens its brief.
+  // icon: eye, cube, cross, agent, screen, robot, chip, code, db or tool.
+  // projects (optional): project titles exactly as written in `projects` below; each becomes a button that opens its brief.
   research: {
     title: "Research interests",
-    lede: "The questions I keep coming back to, and the projects where I've worked on them.",
+    lede: "The problems I want to work on, and the projects that led me there.",
     builtLabel: "Explored in",
     items: [
       {
         icon: "eye",
-        title: "Perception that holds up in bad conditions",
-        text: "How can a robot keep seeing when the water turns murky, the weather turns or a sensor fails? I fuse camera and sonar, train detectors on generated bad weather, and make models small enough to run in real time on board.",
-        projects: ["Camera–Sonar Perception", "Weather-Robust Object Detection with GANs", "AUV Vision Pipeline"]
+        title: "Underwater domain generalization and perception",
+        text: "A detector trained in one pool often fails in the next, because colour, turbidity and light change from water to water. I'm interested in underwater perception that holds up in water it has never seen, through physics-based augmentation, synthetic data and more than one sensor.",
+        projects: ["AUV Vision Pipeline", "Camera–Sonar Perception", "MuJoCo Marine Sim"]
       },
       {
-        icon: "compass",
-        title: "Navigation when sensors drop out",
-        text: "Underwater there is no GPS, and the DVL that measures speed over the seabed can lose lock. I work on state estimation that stays accurate through those gaps, with sensor fusion and learned motion models.",
-        projects: ["AUV Navigation Fusion", "Agentic AUV"]
+        icon: "cube",
+        title: "Feedforward 3D CNNs",
+        text: "Networks that understand 3D structure in a single forward pass, fast enough to use in real time."
       },
       {
-        icon: "agent",
-        title: "AI agents you can trust",
-        text: "LLMs make plain-English control possible, but they can misunderstand, make things up or be manipulated. I build agents that act only through safe tools and fixed rules, and check what they did against ground truth.",
-        projects: ["Agentic AUV", "AUV LLM Mission Planner", "bari"]
-      },
-      {
-        icon: "screen",
-        title: "Simulation for testing autonomy",
-        text: "Testing in water is slow and failures are costly. I build simulators that inject sensor faults on a schedule and label their own data, so autonomy can be stress-tested before it gets wet.",
-        projects: ["MuJoCo Marine Sim", "AUV LLM Mission Planner"]
+        icon: "cross",
+        title: "Medical imaging and multimodal data",
+        text: "Learning from medical images together with other kinds of data, so each source covers what the others miss. It's the same fusion problem as camera and sonar, where getting it right matters directly to people."
       }
     ]
   },

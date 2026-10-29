@@ -1005,7 +1005,7 @@ a { color: inherit; }
 
 .interests {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr);
   gap: 24px;
   margin: 0;
   padding: 0;
@@ -1878,7 +1878,8 @@ html:has(.brief[open]) { overflow: hidden; }
 /* ---------- Narrow screens (sections) ---------- */
 
 @media (min-width: 1200px) {
-  .cards { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .cards,
+  .interests { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
 @media (max-width: 899px) {
@@ -1887,7 +1888,7 @@ html:has(.brief[open]) { overflow: hidden; }
   .edu,
   .seabed__inner { grid-template-columns: minmax(0, 1fr); }
   .cards { grid-template-columns: minmax(0, 1fr); gap: 32px; }
-  .interests { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .interests { gap: 16px; }
   .awards { grid-template-columns: minmax(0, 1fr); }
   .seabed__dock { height: 40px; }
 }
