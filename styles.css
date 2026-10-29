@@ -1001,30 +1001,68 @@ a { color: inherit; }
   line-height: 1.35;
 }
 
-/* ---------- Research interests ---------- */
+/* ---------- Research interests: contacts on a sonar scope ---------- */
 
-.interests {
+.sonar {
   display: grid;
-  gap: 0.9rem;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(32px, 5vw, 72px);
+}
+.sonar__screen {
+  position: relative;
+  width: 324px;           /* 81 px canvas at 4x */
+  height: 324px;
+}
+.sonar__scope {
+  display: block;
+  width: 100%;
+  height: 100%;
+  image-rendering: crisp-edges;
+  image-rendering: pixelated;
+}
+/* contact number next to each blip; main.js places it */
+.sonar__tag {
+  position: absolute;
+  transform: translate(22px, -50%);   /* clear of the blip's ring */
+  color: var(--text-dim);
+  font: 400 0.625rem/1 var(--font-hud);
+  letter-spacing: 0.05em;
+  pointer-events: none;
+}
+.sonar__tag.is-lit { color: var(--amber); }
+
+.contacts {
+  display: grid;
+  gap: 0.75rem;
   margin: 0;
   padding: 0;
   list-style: none;
 }
-.interest {
-  position: relative;
-  padding-left: 1.5rem;
-  font: 400 1.75rem/1.15 var(--font-pixel);
-  text-wrap: pretty;
+.contact {
+  display: grid;
+  gap: 0.5rem;
+  padding: 0.95rem 1.2rem;
+  border-left: 3px solid var(--line);
+  transition: border-color 0.35s, background-color 0.35s;
 }
-.interest::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0.4em;
-  width: 10px;
-  height: 10px;
-  background: var(--amber);
+.contact__tag {
+  color: var(--cyan);
+  font: 400 0.6875rem/1 var(--font-hud);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: color 0.35s;
 }
+.contact__name {
+  font: 400 clamp(1.6rem, 1.25rem + 1vw, 2.25rem)/1.1 var(--font-pixel);
+  text-wrap: balance;
+}
+/* the sweep just passed this contact's blip (or the pointer is on it) */
+.contact.is-lit {
+  border-left-color: var(--amber);
+  background-color: color-mix(in srgb, var(--amber) 10%, transparent);
+}
+.contact.is-lit .contact__tag { color: var(--amber); }
 
 /* ---------- Projects: level cards ---------- */
 
@@ -1853,6 +1891,7 @@ html:has(.brief[open]) { overflow: hidden; }
   .edu,
   .seabed__inner { grid-template-columns: minmax(0, 1fr); }
   .cards { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+  .sonar { grid-template-columns: minmax(0, 1fr); }
   .awards { grid-template-columns: minmax(0, 1fr); }
   .seabed__dock { height: 40px; }
 }
@@ -1868,6 +1907,7 @@ html:has(.brief[open]) { overflow: hidden; }
   .idcard__name { font-size: 1.5rem; }
   .featured__stats li { padding: 0.85rem; }
   .card__body { padding: 1.1rem 1.1rem 1.25rem; }
+  .sonar__screen { width: 243px; height: 243px; }  /* 3x */
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1900,7 +1940,7 @@ html:has(.brief[open]) { overflow: hidden; }
   .skip-link, .topbar, .meter, .scene-canvas, .snow, .hero__fx, .detect, .hero__stage,
   .hero__actions, .idcard__links, .chip, .zone__tag, .zone__lede, .zone__kicker, .slot,
   .idcard__photo, .idcard__band, .idcard__name, .card__media, .card__det, .card__brief, .brief,
-  .transmission__actions, .seabed__dock, .footer a, .zone::before { display: none !important; }
+  .transmission__actions, .seabed__dock, .sonar__screen, .contact__tag, .footer a, .zone::before { display: none !important; }
 
   .hero, .zone, .seabed { min-height: 0 !important; padding: 0 !important; overflow: visible !important; }
   .hero__inner, .zone__inner, .seabed__inner, .footer__inner {
@@ -1931,7 +1971,7 @@ html:has(.brief[open]) { overflow: hidden; }
   .log__entry { display: block !important; }
   .edu__head { display: block !important; margin: 0 !important; }
   .edu__grade { font-size: 10pt !important; padding: 0 !important; }
-  .about, .mission, .cards, .interests, .edu, .inventory, .awards {
+  .about, .mission, .cards, .sonar, .edu, .inventory, .awards {
     display: block !important;
     margin: 0 !important;
   }

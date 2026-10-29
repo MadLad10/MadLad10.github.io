@@ -445,7 +445,14 @@
 
     // Research interests
     var rs = C.research || {};
-    fill($("#research-list"), (rs.items || []).map(function (t) { return el("li", "interest", t); }));
+    fill($("#research-list"), (rs.items || []).map(function (t, i) {
+      var li = el("li", "contact");
+      var tag = el("span", "contact__tag", (rs.contactLabel || "Contact") + " " + ("0" + (i + 1)).slice(-2));
+      tag.setAttribute("aria-hidden", "true");
+      li.appendChild(tag);
+      li.appendChild(el("span", "contact__name", t));
+      return li;
+    }));
     var rsSection = $("#research");
     if (rsSection) rsSection.hidden = !(rs.items && rs.items.length);
 
@@ -1663,6 +1670,136 @@
   }
 
   /* ------------------------------------------------------------
+     4c2. Research interests: contacts on a sonar scope
+     The sweep lights each blip in turn, and the matching topic with it.
+     ------------------------------------------------------------ */
+  function sonar() {
+    var canvas = $("#sonar-scope");
+    var items = $$("#research-list .contact");
+    if (!canvas || !items.length) return;
+    var ctx = canvas.getContext("2d");
+    var W = canvas.width, c = (W - 1) / 2, R = c - 1;
+    var TAU = Math.PI * 2, TRAIL = 1.1, BAYER = [0, 0.5, 0.75, 0.25];
+    var period = Math.max(6, items.length * 2); // seconds per turn
+    var img = ctx.createImageData(W, W), buf = new Uint32Array(img.data.buffer);
+    function px(name) { return pack(cssVar(name)); }
+    var RAMP = ["--navy-950", "--deep-1", "--water-8", "--water-6", "--water-4", "--turquoise", "--cyan"].map(px);
+    var BG = RAMP[0], LINE = px("--water-7"), RIM = px("--water-5");
+    var HOT = px("--amber-light"), WARM = px("--amber"), COOL = px("--amber-deep"), DIM = px("--water-5");
+
+    // per pixel: bearing (0 at the top, clockwise; -1 outside the scope), grid line or not
+    var ang = new Float32Array(W * W), grid = new Uint8Array(W * W), base = new Uint32Array(W * W);
+    for (var y = 0; y < W; y++) {
+      for (var x = 0; x < W; x++) {
+        var dx = x - c, dy = y - c, r = Math.sqrt(dx * dx + dy * dy), i = y * W + x;
+        if (r > R + 0.5) { ang[i] = -1; continue; }
+        ang[i] = (Math.atan2(dx, -dy) + TAU) % TAU;
+        var rim = r > R - 0.5;
+        grid[i] = rim || Math.abs(r - R / 3) < 0.5 || Math.abs(r - R * 2 / 3) < 0.5 || dx === 0 || dy === 0 ? 1 : 0;
+        base[i] = rim ? RIM : grid[i] ? LINE : BG;
+      }
+    }
+
+    var RADII = [0.62, 0.36, 0.82, 0.5, 0.72];
+    var screen = canvas.parentNode;
+    var blips = items.map(function (li, j) {
+      var a = ((j + 0.35) / items.length) * TAU, rr = RADII[j % RADII.length] * R;
+      var b = { a: a, x: Math.round(c + Math.sin(a) * rr), y: Math.round(c - Math.cos(a) * rr), li: li, lit: false };
+      b.tag = el("span", "sonar__tag", ("0" + (j + 1)).slice(-2));
+      b.tag.style.left = ((b.x + 0.5) / W) * 100 + "%";
+      b.tag.style.top = ((b.y + 0.5) / W) * 100 + "%";
+      screen.appendChild(b.tag);
+      return b;
+    });
+
+    function plot(x, y, color) {
+      if (x >= 0 && y >= 0 && x < W && y < W && ang[y * W + x] >= 0) buf[y * W + x] = color;
+    }
+    function ring(b, radius, color) {
+      var m = Math.ceil(radius) + 1;
+      for (var oy = -m; oy <= m; oy++) {
+        for (var ox = -m; ox <= m; ox++) {
+          if (Math.abs(Math.sqrt(ox * ox + oy * oy) - radius) < 0.5) plot(b.x + ox, b.y + oy, color);
+        }
+      }
+    }
+
+    var hover = -1;
+    function draw(theta, still) {
+      for (var i = 0; i < buf.length; i++) {
+        var a = ang[i];
+        if (a < 0) { buf[i] = 0; continue; }
+        var d = (theta - a + TAU) % TAU;
+        if (d < TRAIL) {
+          var k = 1 - d / TRAIL, x = i % W, y = (i / W) | 0;
+          var idx = Math.min(RAMP.length - 1, Math.floor(k * (RAMP.length - 1) + BAYER[(y & 1) * 2 + (x & 1)]) + grid[i]);
+          buf[i] = idx > 0 ? RAMP[idx] : base[i];
+        } else {
+          buf[i] = base[i];
+        }
+      }
+      blips.forEach(function (b, j) {
+        var f = ((theta - b.a + TAU) % TAU) / TAU; // 0 right after the sweep passes
+        var on = j === hover;
+        var color = still ? (on ? HOT : WARM) : on || f < 0.1 ? HOT : f < 0.45 ? WARM : f < 0.8 ? COOL : DIM;
+        if (on) ring(b, 3, COOL);
+        else if (!still && f < 0.12) ring(b, 2 + (f / 0.12) * 4, COOL);
+        plot(b.x, b.y, color);
+        plot(b.x - 1, b.y, color);
+        plot(b.x + 1, b.y, color);
+        plot(b.x, b.y - 1, color);
+        plot(b.x, b.y + 1, color);
+        var lit = on || (!still && f < 0.32);
+        if (lit !== b.lit) {
+          b.lit = lit;
+          b.li.classList.toggle("is-lit", lit);
+          b.tag.classList.toggle("is-lit", lit);
+        }
+      });
+      ctx.putImageData(img, 0, 0);
+    }
+
+    var t0 = performance.now(), rafId = 0, last = 0, running = false, onScreen = false;
+    function frame(now) {
+      rafId = requestAnimationFrame(frame);
+      if (now - last < 33) return; // ~30 fps is plenty for a sweep
+      last = now;
+      draw((((now - t0) / 1000 / period) % 1) * TAU, false);
+    }
+    function start() {
+      if (running || !onScreen || document.hidden || reduceMQ.matches) return;
+      running = true;
+      rafId = requestAnimationFrame(frame);
+    }
+    function stop() {
+      running = false;
+      cancelAnimationFrame(rafId);
+    }
+    function still() { draw(TAU * 0.6, true); }
+
+    items.forEach(function (li, j) {
+      li.addEventListener("mouseenter", function () { hover = j; if (!running) still(); });
+      li.addEventListener("mouseleave", function () { hover = -1; if (!running) still(); });
+    });
+    still();
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(function (entries) {
+        onScreen = entries[0].isIntersecting;
+        onScreen ? start() : stop();
+      }).observe(canvas);
+    } else {
+      onScreen = true;
+      start();
+    }
+    document.addEventListener("visibilitychange", function () { document.hidden ? stop() : start(); });
+    if (reduceMQ.addEventListener) {
+      reduceMQ.addEventListener("change", function () {
+        if (reduceMQ.matches) { stop(); still(); } else start();
+      });
+    }
+  }
+
+  /* ------------------------------------------------------------
      4d. Marine snow in the middle sections
      One low-res canvas fixed to the viewport, drawn *under* the section
      content (zone__inner sits above it), only between About and Contact.
@@ -1827,6 +1964,7 @@
   briefDialog();
   copyEmail();
   photoReveal();
+  sonar();
 
   var heroScene = null;
   [["hero", ".hero"], ["seabed", ".seabed"]].forEach(function (s) {

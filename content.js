@@ -448,9 +448,11 @@ window.CONTENT = {
   },
 
   // Research interests, between About and Experience.
+  // Shown as contacts on a sonar scope: the sweep lights each one in turn.
   research: {
     title: "Research interests",
     lede: "", // one line under the title; "" hides it
+    contactLabel: "Contact", // small tag above each topic: "Contact 01", "Contact 02"...
     items: [
       "Underwater domain generalization and perception",
       "Feedforward 3D CNNs",
