@@ -67,7 +67,7 @@ window.CONTENT = {
     depthUnit: "m",
     cgpaLabel: "CGPA",
     cgpa: "3.96 / 4.0", // top left, next to a graduation cap
-    clockLabel: "Dhaka", // bottom right: your local time, with a sun by day and a moon by night
+    clockLabel: "Dhaka", // top right: your local time, with a sun by day and a moon by night
     clockOffset: 6, // hours ahead of UTC (Bangladesh has no daylight saving)
     // Bottom bar: typed out one line at a time, on a loop. With reduced motion only the first line shows.
     status: [
