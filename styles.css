@@ -1005,60 +1005,26 @@ a { color: inherit; }
 
 .interests {
   display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 24px;
+  gap: 0.9rem;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 .interest {
-  padding: 1.3rem 1.35rem 1.4rem;
-  background: rgba(6, 13, 34, 0.5);
-  border: 1px solid rgba(94, 240, 255, 0.18);
+  position: relative;
+  padding-left: 1.5rem;
+  font: 400 1.75rem/1.15 var(--font-pixel);
+  text-wrap: pretty;
 }
-.interest__head {
-  display: flex;
-  align-items: center;
-  gap: 0.95rem;
+.interest::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.4em;
+  width: 10px;
+  height: 10px;
+  background: var(--amber);
 }
-.interest__title {
-  margin: 0;
-  font: 400 1.75rem/1.05 var(--font-pixel);
-  text-wrap: balance;
-}
-.interest__text {
-  margin: 0.9rem 0 0;
-  line-height: 1.6;
-}
-.interest__built {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.4rem;
-  margin-top: 1rem;
-}
-.interest__label {
-  margin-right: 0.35rem;
-  color: var(--cyan);
-  font: 400 0.6875rem/1 var(--font-hud);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-/* looks like a tag, opens the project's brief */
-.interest__project {
-  padding: 0.2rem 0.5rem;
-  background: none;
-  border: 1px solid rgba(94, 240, 255, 0.22);
-  color: var(--foam-100);
-  font: inherit;
-  font-size: 0.8125rem;
-  line-height: 1.4;
-  text-align: left;
-  text-decoration: none;
-  cursor: pointer;
-}
-.interest__project:hover,
-.interest__project:focus-visible { color: var(--amber); border-color: var(--amber); }
 
 /* ---------- Projects: level cards ---------- */
 
@@ -1878,8 +1844,7 @@ html:has(.brief[open]) { overflow: hidden; }
 /* ---------- Narrow screens (sections) ---------- */
 
 @media (min-width: 1200px) {
-  .cards,
-  .interests { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .cards { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
 @media (max-width: 899px) {
@@ -1888,7 +1853,6 @@ html:has(.brief[open]) { overflow: hidden; }
   .edu,
   .seabed__inner { grid-template-columns: minmax(0, 1fr); }
   .cards { grid-template-columns: minmax(0, 1fr); gap: 32px; }
-  .interests { gap: 16px; }
   .awards { grid-template-columns: minmax(0, 1fr); }
   .seabed__dock { height: 40px; }
 }
@@ -1971,7 +1935,7 @@ html:has(.brief[open]) { overflow: hidden; }
     display: block !important;
     margin: 0 !important;
   }
-  .idcard, .card, .interest, .slotbox, .award, .transmission, .featured__stats li, .edu__card, .mission {
+  .idcard, .card, .slotbox, .award, .transmission, .featured__stats li, .edu__card, .mission {
     border: 0 !important;
     padding: 0 !important;
     margin: 0 0 6pt !important;

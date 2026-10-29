@@ -244,34 +244,6 @@
       ".www...",
       "..www.."
     ],
-    cube: [
-      "............",
-      ".....cc.....",
-      "...cccccc...",
-      ".cccccccccc.",
-      ".ttccccccgg.",
-      ".ttttccgggg.",
-      ".tttttggggg.",
-      ".tttttggggg.",
-      ".tttttggggg.",
-      "...tttggg...",
-      ".....tg.....",
-      "............"
-    ],
-    cross: [
-      "............",
-      "....cccc....",
-      "....cccc....",
-      "....cccc....",
-      ".cccccccccc.",
-      ".cccccccccc.",
-      ".cccccccccc.",
-      ".cccccccccc.",
-      "....cccc....",
-      "....cccc....",
-      "....cccc....",
-      "............"
-    ],
     marker: [
       "....a....",
       "...pppp..",
@@ -469,43 +441,11 @@
 
     // Projects
     var pr = C.projects || {};
-    var allProjects = (pr.featured || []).concat(pr.more || []);
-    fill($("#project-cards"), allProjects.map(projectCard));
+    fill($("#project-cards"), (pr.featured || []).concat(pr.more || []).map(projectCard));
 
-    // Research interests, each with the projects that explore it
+    // Research interests
     var rs = C.research || {};
-    fill($("#research-list"), (rs.items || []).map(function (r) {
-      var li = el("li", "interest");
-      var head = el("div", "interest__head");
-      var icon = el("span", "slotbox__icon");
-      icon.innerHTML = spriteSVG(ICONS[r.icon] || ICONS.code);
-      head.appendChild(icon);
-      head.appendChild(el("h3", "interest__title", r.title));
-      li.appendChild(head);
-      li.appendChild(el("p", "interest__text", r.text));
-      var ps = (r.projects || []).map(function (name) {
-        return allProjects.filter(function (p) { return p.title === name; })[0];
-      }).filter(Boolean);
-      if (ps.length) {
-        var row = el("div", "interest__built");
-        row.appendChild(el("span", "interest__label", rs.builtLabel || "Explored in"));
-        ps.forEach(function (p) {
-          var b;
-          if (p.brief) {
-            b = el("button", "interest__project", p.title);
-            b.type = "button";
-            b.setAttribute("aria-label", "Read more about " + p.title);
-            b.addEventListener("click", function () { openBrief(p); });
-          } else {
-            b = el("a", "interest__project", p.title);
-            b.href = "#projects";
-          }
-          row.appendChild(b);
-        });
-        li.appendChild(row);
-      }
-      return li;
-    }));
+    fill($("#research-list"), (rs.items || []).map(function (t) { return el("li", "interest", t); }));
     var rsSection = $("#research");
     if (rsSection) rsSection.hidden = !(rs.items && rs.items.length);
 

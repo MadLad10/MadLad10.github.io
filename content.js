@@ -448,29 +448,13 @@ window.CONTENT = {
   },
 
   // Research interests, between About and Experience.
-  // icon: eye, cube, cross, agent, screen, robot, chip, code, db or tool.
-  // projects (optional): project titles exactly as written in `projects` below; each becomes a button that opens its brief.
   research: {
     title: "Research interests",
-    lede: "The problems I want to work on, and the projects that led me there.",
-    builtLabel: "Explored in",
+    lede: "", // one line under the title; "" hides it
     items: [
-      {
-        icon: "eye",
-        title: "Underwater domain generalization and perception",
-        text: "A detector trained in one pool often fails in the next, because colour, turbidity and light change from water to water. I'm interested in underwater perception that holds up in water it has never seen, through physics-based augmentation, synthetic data and more than one sensor.",
-        projects: ["AUV Vision Pipeline", "Camera–Sonar Perception", "MuJoCo Marine Sim"]
-      },
-      {
-        icon: "cube",
-        title: "Feedforward 3D CNNs",
-        text: "Networks that understand 3D structure in a single forward pass, fast enough to use in real time."
-      },
-      {
-        icon: "cross",
-        title: "Medical imaging and multimodal data",
-        text: "Learning from medical images together with other kinds of data, so each source covers what the others miss. It's the same fusion problem as camera and sonar, where getting it right matters directly to people."
-      }
+      "Underwater domain generalization and perception",
+      "Feedforward 3D CNNs",
+      "Medical imaging and multimodal data"
     ]
   },
 
