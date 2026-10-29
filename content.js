@@ -37,6 +37,7 @@ window.CONTENT = {
   zones: [
     { id: "top", label: "Surface", depth: 0 },
     { id: "about", label: "About", depth: 20 },
+    { id: "research", label: "Research", depth: 70 },
     { id: "experience", label: "Experience", depth: 120 },
     { id: "education", label: "Education", depth: 220 },
     { id: "projects", label: "Projects", depth: 350 },
@@ -442,6 +443,41 @@ window.CONTENT = {
           ]
         },
         links: [{ label: "Code", href: "https://github.com/MadLad10/Depression_detection" }]
+      }
+    ]
+  },
+
+  // Research interests, between About and Experience.
+  // icon: eye, compass, agent, screen, robot, chip, code, db or tool.
+  // projects: project titles exactly as written in `projects` below; each becomes a button that opens its brief.
+  research: {
+    title: "Research interests",
+    lede: "The questions I keep coming back to, and the projects where I've worked on them.",
+    builtLabel: "Explored in",
+    items: [
+      {
+        icon: "eye",
+        title: "Perception that holds up in bad conditions",
+        text: "How can a robot keep seeing when the water turns murky, the weather turns or a sensor fails? I fuse camera and sonar, train detectors on generated bad weather, and make models small enough to run in real time on board.",
+        projects: ["Camera–Sonar Perception", "Weather-Robust Object Detection with GANs", "AUV Vision Pipeline"]
+      },
+      {
+        icon: "compass",
+        title: "Navigation when sensors drop out",
+        text: "Underwater there is no GPS, and the DVL that measures speed over the seabed can lose lock. I work on state estimation that stays accurate through those gaps, with sensor fusion and learned motion models.",
+        projects: ["AUV Navigation Fusion", "Agentic AUV"]
+      },
+      {
+        icon: "agent",
+        title: "AI agents you can trust",
+        text: "LLMs make plain-English control possible, but they can misunderstand, make things up or be manipulated. I build agents that act only through safe tools and fixed rules, and check what they did against ground truth.",
+        projects: ["Agentic AUV", "AUV LLM Mission Planner", "bari"]
+      },
+      {
+        icon: "screen",
+        title: "Simulation for testing autonomy",
+        text: "Testing in water is slow and failures are costly. I build simulators that inject sensor faults on a schedule and label their own data, so autonomy can be stress-tested before it gets wet.",
+        projects: ["MuJoCo Marine Sim", "AUV LLM Mission Planner"]
       }
     ]
   },

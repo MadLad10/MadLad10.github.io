@@ -675,9 +675,10 @@ a { color: inherit; }
     conic-gradient(var(--zone-prev) 0 25%, transparent 0 50%, var(--zone-prev) 0 75%, transparent 0) 0 var(--cell) / var(--cell) var(--cell) repeat-x,
     conic-gradient(var(--zone-prev) 0 25%, transparent 0) 0 calc(var(--cell) * 2) / var(--cell) var(--cell) repeat-x;
 }
-/* page order: about, experience, education, projects, skills, awards */
+/* page order: about, research, experience, education, projects, skills, awards */
 .zone--about    { --zone-bg: var(--water-7); --zone-prev: var(--water-6); }
-.zone--log      { --zone-bg: var(--water-8); --zone-prev: var(--water-7); }
+.zone--research { --zone-bg: color-mix(in srgb, var(--water-7), var(--water-8)); --zone-prev: var(--water-7); }
+.zone--log      { --zone-bg: var(--water-8); --zone-prev: color-mix(in srgb, var(--water-7), var(--water-8)); }
 .zone--edu      { --zone-bg: var(--water-9); --zone-prev: var(--water-8); }
 .zone--projects { --zone-bg: var(--deep-1);  --zone-prev: var(--water-9); }
 .zone--skills   { --zone-bg: var(--deep-2);  --zone-prev: var(--deep-1); }
@@ -999,6 +1000,65 @@ a { color: inherit; }
   font-size: 0.875rem;
   line-height: 1.35;
 }
+
+/* ---------- Research interests ---------- */
+
+.interests {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.interest {
+  padding: 1.3rem 1.35rem 1.4rem;
+  background: rgba(6, 13, 34, 0.5);
+  border: 1px solid rgba(94, 240, 255, 0.18);
+}
+.interest__head {
+  display: flex;
+  align-items: center;
+  gap: 0.95rem;
+}
+.interest__title {
+  margin: 0;
+  font: 400 1.75rem/1.05 var(--font-pixel);
+  text-wrap: balance;
+}
+.interest__text {
+  margin: 0.9rem 0 0;
+  line-height: 1.6;
+}
+.interest__built {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 1rem;
+}
+.interest__label {
+  margin-right: 0.35rem;
+  color: var(--cyan);
+  font: 400 0.6875rem/1 var(--font-hud);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+/* looks like a tag, opens the project's brief */
+.interest__project {
+  padding: 0.2rem 0.5rem;
+  background: none;
+  border: 1px solid rgba(94, 240, 255, 0.22);
+  color: var(--foam-100);
+  font: inherit;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+.interest__project:hover,
+.interest__project:focus-visible { color: var(--amber); border-color: var(--amber); }
 
 /* ---------- Projects: level cards ---------- */
 
@@ -1827,6 +1887,7 @@ html:has(.brief[open]) { overflow: hidden; }
   .edu,
   .seabed__inner { grid-template-columns: minmax(0, 1fr); }
   .cards { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+  .interests { grid-template-columns: minmax(0, 1fr); gap: 16px; }
   .awards { grid-template-columns: minmax(0, 1fr); }
   .seabed__dock { height: 40px; }
 }
@@ -1905,11 +1966,11 @@ html:has(.brief[open]) { overflow: hidden; }
   .log__entry { display: block !important; }
   .edu__head { display: block !important; margin: 0 !important; }
   .edu__grade { font-size: 10pt !important; padding: 0 !important; }
-  .about, .mission, .cards, .edu, .inventory, .awards {
+  .about, .mission, .cards, .interests, .edu, .inventory, .awards {
     display: block !important;
     margin: 0 !important;
   }
-  .idcard, .card, .slotbox, .award, .transmission, .featured__stats li, .edu__card, .mission {
+  .idcard, .card, .interest, .slotbox, .award, .transmission, .featured__stats li, .edu__card, .mission {
     border: 0 !important;
     padding: 0 !important;
     margin: 0 0 6pt !important;
