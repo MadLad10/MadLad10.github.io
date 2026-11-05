@@ -346,7 +346,7 @@ window.CONTENT = {
           ],
           results: [
             "DVL lost: average error of 2.07 m with the plain EKF, against 0.03 m with wall ranges (replay, 3 seeds).",
-            "In 400 integrated missions with the compass disturbed, the DVL lost and long pauses: 35.9 m error down to 0.45 m with the full recovery stack.",
+            "In the 400-mission integrated study, the hardest condition (compass disturbed, DVL lost and 60 s pauses) went from 35.9 m error and 1/20 missions completed with the plain EKF to 0.45 m and 20/20 with the full recovery stack.",
             "The factor graph was not better than the EKF in these tests, and that is reported as a result too."
           ]
         },
