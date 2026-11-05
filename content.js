@@ -114,7 +114,7 @@ window.CONTENT = {
       { value: "8th / 58", label: "RoboSub 2025 · Technical Coordinator" }
     ],
     links: [
-      { label: "See the vision pipeline", href: "https://github.com/MadLad10/BRACU-Duburi-AUV-Vision-Pipeline" },
+      { label: "See the vision pipeline", href: "https://github.com/MadLad10/AUV-Vision-Pipeline" },
       { label: "RoboSub 2026 design report", href: "https://robonation.org/app/uploads/sites/4/2026/07/RS26_TDR_BRACU.pdf" },
       { label: "About RoboSub", href: "https://robonation.org/programs/robosub/" }
     ]
@@ -196,7 +196,7 @@ window.CONTENT = {
             "YOLO11n is the model BRACU Duburi deployed at RoboSub 2026, where the team placed 8th of 58."
           ]
         },
-        links: [{ label: "Code", href: "https://github.com/MadLad10/BRACU-Duburi-AUV-Vision-Pipeline" }]
+        links: [{ label: "Code", href: "https://github.com/MadLad10/AUV-Vision-Pipeline" }]
       },
       {
         title: "AUV LLM Mission Planner",
@@ -264,6 +264,38 @@ window.CONTENT = {
     // Shown as the same cards, after the four above. Without an image a card shows a
     // pixel "no signal" screen with `icon` (code, agent, eye, robot, chip, db, screen, tool).
     more: [
+      {
+        title: "AUV Hull Inspection",
+        kind: "Autonomous inspection",
+        summary: "Software for an underwater robot that inspects a ship's hull: it plans and flies the survey, finds corrosion, fouling, cracks and worn anodes, and writes an inspection report.",
+        stat: { label: "Hull coverage on test hulls", value: "100%" },
+        tags: ["MuJoCo", "PyTorch", "EKF", "Segmentation", "Multi-vehicle"],
+        image: "assets/projects/hull-inspection.mp4",
+        alt: "Simulated AUV surveying a ship's hull, with its camera view and the hull filling in as it is covered",
+        detect: { label: "hull_inspect", confidence: 0.98 },
+        brief: {
+          tldr: "Software for an autonomous underwater vehicle that inspects a ship's hull. It plans the survey, flies it, finds corrosion, coating damage, fouling, cracks and worn anodes, and writes an inspection report. Everything is built and tested in simulation, where every defect is known exactly, so every claim the software makes can be checked.",
+          problem: "Real inspection footage has no ground truth. Nobody knows exactly where every defect is, how big it is, or whether the vehicle really saw every part of the hull, so there is no way to check what inspection software claims.",
+          why: "",
+          how: [
+            "Seeded hull sections with plates, weld seams, a sea-chest grating, anodes and five defect types. Real defects cut from the LIACi inspection images can be painted on.",
+            "MuJoCo renders the hull, and a Jaffe-McGlamery light model adds lamps, absorption and scattering, with a photon-counting camera for noise and motion blur.",
+            "Fossen 6-DOF vehicle dynamics, with IMU, DVL, depth and compass fused by an EKF, ten injectable faults and revisits to fill coverage holes.",
+            "Three detectors: a classical one, a small learned region classifier, and a deep segmenter (MobileNetV2 with an FPN decoder, in PyTorch).",
+            "Findings are placed on the hull, confirmed across views and written into an HTML report with a photomosaic, with change detection between surveys months apart.",
+            "Several vehicles can share one hull over a slow, lossy acoustic link. A coordinator on the ship hands an aborted vehicle's work to another.",
+            "Independent referees score coverage, detections, the defect map and the fleet against the exact ground truth, never against what the software reports about itself."
+          ],
+          results: [
+            "100% hull coverage on every hull in a frozen test suite of 8, and the vehicle never claimed coverage it did not get.",
+            "86% of procedural defects found at 98% precision. 55 of 56 anode stations judged right, with all 9 missing anodes found.",
+            "With a camera blackout, murky water and a 60 s DVL loss, revisits brought coverage back to 100% with no false claims.",
+            "Two vehicles finish 2.0× faster and four 4.0× faster. After a battery failure the fleet still covers 100% of the hull (89.5% without coordination).",
+            "All results are from simulation and have not been checked on a real hull."
+          ]
+        },
+        links: [{ label: "Code", href: "https://github.com/MadLad10/auv_inspection" }]
+      },
       {
         title: "Camera–Sonar Perception",
         kind: "Sensor fusion",
