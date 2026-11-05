@@ -72,7 +72,7 @@ window.CONTENT = {
     // Bottom bar: typed out one line at a time, on a loop. With reduced motion only the first line shows.
     status: [
       "Mission: join a research team",
-      "Now: Research Assistant, Dubotech Digital",
+      "Previously: Research Assistant, Dubotech Digital",
       "Led: AI and Machine Vision, BRACU Duburi",
       "RoboSub: 8th of 58, 2025 and 2026"
     ],
@@ -83,7 +83,7 @@ window.CONTENT = {
     title: "About",
     paragraphs: [
       "I'm Yaad, a Computer Science graduate from BRAC University in Dhaka, with a CGPA of 3.96/4.0. I care about both sides of the field: the research that explains why something works, and the engineering that makes it work on real hardware.",
-      "On the academic side, I spent over a year as an undergraduate teaching assistant, running weekly consultations and helping students think through algorithm design. On the industry side, I'm a Research Assistant at Dubotech Digital working on underwater robotics R&D, after leading the AI and Machine Vision sub-team at BRACU Duburi.",
+      "On the academic side, I spent over a year as an undergraduate teaching assistant, running weekly consultations and helping students think through algorithm design. On the industry side, I worked as a Research Assistant at Dubotech Digital on underwater robotics R&D, and led the AI and Machine Vision sub-team at BRACU Duburi.",
       "Outside of that, I build things for fun: agents, vision pipelines and robot planners in simulation. I like to experiment and see what breaks, but I always aim for something meaningful that could actually add value for someone."
     ],
     card: {
@@ -95,7 +95,7 @@ window.CONTENT = {
       links: true, // Email + the contact.links below as icons under the photo; false hides them
       facts: [
         { label: "Based in", value: "Dhaka, Bangladesh" },
-        { label: "Now", value: "Research Assistant, Dubotech Digital" },
+        { label: "Previously", value: "Research Assistant, Dubotech Digital" },
         { label: "Degree", value: "BSc Computer Science, BRAC University (2026)" },
         { label: "CGPA", value: "3.96 / 4.0" },
         { label: "Focus", value: "Agentic AI · Computer vision · Robotics" }
@@ -503,13 +503,13 @@ window.CONTENT = {
         role: "Research Assistant",
         org: "Dubotech Digital Ltd.",
         place: "Dhaka, Bangladesh",
-        dates: "May 2026 – Present",
-        status: "Active",
+        dates: "May 2026 – Oct 2026",
+        status: "Complete",
         logo: "assets/logos/dubotech.png",
         logoBg: "#09335d", // white logo, shown on Dubotech's brand navy
         mark: "DT",
         points: [
-          "Contribute to research and development on underwater robotic systems, supporting design, implementation and testing across the vehicle stack."
+          "Contributed to research and development on underwater robotic systems, supporting design, implementation and testing across the vehicle stack."
         ]
       },
       {
